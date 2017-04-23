@@ -7,15 +7,15 @@ mod print;
 use std::io;
 
 fn main() {
-    let mut mapOptions = map::MapOptions {
+    let map_options = map::MapOptions {
         width  : 50,
         height : 50,
-        seed   : None
+        seed   : None,
     };
 
-    let     map = map::new_map( mapOptions );
+    let     map = map::new_map( map_options );
     let mut out = io::stdout();
 
-    let _ = print::print_map( map, &mut out );
+    print::print_map( map, &mut out );
 }
 

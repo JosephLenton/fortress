@@ -2,12 +2,10 @@
 extern crate tiles;
 extern crate rand;
 
-use tiles::tiles::Tile;
+use tiles::tile::Tile;
+use tiles::map::Map;
 
 use map::rand::{SeedableRng, StdRng, Rng};
-use std::vec::Vec;
-
-pub type Map = Vec<Vec<Tile>>;
 
 pub struct MapOptions {
     pub width  : usize,
@@ -16,32 +14,33 @@ pub struct MapOptions {
 }
 
 pub fn new_map( options : MapOptions ) -> Map {
-    let mut map = new_filled_map( &options, tiles::tiles::GROUND );
+    let mut map = tiles::map::Map::new( options.width, options.height, tiles::tile::GROUND );
     let mut rng = new_map_rng( &options );
 
-    for x in 0 .. options.width {
-        for y in 0 .. options.height {
-            map[x][y] = random_tile( &mut rng );
-        }
-    }
+    add_base_vegetation( & mut map, & mut rng );
+    add_buildings( & mut map, & mut rng );
 
     return map;
 }
 
-fn new_filled_map( options : &MapOptions, tile : Tile ) -> Map {
-    let mut map = Vec::with_capacity( options.width );
+fn add_base_vegetation(
+    mut map : & mut Map,
+    mut rng : & mut StdRng,
+) {
+    map.map(|_, _, _| random_tile( &mut rng ));
+}
 
-    for x in 0 .. options.width {
-        let mut row = Vec::with_capacity( options.height );
-
-        for y in 0 .. options.height {
-            row.push( tile );
-        }
-
-        map.push( row );
+fn add_buildings(
+    mut map : & mut Map,
+    mut rng : & mut StdRng,
+) {
+    for x in 20 .. 30 {
+        map.set(  x, 15, tiles::tile::WALL );
     }
 
-    return map;
+    for y in 15 .. 30 {
+        map.set( 20,  y, tiles::tile::WALL );
+    }
 }
 
 fn new_map_rng( options : &MapOptions ) -> StdRng {
@@ -58,13 +57,13 @@ fn new_map_rng( options : &MapOptions ) -> StdRng {
     return rng;
 }
 
-fn random_tile( rng : &mut rand::StdRng ) -> Tile {
+fn random_tile( rng : &mut StdRng ) -> Tile {
     let r = rng.gen_range( 0, 10 );
 
     return match r {
-        0 ... 3 => tiles::tiles::GRASS,
-        6       => tiles::tiles::ROCKS,
-              _ => tiles::tiles::GROUND
+        0 ... 3 => tiles::tile::GRASS,
+        6       => tiles::tile::ROCKS,
+              _ => tiles::tile::GROUND
     }
 }
 
