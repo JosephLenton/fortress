@@ -13,8 +13,8 @@ pub struct MapOptions {
     pub seed   : Option<usize>
 }
 
-pub fn new_map( options : MapOptions ) -> Map {
-    let mut map = tiles::map::Map::new( options.width, options.height, tiles::tile::GROUND );
+pub fn new_map( options : MapOptions ) -> Map<Tile> {
+    let mut map = Map::new( options.width, options.height, Tile::Grass );
     let mut rng = new_map_rng( &options );
 
     add_base_vegetation( & mut map, & mut rng );
@@ -24,22 +24,24 @@ pub fn new_map( options : MapOptions ) -> Map {
 }
 
 fn add_base_vegetation(
-    mut map : & mut Map,
+    mut map : & mut Map<Tile>,
     mut rng : & mut StdRng,
 ) {
     map.map(|_, _, _| random_tile( &mut rng ));
 }
 
 fn add_buildings(
-    mut map : & mut Map,
+    mut map : & mut Map<Tile>,
     mut rng : & mut StdRng,
 ) {
+    // todo,
+    // change this to some proper building building code
     for x in 20 .. 30 {
-        map.set(  x, 15, tiles::tile::WALL );
+        map.set(  x, 15, Tile::Wall );
     }
 
     for y in 15 .. 30 {
-        map.set( 20,  y, tiles::tile::WALL );
+        map.set( 20,  y, Tile::Wall );
     }
 }
 
@@ -58,12 +60,13 @@ fn new_map_rng( options : &MapOptions ) -> StdRng {
 }
 
 fn random_tile( rng : &mut StdRng ) -> Tile {
-    let r = rng.gen_range( 0, 10 );
+    let r = rng.gen_range( 0, 20 );
 
     return match r {
-        0 ... 3 => tiles::tile::GRASS,
-        6       => tiles::tile::ROCKS,
-              _ => tiles::tile::GROUND
+        0 ... 3 => Tile::GrassThick,
+        4       => Tile::TreeStump,
+        6       => Tile::Rocks,
+              _ => Tile::Grass
     }
 }
 
