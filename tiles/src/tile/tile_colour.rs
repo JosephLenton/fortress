@@ -1,5 +1,5 @@
 
-use tile::Tile;
+use tile::tile::Tile;
 
 #[derive(Copy, Clone)]
 pub enum TileColour {
@@ -35,6 +35,7 @@ pub fn tile_to_cmd( tile : Tile ) -> String {
 
 pub fn tile_to_colour( tile : Tile ) -> ( TileColour, TileColour ) {
     return match tile {
+        Tile::Empty       => ( TileColour::Black        , TileColour::Grey  ),
         Tile::Ground      => ( TileColour::Black        , TileColour::Brown ),
 
         Tile::Grass       => ( TileColour::Black        , TileColour::Green ),
@@ -45,7 +46,7 @@ pub fn tile_to_colour( tile : Tile ) -> ( TileColour, TileColour ) {
         Tile::Hill        => ( TileColour::Black        , TileColour::Green ),
 
         Tile::Water       => ( TileColour::Black        , TileColour::Blue  ),
-        Tile::Wall        => ( TileColour::Grey         , TileColour::Black ),
+        Tile::Wall        => ( TileColour::Grey         , TileColour::LightGrey ),
         Tile::TreeStump   => ( TileColour::Black        , TileColour::Brown ),
 
         Tile::Ice         => ( TileColour::LightCyan    , TileColour::White ),

@@ -3,8 +3,8 @@ extern crate tiles;
 extern crate getopts;
 
 mod map;
-mod print;
 
+use tiles::print;
 use std::env;
 use std::io;
 
@@ -19,7 +19,8 @@ fn main() {
     let     map = map::new_map( options.map );
     let mut out = io::stdout();
 
-    print::print_map( options.print, map, &mut out );
+    out.lock();
+    print::print_map( options.print, & map, &mut out );
 }
 
 fn parse_opts(
@@ -28,10 +29,10 @@ fn parse_opts(
     let program = args[0].clone();
     let opts    = new_opts();
 
-    let mut width   = 50;
-    let mut height  = 50;
-    let mut colour  = print::PrintColourOptions::Off;
-    let mut seed    = Some( 0 as usize );
+    let mut width  = 50;
+    let mut height = 50;
+    let mut colour = print::PrintColourOptions::Off;
+    let mut seed   = Some( 0 as usize );
 
     let matches = match opts.parse(&args[1..]) {
         Ok(m)  => m,

@@ -1,0 +1,10 @@
+[package]
+name = "game"
+version = "0.1.0"
+authors = ["joseph.lenton@askattest.com <joseph.lenton@askattest.com>"]
+
+[dependencies]
+tiles = { path = "../tiles" }
+piston = "0.32.0"                     # The Piston game engine core libraries
+piston_window = "0.65.0"              # Official Piston window wrapper.
+

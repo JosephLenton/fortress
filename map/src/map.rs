@@ -2,7 +2,7 @@
 extern crate tiles;
 extern crate rand;
 
-use tiles::tile::Tile;
+use tiles::tile::tile::Tile;
 use tiles::map::Map;
 
 use map::rand::{SeedableRng, StdRng, Rng};
@@ -10,7 +10,7 @@ use map::rand::{SeedableRng, StdRng, Rng};
 pub struct MapOptions {
     pub width  : usize,
     pub height : usize,
-    pub seed   : Option<usize>
+    pub seed   : Option<usize>,
 }
 
 pub fn new_map( options : MapOptions ) -> Map<Tile> {

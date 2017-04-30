@@ -1,7 +1,8 @@
 
 pub mod tile;
-pub mod tile_colour;
 pub mod map;
+pub mod load;
+pub mod print;
 
 #[cfg(test)]
 mod tests {
