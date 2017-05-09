@@ -20,10 +20,10 @@ fn main() {
     let setup = Setup {
         title : "Fortress",
 
-        window_size : Size::new( 800, 600 ),
-        tile_size   : Size::new(  24,  24 ),
+        window_size : Size { width: 800, height: 600 },
+        tile_size   : Size { width:  24, height:  24 },
     };
 
-    render::game::run( setup, game );
+    render::main::run( setup, game );
 }
 

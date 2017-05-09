@@ -67,12 +67,12 @@ pub fn read_to_map( read_in : &mut BufRead ) -> Map<Tile> {
     return map;
 }
 
-fn get_vec_size( buf : & Vec<String> ) -> ( usize, usize ) {
-    let mut max_width  = 0;
-    let     max_height = buf.len();
+fn get_vec_size( buf : & Vec<String> ) -> ( u32, u32 ) {
+    let mut max_width  = 0 as u32;
+    let     max_height = buf.len() as u32;
 
     for line in buf {
-        let line_len = line.chars().count();
+        let line_len = line.chars().count() as u32;
 
         max_width = cmp::max( max_width, line_len );
     }

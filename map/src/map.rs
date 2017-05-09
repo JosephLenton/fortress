@@ -8,8 +8,8 @@ use tiles::map::Map;
 use map::rand::{SeedableRng, StdRng, Rng};
 
 pub struct MapOptions {
-    pub width  : usize,
-    pub height : usize,
+    pub width  : u32,
+    pub height : u32,
     pub seed   : Option<usize>,
 }
 

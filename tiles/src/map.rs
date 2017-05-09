@@ -2,15 +2,15 @@
 use std::iter::Iterator;
 
 pub struct Map<T> {
-    pub width  : usize,
-    pub height : usize,
+    pub width  : u32,
+    pub height : u32,
         data   : MapData<T>,
 }
 
 type MapData<T> = Vec<T>;
 
 impl<T: Copy> Map<T> {
-    pub fn new( width : usize, height : usize, default : T ) -> Map<T> {
+    pub fn new( width : u32, height : u32, default : T ) -> Map<T> {
         return Map {
             width  : width,
             height : height,
@@ -18,20 +18,20 @@ impl<T: Copy> Map<T> {
         }
     }
 
-    pub fn get( &self, x : usize, y : usize ) -> T {
+    pub fn get( &self, x : u32, y : u32 ) -> T {
         let index = map_index( x, y, self.width, self.height );
 
         return self.data[ index ];
     }
 
-    pub fn set( & mut self, x : usize, y : usize, tile : T ) {
+    pub fn set( & mut self, x : u32, y : u32, tile : T ) {
         let index = map_index( x, y, self.width, self.height );
 
         self.data[ index ] = tile;
     }
 
     pub fn map<F>( &mut self, mut map_f : F )
-        where F : FnMut( T, usize, usize ) -> T
+        where F : FnMut( T, u32, u32 ) -> T
     {
         let mut i = 0;
 
@@ -92,15 +92,15 @@ impl<T: Copy> Map<T> {
         return MapIterator {
             data : & self.data,
 
-            x : x as usize,
-            y : y as usize,
+            x : x as u32,
+            y : y as u32,
 
             w : self.width,
             h : self.height,
 
-            sx : x  as usize,
-            sw : sw as usize,
-            sh : sh as usize,
+            sx : x  as u32,
+            sw : sw as u32,
+            sh : sh as u32,
         }
     }
 }
@@ -111,34 +111,34 @@ pub struct MapIterator<'a, T: 'a> {
     /// 
     /// The x position of where we are iterating.
     ///
-    x : usize,
+    x : u32,
 
     /// 
     /// The y position of where we are iterating.
     ///
-    y : usize,
+    y : u32,
 
     ///
     /// Full size of the data map.
     /// 
-    w : usize,
-    h : usize,
+    w : u32,
+    h : u32,
 
     /// 
     /// sx stands for 'slice x'.
     /// It's the x position of the top left corner of the map.
     /// 
-    sx : usize,
+    sx : u32,
 
     ///
     /// sw is the 'slice width'.
     /// 
-    sw : usize,
+    sw : u32,
 
     ///
     /// sh is the 'slice height'.
     /// 
-    sh : usize,
+    sh : u32,
 }
 
 impl<'a, T:Copy> Iterator for MapIterator<'a, T> {
@@ -171,10 +171,10 @@ impl<'a, T:Copy> Iterator for MapIterator<'a, T> {
 }
 
 type MapIteratorItem<T> =
-    ( T, usize, usize );
+    ( T, u32, u32 );
 
-fn new_map_data<T: Copy>( width : usize, height : usize, default : T ) -> MapData<T> {
-    let size    = width * height;
+fn new_map_data<T: Copy>( width : u32, height : u32, default : T ) -> MapData<T> {
+    let size    = (width * height) as usize;
     let mut map = Vec::with_capacity( size );
 
     for _ in 0 .. size {
@@ -186,13 +186,13 @@ fn new_map_data<T: Copy>( width : usize, height : usize, default : T ) -> MapDat
 
 fn copy_map_data<F, T1:Copy, T2:Copy>(
         src     : & MapData<T1>,
-        width   : usize,
-        height  : usize,
+        width   : u32,
+        height  : u32,
     mut map_f   : F,
 ) -> MapData<T2> 
     where F : FnMut( T1 ) -> T2
 {
-    let size    = width * height;
+    let size    = (width * height) as usize;
     let mut map = Vec::with_capacity( size );
 
     for i in 0 .. size {
@@ -206,7 +206,7 @@ fn copy_map_data<F, T1:Copy, T2:Copy>(
 }
 
 #[inline]
-fn map_index( x:usize, y:usize, _width:usize, height:usize ) -> usize {
-    return y*height + x;
+fn map_index( x:u32, y:u32, _width:u32, height:u32 ) -> usize {
+    return (y*height + x) as usize;
 }
 

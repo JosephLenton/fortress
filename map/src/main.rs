@@ -51,12 +51,12 @@ fn parse_opts(
     }
 
     match matches.opt_str("w") {
-        Some( width_str ) => width = width_str.parse::<usize>().unwrap(),
+        Some( width_str ) => width = width_str.parse::<u32>().unwrap(),
         None              => { /* do nothing */ },
     };
 
     match matches.opt_str("h") {
-        Some( height_str ) => height = height_str.parse::<usize>().unwrap(),
+        Some( height_str ) => height = height_str.parse::<u32>().unwrap(),
         None               => { /* do nothing */ },
     };
 
