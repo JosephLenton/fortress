@@ -1,6 +1,4 @@
 
-extern crate tiles;
-
 use tiles::tile::tile::Tile;
 
 #[derive(Copy, Clone)]

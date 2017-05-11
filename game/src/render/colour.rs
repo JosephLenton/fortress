@@ -1,8 +1,7 @@
 
-extern crate tiles;
-
 use tiles::tile::tile::Tile;
-use tiles::tile::tile_colour::TileColour;
+use tiles::colour::Colour;
+use tiles::tile::tile_colour;
 
 #[macro_use]
 mod macros {
@@ -42,37 +41,37 @@ pub static LIGHT_GREEN  : RenderColour = colour!(   0, 255,   0 );
 pub static GREEN        : RenderColour = colour!(  50, 205,  50 );
 
 pub fn tile_to_colour( tile : Tile ) -> ( RenderColour, RenderColour ) {
-    let colour = tiles::tile::tile_colour::tile_to_colour( tile );
+    let colour = tile_colour::tile_to_colour( tile );
 
     return ( tile_colour_to_render_colour(colour.0), tile_colour_to_render_colour(colour.1) )
 }
 
-pub fn tile_colour_to_render_colour( colour : TileColour ) -> RenderColour {
+pub fn tile_colour_to_render_colour( colour : Colour ) -> RenderColour {
     return match colour {
-        TileColour::Black        => BLACK,
-        TileColour::White        => WHITE,
+        Colour::Black        => BLACK,
+        Colour::White        => WHITE,
 
-        TileColour::LightRed     => LIGHT_RED,
-        TileColour::Red          => RED,
+        Colour::LightRed     => LIGHT_RED,
+        Colour::Red          => RED,
 
-        TileColour::Pink         => PINK,
-        TileColour::Purple       => PURPLE,
+        Colour::Pink         => PINK,
+        Colour::Purple       => PURPLE,
 
-        TileColour::Brown        => BROWN,
-        TileColour::Yellow       => YELLOW,
+        Colour::Brown        => BROWN,
+        Colour::Yellow       => YELLOW,
 
-        TileColour::DarkGrey     => DARK_GREY,
-        TileColour::Grey         => GREY,
-        TileColour::LightGrey    => LIGHT_GREY,
+        Colour::DarkGrey     => DARK_GREY,
+        Colour::Grey         => GREY,
+        Colour::LightGrey    => LIGHT_GREY,
 
-        TileColour::LightCyan    => LIGHT_CYAN,
-        TileColour::Cyan         => CYAN,
+        Colour::LightCyan    => LIGHT_CYAN,
+        Colour::Cyan         => CYAN,
 
-        TileColour::LightBlue    => LIGHT_BLUE,
-        TileColour::Blue         => BLUE,
+        Colour::LightBlue    => LIGHT_BLUE,
+        Colour::Blue         => BLUE,
 
-        TileColour::LightGreen   => LIGHT_GREEN,
-        TileColour::Green        => GREEN,
+        Colour::LightGreen   => LIGHT_GREEN,
+        Colour::Green        => GREEN,
     }
 }
 

@@ -1,96 +1,69 @@
 
+use colour::Colour;
 use tile::tile::Tile;
-
-#[derive(Copy, Clone)]
-pub enum TileColour {
-    Black,
-    White,
-
-    LightRed,
-    Red,
-
-    Pink,
-    Purple,
-
-    Brown,
-    Yellow,
-
-    LightGrey,
-    Grey,
-    DarkGrey,
-
-    LightCyan,
-    Cyan,
-
-    LightBlue,
-    Blue,
-
-    LightGreen,
-    Green,
-}
 
 pub fn tile_to_cmd( tile : Tile ) -> String {
     return colour_to_cmd( tile_to_colour( tile ) );
 }
 
-pub fn tile_to_colour( tile : Tile ) -> ( TileColour, TileColour ) {
+pub fn tile_to_colour( tile : Tile ) -> ( Colour, Colour ) {
     return match tile {
-        Tile::Empty       => ( TileColour::Black        , TileColour::Grey  ),
-        Tile::Ground      => ( TileColour::Black        , TileColour::Brown ),
+        Tile::Empty       => ( Colour::Black        , Colour::Grey  ),
+        Tile::Ground      => ( Colour::Black        , Colour::Brown ),
 
-        Tile::Grass       => ( TileColour::Black        , TileColour::Green ),
-        Tile::GrassThick  => ( TileColour::Black        , TileColour::Green ),
+        Tile::Grass       => ( Colour::Black        , Colour::Green ),
+        Tile::GrassThick  => ( Colour::Black        , Colour::Green ),
 
-        Tile::Rocks       => ( TileColour::Black        , TileColour::LightGrey ),
+        Tile::Rocks       => ( Colour::Black        , Colour::LightGrey ),
 
-        Tile::Hill        => ( TileColour::Black        , TileColour::Green ),
+        Tile::Hill        => ( Colour::Black        , Colour::Green ),
 
-        Tile::Water       => ( TileColour::Black        , TileColour::Blue  ),
-        Tile::Wall        => ( TileColour::Grey         , TileColour::LightGrey ),
-        Tile::TreeStump   => ( TileColour::Black        , TileColour::Brown ),
+        Tile::Water       => ( Colour::Black        , Colour::Blue  ),
+        Tile::Wall        => ( Colour::Grey         , Colour::LightGrey ),
+        Tile::TreeStump   => ( Colour::Black        , Colour::Brown ),
 
-        Tile::Ice         => ( TileColour::LightCyan    , TileColour::White ),
+        Tile::Ice         => ( Colour::LightCyan    , Colour::White ),
     }
 }
 
-pub fn colour_to_cmd( colour : ( TileColour, TileColour ) ) -> String {
+pub fn colour_to_cmd( colour : ( Colour, Colour ) ) -> String {
     return colour_to_cmd_background( colour.0 ) + &colour_to_cmd_foreground( colour.1 );
 }
 
-fn colour_to_cmd_foreground( colour : TileColour ) -> String {
+fn colour_to_cmd_foreground( colour : Colour ) -> String {
     return "\x1B[38;2;".to_string() + colour_to_cmd_colour( colour ) + "m"
 }
 
-fn colour_to_cmd_background( colour : TileColour ) -> String {
+fn colour_to_cmd_background( colour : Colour ) -> String {
     return "\x1B[48;2;".to_string() + colour_to_cmd_colour( colour ) + "m"
 }
 
-fn colour_to_cmd_colour( colour : TileColour ) -> &'static str {
+fn colour_to_cmd_colour( colour : Colour ) -> &'static str {
     return match colour {
-        TileColour::Black        => "0;0;0",
-        TileColour::White        => "255;255;255",
+        Colour::Black        => "0;0;0",
+        Colour::White        => "255;255;255",
 
-        TileColour::LightRed     => "250;128;144",
-        TileColour::Red          => "255;0;0",
+        Colour::LightRed     => "250;128;144",
+        Colour::Red          => "255;0;0",
 
-        TileColour::Pink         => "255;0;255",
-        TileColour::Purple       => "128;0;128",
+        Colour::Pink         => "255;0;255",
+        Colour::Purple       => "128;0;128",
 
-        TileColour::Brown        => "175;90;35",
-        TileColour::Yellow       => "255;215;0",
+        Colour::Brown        => "175;90;35",
+        Colour::Yellow       => "255;215;0",
 
-        TileColour::DarkGrey     => "75;75;75",
-        TileColour::Grey         => "120;120;120",
-        TileColour::LightGrey    => "180;180;180",
+        Colour::DarkGrey     => "75;75;75",
+        Colour::Grey         => "120;120;120",
+        Colour::LightGrey    => "180;180;180",
 
-        TileColour::LightCyan    => "0;255;255",
-        TileColour::Cyan         => "64;224;208",
+        Colour::LightCyan    => "0;255;255",
+        Colour::Cyan         => "64;224;208",
 
-        TileColour::LightBlue    => "30;144;255",
-        TileColour::Blue         => "0;0;255",
+        Colour::LightBlue    => "30;144;255",
+        Colour::Blue         => "0;0;255",
 
-        TileColour::LightGreen   => "0;255;0",
-        TileColour::Green        => "50;205;50",
+        Colour::LightGreen   => "0;255;0",
+        Colour::Green        => "50;205;50",
     }
 }
 
