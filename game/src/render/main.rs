@@ -1,11 +1,11 @@
 
 use vulkano;
-use vulkano_win;
 use winit;
 
-use vulkano_win::VkSurfaceBuild;
 use winit::WindowBuilder;
 
+use render::vulkano_win;
+use render::vulkano_win::VkSurfaceBuild;
 use render::setup::Setup;
 use render::window_state::WindowState;
 use render::render_game::RenderGame;
@@ -31,7 +31,7 @@ pub fn run(
         .build_vk_surface( &events_loop, &instance )
         .unwrap();
 
-    let gfx = GFX::new();
+    let mut gfx = GFX::new();
 
     events_loop.run_forever(|event| {
         match event {

@@ -8,5 +8,7 @@ tiles       = { path = "../tiles" }
 
 vulkano     = "0.3.2" # Vulkan bindings.
 winit       = "0.6.4" # For creating windows in a cross platform manner.
-vulkano-win = "0.3.2" # Link between Vulkano and Winit
+
+# At the time of writing, the vulkano-win crate does not work correctly.
+#vulkano-win = "0.3.2" # Link between Vulkano and Winit
 
