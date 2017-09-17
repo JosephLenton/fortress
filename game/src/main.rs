@@ -1,7 +1,10 @@
 
-#![warn(missing_docs)]
 #![warn(unused_extern_crates)]
 #![warn(unused_import_braces)]
+
+use std::io::Result;
+use std::io::BufReader;
+use std::fs::File;
 
 extern crate sdl2;
 
@@ -10,10 +13,6 @@ extern crate structopt_derive;
 extern crate structopt;
 
 extern crate tiles;
-
-use std::io::Result;
-use std::io::BufReader;
-use std::fs::File;
 
 use args::Args;
 use tiles::load;

@@ -9,7 +9,6 @@ use render::window_state::WindowState;
 use game::game::Game;
 
 use util::size::Size;
-use util::bounds::Bounds;
 
 pub struct RenderGame<'a> {
 

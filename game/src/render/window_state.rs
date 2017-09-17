@@ -1,8 +1,6 @@
 
 use render::setup::Setup;
 
-use std::cmp::min;
-use std::cmp::max;
 use util::size::Size;
 
 pub struct WindowState {

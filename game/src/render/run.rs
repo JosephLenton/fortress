@@ -1,6 +1,5 @@
 
 use sdl2;
-use sdl2::pixels;
 use sdl2::event::Event;
 use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
@@ -9,7 +8,6 @@ use sdl2::mouse::MouseWheelDirection;
 use render::setup::Setup;
 use render::window_state::WindowState;
 use render::render_game::RenderGame;
-use render::colour;
 use render::gfx::GFX;
 
 use game::game::Game;

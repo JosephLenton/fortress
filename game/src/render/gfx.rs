@@ -1,11 +1,9 @@
 
-use sdl2::pixels;
 use sdl2::rect::Rect;
 use sdl2::render::WindowCanvas;
 
 use tiles::colour::Colour;
 use render::colour;
-use render::colour::RenderColour;
 use render::colour::ToSDL2Color;
 
 ///
