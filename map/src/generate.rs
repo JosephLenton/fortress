@@ -1,11 +1,10 @@
 
-extern crate tiles;
-extern crate rand;
-
 use tiles::tile::tile::Tile;
 use tiles::map::Map;
 
-use map::rand::{SeedableRng, StdRng, Rng};
+use rand::StdRng;
+use rand::SeedableRng;
+use rand::Rng;
 
 pub struct MapOptions {
     pub width  : u32,
@@ -17,13 +16,27 @@ pub fn new_map( options : MapOptions ) -> Map<Tile> {
     let mut map = Map::new( options.width, options.height, Tile::Grass );
     let mut rng = new_map_rng( &options );
 
-    add_base_vegetation( & mut map, & mut rng );
+    add_ground_vegetation( & mut map, & mut rng );
     add_buildings( & mut map, & mut rng );
 
     return map;
 }
 
-fn add_base_vegetation(
+fn new_map_rng( options : &MapOptions ) -> StdRng {
+    let mut rng = match StdRng::new() {
+        Ok(rng) => rng,
+        Err(e)  => panic!("Could not initialise map rng, {}", e)
+    };
+
+    match options.seed {
+        Some(seed) => { rng.reseed(&[ seed ]); }
+        None       => {    /* do nothing */    }
+    }
+
+    return rng;
+}
+
+fn add_ground_vegetation(
     mut map : & mut Map<Tile>,
     mut rng : & mut StdRng,
 ) {
@@ -43,20 +56,6 @@ fn add_buildings(
     for y in 15 .. 30 {
         map.set( 20,  y, Tile::Wall );
     }
-}
-
-fn new_map_rng( options : &MapOptions ) -> StdRng {
-    let mut rng = match StdRng::new() {
-        Ok(rng) => rng,
-        Err(e)  => panic!("Could not initialise map rng, {}", e)
-    };
-
-    match options.seed {
-        Some(seed) => { rng.reseed(&[ seed ]); }
-        None       => {    /* do nothing */    }
-    }
-
-    return rng;
 }
 
 fn random_tile( rng : &mut StdRng ) -> Tile {

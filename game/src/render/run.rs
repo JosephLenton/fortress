@@ -96,6 +96,9 @@ fn render(
         gfx,
     );
 
+    // render cursor
+    // render UIs
+
     gfx.finished_drawing();
 }
 

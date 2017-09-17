@@ -6,20 +6,14 @@ use tile::display_tile::tile_to_char;
 
 use std::io;
 
-pub struct PrintOptions {
-    pub colour : PrintColourOptions,
-}
-
+#[derive(PartialEq, Eq)]
 pub enum PrintColourOptions {
     On,
     Off,
 }
 
-pub fn print_map( options : PrintOptions, map : & Map<Tile>, out : &mut io::Write ) {
-    let has_colour = match options.colour {
-        PrintColourOptions::On  => true,
-        PrintColourOptions::Off => false,
-    };
+pub fn print_map( colour : PrintColourOptions, map : & Map<Tile>, out : &mut io::Write ) {
+    let has_colour = colour == PrintColourOptions::On;
 
     for (tile, x, y) in map.slice_all() {
         let tile_char = tile_to_char( tile );
