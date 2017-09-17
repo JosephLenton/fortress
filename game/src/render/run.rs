@@ -32,21 +32,13 @@ pub fn run(
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap();
-    canvas.set_draw_color(pixels::Color::RGB(0, 0, 0));
-    canvas.clear();
-    canvas.present();
-
-    let mut gfx = GFX::new(
-        & mut canvas,
-    );
-
     let mut events = sdl_context.event_pump()
         .unwrap();
 
     render(
         & state,
         & rgame,
-        & mut gfx,
+        & mut canvas,
     );
 
     'main: loop {
@@ -56,23 +48,13 @@ pub fn run(
                     break 'main;
                 }
 
-                Event::Window {win_event:WindowEvent::SizeChanged(width, height), ..} => {
+                Event::Window {win_event:WindowEvent::SizeChanged(width, height), ..} | Event::Window {win_event:WindowEvent::Resized(width, height), ..} => {
                     state.on_resize( width as u32, height as u32 );
 
                     render(
                         & state,
                         & rgame,
-                        & mut gfx,
-                    );
-                }
-
-                Event::Window {win_event:WindowEvent::Resized(width, height), ..} => {
-                    state.on_resize( width as u32, height as u32 );
-
-                    render(
-                        & state,
-                        & rgame,
-                        & mut gfx,
+                        & mut canvas,
                     );
                 }
 
@@ -109,11 +91,13 @@ fn render(
         rgame   : & RenderGame,
         gfx     : & mut GFX,
 ) {
-    gfx.pre_render();
+    gfx.clear();
+
     rgame.render(
         state,
         gfx,
     );
-    gfx.post_render();
+
+    gfx.finished_drawing();
 }
 

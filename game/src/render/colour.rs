@@ -1,16 +1,19 @@
 
 use sdl2::pixels::Color;
 
-use tiles::tile::tile::Tile;
 use tiles::colour::Colour;
-use tiles::tile::tile_colour;
 
 #[macro_use]
 mod macros {
     #[macro_export]
     macro_rules! colour {
         ( $r:expr, $g:expr, $b:expr ) => {
-            ( $r as u8, $g as u8, $b as u8, 255 as u8 );
+            RenderColour {
+                r : $r as u8,
+                g : $g as u8,
+                b : $b as u8,
+                a : 255 as u8,
+            }
         }
     }
 }
@@ -19,7 +22,13 @@ mod macros {
 /// The colour used when rendering.
 /// This matches the layout used by SDL.
 ///
-pub type RenderColour = ( u8, u8, u8, u8 );
+#[derive(Copy, Clone)]
+pub struct RenderColour {
+    r : u8,
+    g : u8,
+    b : u8,
+    a : u8,
+}
 
 pub static BLACK        : RenderColour = colour!(   0,   0,   0 );
 pub static WHITE        : RenderColour = colour!( 255, 255, 255 );
@@ -46,44 +55,54 @@ pub static BLUE         : RenderColour = colour!(   0,   0, 255 );
 pub static LIGHT_GREEN  : RenderColour = colour!(   0, 255,   0 );
 pub static GREEN        : RenderColour = colour!(  50, 205,  50 );
 
-pub fn tile_to_colour( tile : Tile ) -> ( RenderColour, RenderColour ) {
-    let colour = tile_colour::tile_to_colour( tile );
-
-    return ( colour_to_render_colour(colour.0), colour_to_render_colour(colour.1) )
+pub trait ToRenderColour {
+    fn to_render_colour( self ) -> RenderColour;
 }
 
-pub fn colour_to_render_colour( colour : Colour ) -> RenderColour {
-    return match colour {
-        Colour::Black        => BLACK,
-        Colour::White        => WHITE,
+impl ToRenderColour for Colour {
+    fn to_render_colour( self ) -> RenderColour {
+        return match self {
+            Colour::Black        => BLACK,
+            Colour::White        => WHITE,
 
-        Colour::LightRed     => LIGHT_RED,
-        Colour::Red          => RED,
+            Colour::LightRed     => LIGHT_RED,
+            Colour::Red          => RED,
 
-        Colour::Pink         => PINK,
-        Colour::Purple       => PURPLE,
+            Colour::Pink         => PINK,
+            Colour::Purple       => PURPLE,
 
-        Colour::Brown        => BROWN,
-        Colour::Yellow       => YELLOW,
+            Colour::Brown        => BROWN,
+            Colour::Yellow       => YELLOW,
 
-        Colour::DarkGrey     => DARK_GREY,
-        Colour::Grey         => GREY,
-        Colour::LightGrey    => LIGHT_GREY,
+            Colour::DarkGrey     => DARK_GREY,
+            Colour::Grey         => GREY,
+            Colour::LightGrey    => LIGHT_GREY,
 
-        Colour::LightCyan    => LIGHT_CYAN,
-        Colour::Cyan         => CYAN,
+            Colour::LightCyan    => LIGHT_CYAN,
+            Colour::Cyan         => CYAN,
 
-        Colour::LightBlue    => LIGHT_BLUE,
-        Colour::Blue         => BLUE,
+            Colour::LightBlue    => LIGHT_BLUE,
+            Colour::Blue         => BLUE,
 
-        Colour::LightGreen   => LIGHT_GREEN,
-        Colour::Green        => GREEN,
+            Colour::LightGreen   => LIGHT_GREEN,
+            Colour::Green        => GREEN,
+        }
     }
 }
 
-pub fn colour_to_sdl2_colour( colour : Colour ) -> Color {
-    let (r, g, b, a) = colour_to_render_colour( colour );
+pub trait ToSDL2Color {
+    fn to_sdl2_color( self ) -> Color;
+}
 
-    return Color::RGBA( r, g, b, a );
+impl ToSDL2Color for Colour {
+    fn to_sdl2_color( self ) -> Color {
+        return self.to_render_colour().to_sdl2_color();
+    }
+}
+
+impl ToSDL2Color for RenderColour {
+    fn to_sdl2_color( self ) -> Color {
+        return Color::RGBA( self.r, self.g, self.b, self.a );
+    }
 }
 
