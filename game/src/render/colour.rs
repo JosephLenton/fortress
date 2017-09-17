@@ -1,4 +1,6 @@
 
+use sdl2::pixels::Color;
+
 use tiles::tile::tile::Tile;
 use tiles::colour::Colour;
 use tiles::tile::tile_colour;
@@ -8,12 +10,16 @@ mod macros {
     #[macro_export]
     macro_rules! colour {
         ( $r:expr, $g:expr, $b:expr ) => {
-            [($r as f32)/255.0, ($g as f32)/255.0, ($b as f32)/255.0, 1.0];
+            ( $r as u8, $g as u8, $b as u8, 255 as u8 );
         }
     }
 }
 
-pub type RenderColour = [ f32; 4 ];
+///
+/// The colour used when rendering.
+/// This matches the layout used by SDL.
+///
+pub type RenderColour = ( u8, u8, u8, u8 );
 
 pub static BLACK        : RenderColour = colour!(   0,   0,   0 );
 pub static WHITE        : RenderColour = colour!( 255, 255, 255 );
@@ -43,10 +49,10 @@ pub static GREEN        : RenderColour = colour!(  50, 205,  50 );
 pub fn tile_to_colour( tile : Tile ) -> ( RenderColour, RenderColour ) {
     let colour = tile_colour::tile_to_colour( tile );
 
-    return ( tile_colour_to_render_colour(colour.0), tile_colour_to_render_colour(colour.1) )
+    return ( colour_to_render_colour(colour.0), colour_to_render_colour(colour.1) )
 }
 
-pub fn tile_colour_to_render_colour( colour : Colour ) -> RenderColour {
+pub fn colour_to_render_colour( colour : Colour ) -> RenderColour {
     return match colour {
         Colour::Black        => BLACK,
         Colour::White        => WHITE,
@@ -73,5 +79,11 @@ pub fn tile_colour_to_render_colour( colour : Colour ) -> RenderColour {
         Colour::LightGreen   => LIGHT_GREEN,
         Colour::Green        => GREEN,
     }
+}
+
+pub fn colour_to_sdl2_colour( colour : Colour ) -> Color {
+    let (r, g, b, a) = colour_to_render_colour( colour );
+
+    return Color::RGBA( r, g, b, a );
 }
 

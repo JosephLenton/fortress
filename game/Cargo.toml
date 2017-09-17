@@ -1,14 +1,15 @@
 [package]
+authors = ["joseph.lenton@askattest.com <joseph.lenton@askattest.com>"]
 name = "game"
 version = "0.1.0"
-authors = ["joseph.lenton@askattest.com <joseph.lenton@askattest.com>"]
 
 [dependencies]
-tiles       = { path = "../tiles" }
 
-vulkano     = "0.3.2" # Vulkan bindings.
-winit       = "0.6.4" # For creating windows in a cross platform manner.
+[dependencies.sdl2]
+default-features = false
+features = [
+]
+version = "0.30"
 
-# At the time of writing, the vulkano-win crate does not work correctly.
-#vulkano-win = "0.3.2" # Link between Vulkano and Winit
-
+[dependencies.tiles]
+path = "../tiles"

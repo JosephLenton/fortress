@@ -13,20 +13,20 @@ use util::bounds::Bounds;
 
 pub struct RenderGame<'a> {
 
-    /// 
+    ///
     /// The game state we are using for rendering.
     ///
     game : &'a Game,
 
-    /// 
+    ///
     /// Used for rendering.
     ///
     /// The size of the tile when drawn to the screen.
     tile_size : Size,
 
-    /// 
+    ///
     /// The camera whilst drawing.
-    /// 
+    ///
     camera : Camera,
 
 }
@@ -43,10 +43,10 @@ impl<'a> RenderGame<'a> {
         }
     }
 
-    pub fn on_mouse_scroll( &mut self, y : f32 ) {
-        if y > 0.0 {
+    pub fn on_mouse_scroll( &mut self, y : i32 ) {
+        if y > 0 {
             self.camera.zoom_in();
-        } else if y < 0.0 {
+        } else if y < 0 {
             self.camera.zoom_out();
         }
     }
@@ -82,12 +82,12 @@ impl<'a> RenderGame<'a> {
 
             gfx.rectangle(
                     background,
-                    [ draw_x, draw_y, tile_width, tile_height ],
+                    ( draw_x, draw_y, tile_width, tile_height ),
             );
 
             gfx.rectangle(
                     foreground,
-                    [ draw_x+tile_width/4.0, draw_y+tile_height/4.0, tile_width/2.0, tile_height/2.0 ],
+                    ( draw_x+tile_width/4.0, draw_y+tile_height/4.0, tile_width/2.0, tile_height/2.0 ),
             );
         }
     }
@@ -111,7 +111,7 @@ impl Cursor {
 
             start_x : x,
             start_y : y,
-            
+
             is_down : false,
         }
     }

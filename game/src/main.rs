@@ -1,7 +1,5 @@
 
-#[macro_use]
-extern crate vulkano;
-extern crate winit;
+extern crate sdl2;
 
 extern crate tiles;
 
@@ -28,6 +26,6 @@ fn main() {
         tile_size   : Size { width:  24, height:  24 },
     };
 
-    render::main::run( setup, game );
+    render::run::run( setup, game );
 }
 
