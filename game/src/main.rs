@@ -39,7 +39,7 @@ fn main_run() -> Result<()> {
     let file = File::open( args.map )?;
     let mut file = BufReader::new( file );
 
-    let map   = load::read_to_map( &mut file );
+    let map   = load::read_to_map( &mut file )?;
     let game  = Game::new( map );
     let setup = Setup {
         title : "Fortress",
