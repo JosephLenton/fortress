@@ -1,15 +1,16 @@
 
 use std::fmt;
+
+use colour::Colour;
 use tile::tile::Tile;
-use tile::tile_colour::TileColour;
 use tile::tile_colour::tile_to_colour;
 
 #[derive(Copy, Clone)]
 pub struct DisplayTile {
     pub tile       : Tile,
     pub display    : char,
-    pub foreground : TileColour,
-    pub background : TileColour,
+    pub foreground : Colour,
+    pub background : Colour,
 }
 
 impl DisplayTile {

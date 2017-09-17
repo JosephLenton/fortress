@@ -1,6 +1,6 @@
 
 pub struct Camera {
-    zoom : f64,
+    zoom : f32,
     x    : u32,
     y    : u32,
 }
@@ -14,7 +14,7 @@ impl Camera {
         }
     }
 
-    pub fn get_zoom( &self ) -> f64 {
+    pub fn get_zoom( &self ) -> f32 {
         return self.zoom;
     }
 

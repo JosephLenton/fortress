@@ -1,10 +1,8 @@
 
-extern crate piston_window;
+use tiles::tile::tile_colour::tile_to_colour;
 
-use self::piston_window::*;
-
+use render::gfx::GFX;
 use render::camera::Camera;
-use render::colour::tile_to_colour;
 use render::setup::Setup;
 use render::window_state::WindowState;
 
@@ -15,28 +13,28 @@ use util::bounds::Bounds;
 
 pub struct RenderGame<'a> {
 
-    /// 
+    ///
     /// The game state we are using for rendering.
     ///
     game : &'a Game,
 
-    /// 
+    ///
     /// Used for rendering.
     ///
     /// The size of the tile when drawn to the screen.
     tile_size : Size,
 
-    /// 
+    ///
     /// The camera whilst drawing.
-    /// 
+    ///
     camera : Camera,
 
 }
 
 impl<'a> RenderGame<'a> {
     pub fn new(
-            setup : &   Setup,
-            game  : &'a Game,
+        setup : &   Setup,
+        game  : &'a Game,
     ) -> RenderGame<'a> {
         return RenderGame {
             game      : game,
@@ -45,27 +43,26 @@ impl<'a> RenderGame<'a> {
         }
     }
 
-    pub fn on_mouse_scroll( &mut self, y : f64 ) {
-        if y > 0.0 {
+    pub fn on_mouse_scroll( &mut self, y : i32 ) {
+        if y > 0 {
             self.camera.zoom_in();
-        } else if y < 0.0 {
+        } else if y < 0 {
             self.camera.zoom_out();
         }
     }
 
     pub fn render(
-            &self,
-            window  : & WindowState,
-            context : & Context,
-            g2d     : & mut G2d,
+        &self,
+        window  : & WindowState,
+        gfx     : & mut GFX,
     ) {
         let zoom          = self.camera.get_zoom();
         let camera_x      = self.camera.get_x();
         let camera_y      = self.camera.get_y();
         let window_width  = window.size.width  as f32;
         let window_height = window.size.height as f32;
-        let tile_width    = self.tile_size.width  as f64 * zoom;
-        let tile_height   = self.tile_size.height as f64 * zoom;
+        let tile_width    = self.tile_size.width  as f32 * zoom;
+        let tile_height   = self.tile_size.height as f32 * zoom;
 
         // Work out the area that we are rendering.
         // We want to skip areas outside of the window.
@@ -79,22 +76,18 @@ impl<'a> RenderGame<'a> {
         let game_height      = ( bottom_right_y - top_left_y ) as u32;
 
         for ( tile, x, y ) in self.game.slice( top_left_x, top_left_y, game_width, game_height ) {
-            let draw_x = (window_width  as f64)/2.0 - ( (camera_x as i32 - x as i32) as f64 )*tile_width;
-            let draw_y = (window_height as f64)/2.0 - ( (camera_y as i32 - y as i32) as f64 )*tile_height;
+            let draw_x = (window_width  as f32)/2.0 - ( (camera_x as i32 - x as i32) as f32 )*tile_width;
+            let draw_y = (window_height as f32)/2.0 - ( (camera_y as i32 - y as i32) as f32 )*tile_height;
             let ( background, foreground ) = tile_to_colour( tile.tile );
 
-            rectangle(
+            gfx.rectangle(
                     background,
-                    [ draw_x, draw_y, tile_width, tile_height ],
-                    context.transform,
-                    g2d,
+                    ( draw_x, draw_y, tile_width, tile_height ),
             );
 
-            rectangle(
+            gfx.rectangle(
                     foreground,
-                    [ draw_x+tile_width/4.0, draw_y+tile_height/4.0, tile_width/2.0, tile_height/2.0 ],
-                    context.transform,
-                    g2d,
+                    ( draw_x+tile_width/4.0, draw_y+tile_height/4.0, tile_width/2.0, tile_height/2.0 ),
             );
         }
     }
@@ -118,7 +111,7 @@ impl Cursor {
 
             start_x : x,
             start_y : y,
-            
+
             is_down : false,
         }
     }
