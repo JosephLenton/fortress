@@ -6,6 +6,7 @@ use map::Map;
 use std::cmp;
 use std::collections::BTreeMap;
 use std::io::BufRead;
+use std::io::Result;
 use std::vec::Vec;
 
 ///
@@ -50,12 +51,10 @@ fn char_to_tile( decode_map : & BTreeMap<char, Tile>, c : char ) -> Tile {
     };
 }
 
-pub fn read_to_map( read_in : &mut BufRead ) -> Map<Tile> {
+pub fn read_to_map( read_in : &mut BufRead ) -> Result<Map<Tile>> {
     let mut buf = Vec::new();
     for line in read_in.lines() {
-        let str_line = line.unwrap();
-
-        buf.push( str_line );
+        buf.push( line? );
     }
 
     let decode_map      = new_tile_map();
@@ -64,7 +63,7 @@ pub fn read_to_map( read_in : &mut BufRead ) -> Map<Tile> {
 
     populate_map( & decode_map, &mut map, & buf );
 
-    return map;
+    return Ok(map);
 }
 
 fn get_vec_size( buf : & Vec<String> ) -> ( u32, u32 ) {
