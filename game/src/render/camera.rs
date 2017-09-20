@@ -1,12 +1,12 @@
 
 pub struct Camera {
     zoom : f32,
-    x    : u32,
-    y    : u32,
+    x    : i32,
+    y    : i32,
 }
 
 impl Camera {
-    pub fn new( x : u32, y : u32 ) -> Camera {
+    pub fn new( x : i32, y : i32 ) -> Camera {
         return Camera {
             zoom : 1.0,
             x    : x,
@@ -14,7 +14,7 @@ impl Camera {
         }
     }
 
-    pub fn get_zoom( &self ) -> f32 {
+    pub fn zoom( &self ) -> f32 {
         return self.zoom;
     }
 
@@ -34,12 +34,17 @@ impl Camera {
         }
     }
 
-    pub fn get_x( &self ) -> u32 {
+    pub fn x( &self ) -> i32 {
         return self.x;
     }
 
-    pub fn get_y( &self ) -> u32 {
+    pub fn y( &self ) -> i32 {
         return self.y;
+    }
+
+    pub fn add_xy( & mut self, x : i32, y : i32 ) {
+        self.x += x;
+        self.y += y;
     }
 }
 

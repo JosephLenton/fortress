@@ -2,9 +2,11 @@
 #![warn(unused_extern_crates)]
 #![warn(unused_import_braces)]
 
+use std::error::Error;
 use std::io::Result;
 use std::io::BufReader;
 use std::fs::File;
+use std::path::Path;
 
 extern crate sdl2;
 
@@ -27,7 +29,10 @@ mod util;
 
 fn main() {
     match main_run() {
-        Err(err) => { panic!(err) },
+        Err(err) => {
+            eprintln!("Error, {}", err.description());
+            panic!(err);
+        },
         Ok(()) => {}
     }
 }
