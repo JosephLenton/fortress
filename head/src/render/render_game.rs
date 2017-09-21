@@ -19,13 +19,13 @@ pub struct RenderGame<'a> {
     ///
     /// Current size of the Window.
     ///
-    window_size : Size,
+    window_size : Size<u32>,
 
     ///
     /// Used for rendering.
     ///
     /// The size of the tile when drawn to the screen.
-    tile_size : Size,
+    tile_size : Size<u32>,
 
     ///
     /// The camera whilst drawing.
