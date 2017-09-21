@@ -1,10 +1,7 @@
 [package]
-name = "game"
+name = "fortress"
 version = "0.1.0"
 authors = ["joseph.lenton@askattest.com <joseph.lenton@askattest.com>"]
 
 [dependencies]
-
-[dependencies.fortress]
-path = "../fortress"
 

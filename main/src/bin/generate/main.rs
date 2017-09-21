@@ -3,14 +3,15 @@
 extern crate structopt_derive;
 extern crate structopt;
 
-extern crate tiles;
-extern crate map;
+extern crate fortress;
+extern crate generate;
 
-use std::io;
+use std::io::stdout;
 use structopt::StructOpt;
 
-use map::generate;
-use tiles::print;
+use generate::generate::new_map;
+use generate::generate::MapOptions;
+use fortress::print;
 
 ///
 /// The structure of the commands.
@@ -54,13 +55,13 @@ enum ArgsColour {
 fn main() {
     let args = Args::from_args();
 
-    let map = generate::new_map( generate::MapOptions {
+    let map = new_map( MapOptions {
         width : args.width,
         height : args.height,
         seed : args.seed,
     });
 
-    let mut out = io::stdout();
+    let mut out = stdout();
     out.lock();
 
     let colour = if args.colour == Some(ArgsColour::colour) { print::PrintColourOptions::On } else { print::PrintColourOptions::Off };

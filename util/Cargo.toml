@@ -1,11 +1,6 @@
 [package]
-name = "map"
+name = "util"
 version = "0.1.0"
 authors = ["joseph.lenton@askattest.com <joseph.lenton@askattest.com>"]
 
 [dependencies]
-structopt = "0.1.0"
-structopt-derive = "0.1.0"
-rand = "0.3.15"
-tiles = { path = "../tiles" }
-

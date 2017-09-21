@@ -1,0 +1,24 @@
+[package]
+authors = ["joseph.lenton@askattest.com <joseph.lenton@askattest.com>"]
+name = "main"
+version = "0.1.0"
+
+[dependencies]
+structopt = "0.1.0"
+structopt-derive = "0.1.0"
+
+[dependencies.fortress]
+path = "../fortress"
+
+[dependencies.util]
+path = "../util"
+
+[dependencies.generate]
+path = "../generate"
+
+[dependencies.game]
+path = "../game"
+
+[dependencies.head]
+path = "../head"
+

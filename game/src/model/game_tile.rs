@@ -1,5 +1,5 @@
 
-use tiles::tile::tile::Tile;
+use fortress::tile::tile::Tile;
 
 #[derive(Copy, Clone)]
 pub struct GameTile {

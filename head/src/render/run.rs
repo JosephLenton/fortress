@@ -5,13 +5,13 @@ use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
 use sdl2::mouse::MouseWheelDirection;
 
-use tiles::colour::Colour;
+use fortress::colour::Colour;
 use render::setup::Setup;
 use render::cursor::Cursor;
 use render::render_game::RenderGame;
 use render::gfx::GFX;
 
-use game::game::Game;
+use game::model::Game;
 
 pub fn run(
         setup : Setup,

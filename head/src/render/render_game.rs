@@ -1,13 +1,13 @@
 
-use tiles::tile::tile_colour::tile_to_colour;
+use fortress::tile::tile_colour::tile_to_colour;
 
 use render::gfx::GFX;
 use render::camera::Camera;
 use render::setup::Setup;
 
-use game::game::Game;
+use game::model::Game;
 
-use util::size::Size;
+use util::shapes::size::Size;
 
 pub struct RenderGame<'a> {
 

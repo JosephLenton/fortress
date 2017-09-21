@@ -1,7 +1,7 @@
 
 use sdl2::pixels::Color;
 
-use tiles::colour::Colour;
+use fortress::colour::Colour;
 
 #[macro_use]
 mod macros {

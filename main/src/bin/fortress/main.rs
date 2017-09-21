@@ -2,33 +2,42 @@
 #![warn(unused_extern_crates)]
 #![warn(unused_import_braces)]
 
+use std::process::exit;
 use std::error::Error;
+use std::path::Path;
 use std::io::Result;
 use std::io::BufReader;
 use std::fs::File;
-use std::path::Path;
-
-extern crate sdl2;
 
 #[macro_use]
 extern crate structopt_derive;
 extern crate structopt;
 
-extern crate tiles;
+extern crate fortress;
+extern crate util;
+extern crate game;
+extern crate head;
 
 use args::Args;
-use tiles::load;
-use game::game::Game;
-use render::setup::Setup;
-use util::size::Size;
+use fortress::load;
+use util::shapes::size::Size;
+use game::model::Game;
+use head::render::setup::Setup;
+use head::render::run::run;
 
 mod args;
-mod game;
-mod render;
-mod util;
 
 fn main() {
-    match main_run() {
+    let args = Args::new_from_args();
+    if ! Path::new( & args.map ).exists() {
+        eprintln!("");
+        eprintln!("File not found {}", args.map);
+        eprintln!("");
+
+        exit(1);
+    }
+
+    match main_run( args ) {
         Err(err) => {
             eprintln!("Error, {}", err.description());
             panic!(err);
@@ -37,9 +46,9 @@ fn main() {
     }
 }
 
-fn main_run() -> Result<()> {
-    let args = Args::new_from_args();
-
+fn main_run(
+    args : Args,
+) -> Result<()> {
     let file = File::open( args.map )?;
     let mut file = BufReader::new( file );
 
@@ -52,7 +61,7 @@ fn main_run() -> Result<()> {
         tile_size   : Size { width:  24, height:  24 },
     };
 
-    render::run::run( setup, game );
+    run( setup, game );
 
     return Ok(());
 }

@@ -1,0 +1,21 @@
+[package]
+name = "head"
+version = "0.1.0"
+authors = ["joseph.lenton@askattest.com <joseph.lenton@askattest.com>"]
+
+[dependencies]
+
+[dependencies.sdl2]
+default-features = false
+features = []
+version = "0.30"
+
+[dependencies.fortress]
+path = "../fortress"
+
+[dependencies.util]
+path = "../util"
+
+[dependencies.game]
+path = "../game"
+

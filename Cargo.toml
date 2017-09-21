@@ -1,6 +1,15 @@
+[package]
+name = "fortress_all"
+version = "0.1.0"
+authors = ["joseph.lenton@askattest.com <joseph.lenton@askattest.com>"]
+
 [workspace]
 members = [
+    "fortress",
+    "util",
+    "main",
+    "generate",
     "game",
-    "map",
-    "tiles"
+    "head"
 ]
+

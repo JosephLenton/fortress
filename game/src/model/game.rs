@@ -1,8 +1,9 @@
 
-use tiles::tile::tile::Tile;
-use tiles::map::Map;
-use tiles::map::MapIterator;
-use game::game_tile::GameTile;
+use fortress::tile::tile::Tile;
+use fortress::map::Map;
+use fortress::map::MapIterator;
+
+use model::GameTile;
 
 pub struct Game {
     map : Map<GameTile>,

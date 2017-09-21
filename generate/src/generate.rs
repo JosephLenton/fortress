@@ -1,6 +1,6 @@
 
-use tiles::tile::tile::Tile;
-use tiles::map::Map;
+use fortress::tile::tile::Tile;
+use fortress::map::Map;
 
 use rand::StdRng;
 use rand::SeedableRng;
