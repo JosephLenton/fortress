@@ -1,6 +1,4 @@
 
-use sdl2::pixels::Color;
-
 use fortress::colour::Colour;
 
 #[macro_use]
@@ -20,14 +18,13 @@ mod macros {
 
 ///
 /// The colour used when rendering.
-/// This matches the layout used by SDL.
 ///
 #[derive(Copy, Clone)]
 pub struct RenderColour {
-    r : u8,
-    g : u8,
-    b : u8,
-    a : u8,
+    pub r : u8,
+    pub g : u8,
+    pub b : u8,
+    pub a : u8,
 }
 
 pub static BLACK        : RenderColour = colour!(   0,   0,   0 );
@@ -87,22 +84,6 @@ impl ToRenderColour for Colour {
             Colour::LightGreen   => LIGHT_GREEN,
             Colour::Green        => GREEN,
         }
-    }
-}
-
-pub trait ToSDL2Color {
-    fn to_sdl2_color( self ) -> Color;
-}
-
-impl ToSDL2Color for Colour {
-    fn to_sdl2_color( self ) -> Color {
-        return self.to_render_colour().to_sdl2_color();
-    }
-}
-
-impl ToSDL2Color for RenderColour {
-    fn to_sdl2_color( self ) -> Color {
-        return Color::RGBA( self.r, self.g, self.b, self.a );
     }
 }
 

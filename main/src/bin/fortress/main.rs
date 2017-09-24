@@ -20,7 +20,7 @@ extern crate head;
 
 use args::Args;
 use fortress::load;
-use util::shapes::size::Size;
+use util::shapes::Size;
 use game::model::Game;
 use head::render::setup::Setup;
 use head::render::run::run;

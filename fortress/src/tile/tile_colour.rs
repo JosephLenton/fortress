@@ -1,6 +1,6 @@
 
 use colour::Colour;
-use tile::tile::Tile;
+use tile::Tile;
 
 pub fn tile_to_cmd( tile : Tile ) -> String {
     return colour_to_cmd( tile_to_colour( tile ) );

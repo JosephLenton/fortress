@@ -1,5 +1,5 @@
 
-use util::shapes::size::Size;
+use util::shapes::Size;
 
 pub struct Setup {
     pub title       : &'static str,

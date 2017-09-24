@@ -1,6 +1,6 @@
 
 use map::Map;
-use tile::tile::Tile;
+use tile::Tile;
 use tile::tile_colour::tile_to_cmd;
 use tile::display_tile::tile_to_char;
 

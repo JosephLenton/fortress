@@ -13,12 +13,14 @@ use render::gfx::GFX;
 
 use game::model::Game;
 
+use util::shapes::Vec2;
+
 pub fn run(
         setup : Setup,
         game  : Game,
 ) {
     let mut rgame = RenderGame::new( & setup, & game );
-    let mut cursor = Cursor::new( setup.window_size.width / 2, setup.window_size.height / 2 );
+    let mut cursor = Cursor::new( setup.window_size.width as f32 / 2.0, setup.window_size.height as f32 / 2.0 );
 
     let sdl_context = sdl2::init().unwrap();
     let video_subsys = sdl_context.video().unwrap();
@@ -80,7 +82,7 @@ pub fn run(
                 }
 
                 Event::MouseMotion { x, y, ..} => {
-                    cursor.xy( x as u32, y as u32 );
+                    cursor.xy( Vec2::new( x as f32, y as f32 ) );
                 }
 
                 Event::MouseWheel {y, direction:MouseWheelDirection::Normal, ..} => {

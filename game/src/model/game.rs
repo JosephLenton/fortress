@@ -1,5 +1,5 @@
 
-use fortress::tile::tile::Tile;
+use fortress::tile::Tile;
 use fortress::map::Map;
 use fortress::map::MapIterator;
 

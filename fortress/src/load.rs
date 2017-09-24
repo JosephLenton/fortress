@@ -1,5 +1,5 @@
 
-use tile::tile::Tile;
+use tile::Tile;
 use tile::display_tile::tile_to_char;
 use map::Map;
 

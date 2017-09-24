@@ -1,13 +1,17 @@
 
 use fortress::tile::tile_colour::tile_to_colour;
+use fortress::tile::Tile;
 
 use render::gfx::GFX;
 use render::camera::Camera;
 use render::setup::Setup;
 
 use game::model::Game;
+use game::model::GameTile;
 
-use util::shapes::size::Size;
+use util::shapes::Size;
+use util::shapes::Vec2;
+use util::shapes::Rect;
 
 pub struct RenderGame<'a> {
 
@@ -25,7 +29,7 @@ pub struct RenderGame<'a> {
     /// Used for rendering.
     ///
     /// The size of the tile when drawn to the screen.
-    tile_size : Size<u32>,
+    tile_size : Size<f32>,
 
     ///
     /// The camera whilst drawing.
@@ -41,7 +45,7 @@ impl<'a> RenderGame<'a> {
     ) -> RenderGame<'a> {
         return RenderGame {
             game        : game,
-            tile_size   : setup.tile_size,
+            tile_size   : Size::new( setup.tile_size.width as f32, setup.tile_size.height as f32 ),
             camera      : Camera::new( (game.width / 2) as i32, (game.height / 2) as i32 ),
             window_size : Size::new(
                 setup.window_size.width,
@@ -67,7 +71,7 @@ impl<'a> RenderGame<'a> {
     }
 
     pub fn render(
-        &self,
+        & self,
         gfx : & mut GFX,
     ) {
         let zoom          = self.camera.zoom();
@@ -75,13 +79,12 @@ impl<'a> RenderGame<'a> {
         let camera_y      = self.camera.y();
         let window_width  = self.window_size.width  as f32;
         let window_height = self.window_size.height as f32;
-        let tile_width    = self.tile_size.width  as f32 * zoom;
-        let tile_height   = self.tile_size.height as f32 * zoom;
+        let tile_size     = self.tile_size * zoom;
 
         // Work out the area that we are rendering.
         // We want to skip areas outside of the window.
-        let num_game_tiles_x =   window_width  as f32 / tile_width  as f32 ;
-        let num_game_tiles_y =   window_height as f32 / tile_height as f32 ;
+        let num_game_tiles_x =   window_width  as f32 / tile_size.width;
+        let num_game_tiles_y =   window_height as f32 / tile_size.height;
         let top_left_x       = ( camera_x as f32 - num_game_tiles_x/2.0 ).floor() as i32;
         let top_left_y       = ( camera_y as f32 - num_game_tiles_y/2.0 ).floor() as i32;
         let bottom_right_x   = ( camera_x as f32 + num_game_tiles_x/2.0 ).ceil() as i32;
@@ -90,37 +93,43 @@ impl<'a> RenderGame<'a> {
         let game_height      = ( bottom_right_y - top_left_y ) as u32;
 
         for ( tile, x, y ) in self.game.slice( top_left_x, top_left_y, game_width, game_height ) {
-            let draw_x = (window_width  as f32)/2.0 - ( (camera_x as i32 - x as i32) as f32 )*tile_width;
-            let draw_y = (window_height as f32)/2.0 - ( (camera_y as i32 - y as i32) as f32 )*tile_height;
-            let ( background, foreground ) = tile_to_colour( tile.tile );
-
-            gfx.rectangle(
-                    background,
-                    ( draw_x as i32, draw_y as i32, tile_width as i32, tile_height as i32 ),
+            let pos = Vec2::new(
+                (window_width  as f32)/2.0 - ( (camera_x as i32 - x as i32) as f32 )*tile_size.width,
+                (window_height as f32)/2.0 - ( (camera_y as i32 - y as i32) as f32 )*tile_size.height,
             );
 
-            gfx.rectangle(
-                    foreground,
-                    ( (draw_x+tile_width/4.0) as i32, (draw_y+tile_height/4.0) as i32, (tile_width/2.0) as i32, (tile_height/2.0) as i32 ),
-            );
+            self.tile( gfx, tile, pos, tile_size )
         }
     }
 
-    pub fn translate_window_to_tile_xy( &self, (x, y) : (i32, i32) ) -> (i32, i32, i32, i32) {
-        let zoom        = self.camera.zoom();
-        let tile_width  = ( self.tile_size.width  as f32 * zoom ) as i32;
-        let tile_height = ( self.tile_size.height as f32 * zoom ) as i32;
+    fn tile(
+            & self,
+            gfx : & mut GFX,
+            tile : GameTile,
+            pos : Vec2<f32>,
+            size : Size<f32>,
+    ) {
+        let ( background, foreground ) = tile_to_colour( tile.tile );
 
-        let tile_x = x - (x % tile_width );
-        let tile_y = y - (y % tile_height);
+        let draw_back  = ( pos - size / 2.0 ).to_rect( size );
+        let draw_front = ( pos - size / 4.0 ).to_rect( size / 2.0 );
 
-        return ( tile_x, tile_y, tile_width, tile_height );
+        gfx.rectangle( background, draw_back  );
+        gfx.rectangle( foreground, draw_front );
     }
 
-    pub fn translate_window_to_tile_xy_inner( &self, xy : (i32, i32) ) -> (i32, i32, i32, i32) {
-        let (x, y, w, h) = self.translate_window_to_tile_xy( xy );
+    pub fn translate_window_to_tile_xy( &self, pos : Vec2<f32> ) -> Rect<f32> {
+        let zoom      = self.camera.zoom();
+        let tile_size = self.tile_size * zoom;
+        let tile_pos  = pos - (pos % tile_size);
 
-        return (x + 2, y + 2, w - 4, h - 4);
+        return pos.to_rect( tile_size );
+    }
+
+    pub fn translate_window_to_tile_xy_inner( &self, pos : Vec2<f32> ) -> Rect<f32> {
+        let pos = self.translate_window_to_tile_xy( pos );
+
+        return (pos + Vec2::new( 2.0, 2.0 )) - Size::new( 4.0, 4.0 );
     }
 }
 

@@ -2,7 +2,7 @@
 use std::fmt;
 
 use colour::Colour;
-use tile::tile::Tile;
+use tile::Tile;
 use tile::tile_colour::tile_to_colour;
 
 #[derive(Copy, Clone)]

@@ -1,25 +1,37 @@
 
 use std::ops::Add;
 use std::ops::Sub;
+use std::ops::Mul;
+use std::ops::Div;
+use std::ops::Rem;
+
+use super::Vec2;
 
 #[derive(Debug)]
 #[derive(Copy, Clone)]
-pub struct Size<N: Add+Sub+Copy> {
-    pub width : N,
+pub struct Size<N: Add + Sub + Mul + Div + Rem + Copy> {
+    pub width  : N,
     pub height : N,
 }
 
-impl<N: Add+Sub+Copy> Size<N> {
+impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
     pub fn new( width : N, height : N ) -> Size<N> {
         return Size {
             width : width,
             height : height,
         }
     }
+
+    pub fn to_vec2( &self ) -> Vec2<N> {
+        return Vec2 {
+            x : self.width,
+            y : self.height,
+        }
+    }
 }
 
 impl<N> PartialEq for Size<N>
-    where N: Add+Sub+Copy + PartialEq
+    where N: Add + Sub + Mul + Div + Rem + Copy + PartialEq
 {
     fn eq(&self, other: &Self) -> bool {
         return self.width == other.width && self.height == other.height;
@@ -27,11 +39,11 @@ impl<N> PartialEq for Size<N>
 }
 
 impl<N> Add for Size<N>
-    where N:Add<Output=N>+Sub<Output=N>+Copy
+    where N:Add<Output=N>+Sub<Output=N>+Mul<Output=N>+Div<Output=N>+Rem<Output=N>+Copy
 {
-    type Output = Size<N>;
+    type Output = Self;
 
-    fn add( self, other: Size<N> ) -> Size<<N as Add>::Output> {
+    fn add( self, other: Self ) -> Self {
         return Size {
             width : (self.width + other.width),
             height : (self.height + other.height),
@@ -40,17 +52,55 @@ impl<N> Add for Size<N>
 }
 
 impl<N> Sub for Size<N>
-    where N:Add<Output=N>+Sub<Output=N>+Copy
+    where N:Add<Output=N>+Sub<Output=N>+Mul<Output=N>+Div<Output=N>+Rem<Output=N>+Copy
 {
-    type Output = Size<N>;
+    type Output = Self;
 
-    fn sub( self, other: Size<N> ) -> Size<<N as Sub>::Output> {
+    fn sub( self, other: Self ) -> Self {
         return Size {
             width : (self.width - other.width),
             height : (self.height - other.height),
         }
     }
 }
+
+impl<N> Mul<N> for Size<N>
+    where N:Add<Output=N>+Sub<Output=N>+Mul<Output=N>+Div<Output=N>+Rem<Output=N>+Copy
+{
+    type Output = Self;
+
+    fn mul( self, other: N ) -> Self {
+        return Size {
+            width : (self.width * other),
+            height : (self.height * other),
+        }
+    }
+}
+
+impl<N> Div<N> for Size<N>
+    where N:Add<Output=N>+Sub<Output=N>+Mul<Output=N>+Div<Output=N>+Rem<Output=N>+Copy
+{
+    type Output = Self;
+
+    fn div( self, other: N ) -> Self {
+        return Size {
+            width : (self.width / other),
+            height : (self.height / other),
+        }
+    }
+}
+
+impl<N> Into<Size<N>> for Vec2<N>
+    where N:Add<Output=N>+Sub<Output=N>+Mul<Output=N>+Div<Output=N>+Rem<Output=N>+Copy
+{
+    fn into(self) -> Size<N> {
+        return Size {
+            width  : self.x,
+            height : self.y,
+        }
+    }
+}
+
 
 #[cfg(test)]
 mod tests {
