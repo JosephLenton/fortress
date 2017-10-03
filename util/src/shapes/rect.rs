@@ -5,7 +5,7 @@ use std::ops::Mul;
 use std::ops::Div;
 use std::ops::Rem;
 
-use super::Vec2;
+use super::Point2;
 use super::Size;
 
 #[derive(Copy, Clone)]
@@ -29,12 +29,12 @@ impl<N: Add+Sub+Div+Mul+Rem + Copy> Rect<N> {
     }
 }
 
-impl<N> Add<Vec2<N>> for Rect<N>
+impl<N> Add<Point2<N>> for Rect<N>
     where N:Add<Output=N>+Sub<Output=N>+Div<Output=N>+Mul<Output=N>+Rem<Output=N>+Copy
 {
     type Output = Self;
 
-    fn add( self, other: Vec2<N> ) -> Self {
+    fn add( self, other: Point2<N> ) -> Self {
         return Rect {
             x : (self.x + other.x),
             y : (self.y + other.y),
@@ -59,12 +59,12 @@ impl<N> Add<Size<N>> for Rect<N>
     }
 }
 
-impl<N> Sub<Vec2<N>> for Rect<N>
+impl<N> Sub<Point2<N>> for Rect<N>
     where N:Add<Output=N>+Sub<Output=N>+Div<Output=N>+Mul<Output=N>+Rem<Output=N>+Copy
 {
     type Output = Self;
 
-    fn sub( self, other: Vec2<N> ) -> Self {
+    fn sub( self, other: Point2<N> ) -> Self {
         return Rect {
             x : (self.x - other.x),
             y : (self.y - other.y),

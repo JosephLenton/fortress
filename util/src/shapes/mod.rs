@@ -1,9 +1,11 @@
 
 mod rect;
 mod size;
-mod vec2;
+mod point2;
+mod point3;
 
 pub use self::rect::Rect;
 pub use self::size::Size;
-pub use self::vec2::Vec2;
+pub use self::point2::Point2;
+pub use self::point3::Point3;
 

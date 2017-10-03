@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "fortress",
+    "world",
     "util",
     "main",
     "generate",

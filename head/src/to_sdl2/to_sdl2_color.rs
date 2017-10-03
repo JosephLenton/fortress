@@ -3,7 +3,7 @@ use super::ToSDL2;
 use render::colour::*;
 
 use sdl2::pixels::Color as SDL2Color;
-use fortress::colour::Colour;
+use world::colour::Colour;
 
 impl ToSDL2<SDL2Color> for Colour {
     fn to_sdl2( self ) -> SDL2Color {

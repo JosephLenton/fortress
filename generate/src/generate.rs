@@ -1,6 +1,6 @@
 
-use fortress::tile::Tile;
-use fortress::map::Map;
+use world::tile::Tile;
+use world::map::Map;
 
 use rand::StdRng;
 use rand::SeedableRng;

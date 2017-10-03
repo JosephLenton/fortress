@@ -1,9 +1,9 @@
 
-use util::shapes::Vec2;
+use util::shapes::Point2;
 
 pub struct Cursor {
-    pos : Vec2<f32>,
-    start_pos : Vec2<f32>,
+    pos : Point2<f32>,
+    start_pos : Point2<f32>,
 
     is_down : bool,
 }
@@ -11,14 +11,14 @@ pub struct Cursor {
 impl Cursor {
     pub fn new( x : f32, y : f32 ) -> Cursor {
         return Cursor {
-            pos : Vec2::new( x, y ),
-            start_pos : Vec2::new( x, y ),
+            pos : Point2::new( x, y ),
+            start_pos : Point2::new( x, y ),
 
             is_down : false,
         }
     }
 
-    pub fn to_xy( &self ) -> Vec2<f32> {
+    pub fn to_xy( &self ) -> Point2<f32> {
         return self.pos;
     }
 
@@ -31,7 +31,7 @@ impl Cursor {
         self.is_down = false;
     }
 
-    pub fn xy( &mut self, pos : Vec2<f32> ) {
+    pub fn xy( &mut self, pos : Point2<f32> ) {
         self.pos = pos;
     }
 }

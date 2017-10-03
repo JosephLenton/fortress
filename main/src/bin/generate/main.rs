@@ -3,7 +3,7 @@
 extern crate structopt_derive;
 extern crate structopt;
 
-extern crate fortress;
+extern crate world;
 extern crate generate;
 
 use std::io::stdout;
@@ -11,7 +11,7 @@ use structopt::StructOpt;
 
 use generate::generate::new_map;
 use generate::generate::MapOptions;
-use fortress::print;
+use world::print;
 
 ///
 /// The structure of the commands.

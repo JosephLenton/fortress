@@ -1,5 +1,5 @@
 
-use fortress::colour::Colour;
+use world::colour::Colour;
 
 #[macro_use]
 mod macros {

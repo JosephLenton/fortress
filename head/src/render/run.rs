@@ -5,7 +5,7 @@ use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
 use sdl2::mouse::MouseWheelDirection;
 
-use fortress::colour::Colour;
+use world::colour::Colour;
 use render::setup::Setup;
 use render::cursor::Cursor;
 use render::render_game::RenderGame;
@@ -13,7 +13,7 @@ use render::gfx::GFX;
 
 use game::model::Game;
 
-use util::shapes::Vec2;
+use util::shapes::Point2;
 
 pub fn run(
         setup : Setup,
@@ -82,7 +82,7 @@ pub fn run(
                 }
 
                 Event::MouseMotion { x, y, ..} => {
-                    cursor.xy( Vec2::new( x as f32, y as f32 ) );
+                    cursor.xy( Point2::new( x as f32, y as f32 ) );
                 }
 
                 Event::MouseWheel {y, direction:MouseWheelDirection::Normal, ..} => {

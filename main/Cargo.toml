@@ -7,8 +7,8 @@ version = "0.1.0"
 structopt = "0.1.0"
 structopt-derive = "0.1.0"
 
-[dependencies.fortress]
-path = "../fortress"
+[dependencies.world]
+path = "../world"
 
 [dependencies.util]
 path = "../util"

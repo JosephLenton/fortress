@@ -1,7 +1,7 @@
 
 use sdl2::render::WindowCanvas;
 
-use fortress::colour::Colour;
+use world::colour::Colour;
 use render::colour;
 use to_sdl2::*;
 

@@ -1,9 +1,9 @@
 
 //!
-//! Vec3 is a position in 3 dimensional space.
+//! Point3 is a position in 3 dimensional space.
 //!
-//! It's a 3D version of the Vec2. It offers some interaction with the Vec2 as
-//! well.
+//! It's a 3D version of the Point2. It offers some interaction with the Point2
+//! as well.
 //!
 
 use std::ops::Add;
@@ -12,18 +12,17 @@ use std::ops::Mul;
 use std::ops::Div;
 use std::ops::Rem;
 
-use super::Size;
-use super::Rect;
+use super::Point2;
 
 #[derive(Debug)]
 #[derive(Copy, Clone)]
-pub struct Vec3<N: Add+Sub+Mul+Div+Rem+Copy> {
+pub struct Point3<N: Add+Sub+Mul+Div+Rem+Copy> {
     pub x : N,
     pub y : N,
     pub z : N,
 }
 
-impl<N: Add+Sub+Mul+Div+Rem+Copy> Vec3<N> {
+impl<N: Add+Sub+Mul+Div+Rem+Copy> Point3<N> {
 
     ///
     /// Trivial constructor.
@@ -31,8 +30,8 @@ impl<N: Add+Sub+Mul+Div+Rem+Copy> Vec3<N> {
     /// You can make it by hand, or you can use this constructor.
     /// It's all the same to me.
     ///
-    pub fn new( x : N, y : N, z : N ) -> Vec3<N> {
-        return Vec3 {
+    pub fn new( x : N, y : N, z : N ) -> Point3<N> {
+        return Point3 {
             x : x,
             y : y,
             z : z,
@@ -42,8 +41,8 @@ impl<N: Add+Sub+Mul+Div+Rem+Copy> Vec3<N> {
     ///
     /// Gets the X and Y values of this location.
     ///
-    pub fn to_xy( self, size : Size<N> ) -> Vec2<N> {
-        return Vec2<N> {
+    pub fn to_xy( self ) -> Point2<N> {
+        return Point2 {
             x : self.x,
             y : self.y,
         }
@@ -51,7 +50,7 @@ impl<N: Add+Sub+Mul+Div+Rem+Copy> Vec3<N> {
 
 }
 
-impl<N> PartialEq for Vec3<N>
+impl<N> PartialEq for Point3<N>
     where N: Add+Sub+Div+Mul+Rem+Copy + PartialEq
 {
     fn eq(&self, other: &Self) -> bool {
@@ -59,13 +58,13 @@ impl<N> PartialEq for Vec3<N>
     }
 }
 
-impl<N> Add<Self> for Vec3<N>
+impl<N> Add<Self> for Point3<N>
     where N:Add<Output=N>+Sub<Output=N>+Div<Output=N>+Mul<Output=N>+Rem<Output=N>+Copy
 {
     type Output = Self;
 
     fn add( self, other: Self ) -> Self {
-        return Vec3 {
+        return Point3 {
             x : (self.x + other.x),
             y : (self.y + other.y),
             z : (self.z + other.z),
@@ -73,13 +72,13 @@ impl<N> Add<Self> for Vec3<N>
     }
 }
 
-impl<N> Add<Size<N>> for Vec3<N>
+impl<N> Add<Point2<N>> for Point3<N>
     where N:Add<Output=N>+Sub<Output=N>+Div<Output=N>+Mul<Output=N>+Rem<Output=N>+Copy
 {
     type Output = Self;
 
-    fn add( self, other: Vec2<N> ) -> Self {
-        return Vec3 {
+    fn add( self, other: Point2<N> ) -> Self {
+        return Point3 {
             x : (self.x + other.x),
             y : (self.y + other.y),
             z : self.z,
@@ -87,13 +86,13 @@ impl<N> Add<Size<N>> for Vec3<N>
     }
 }
 
-impl<N> Sub for Vec3<N>
+impl<N> Sub for Point3<N>
     where N:Add<Output=N>+Sub<Output=N>+Div<Output=N>+Mul<Output=N>+Rem<Output=N>+Copy
 {
     type Output = Self;
 
     fn sub( self, other: Self ) -> Self {
-        return Vec3 {
+        return Point3 {
             x : (self.x - other.x),
             y : (self.y - other.y),
             z : (self.z - other.z),
@@ -101,30 +100,44 @@ impl<N> Sub for Vec3<N>
     }
 }
 
-impl<N> Sub<Size<N>> for Vec3<N>
+impl<N> Sub<Point2<N>> for Point3<N>
     where N:Add<Output=N>+Sub<Output=N>+Div<Output=N>+Mul<Output=N>+Rem<Output=N>+Copy
 {
     type Output = Self;
 
-    fn sub( self, other: Vec2<N> ) -> Self {
-        return Vec3 {
+    fn sub( self, other: Point2<N> ) -> Self {
+        return Point3 {
             x : (self.x - other.x),
             y : (self.y - other.y),
-            z : (self.z - other.z),
+            z : self.z,
         }
     }
 }
 
-impl<N> Rem<Self> for Vec3<N>
+impl<N> Rem<Self> for Point3<N>
     where N:Add<Output=N>+Sub<Output=N>+Mul<Output=N>+Div<Output=N>+Rem<Output=N>+Copy
 {
     type Output = Self;
 
     fn rem( self, other: Self ) -> Self {
-        return Vec3 {
-            x : (self.x - other.x),
-            y : (self.y - other.y),
-            z : (self.z - other.z),
+        return Point3 {
+            x : (self.x % other.x),
+            y : (self.y % other.y),
+            z : (self.z % other.z),
+        }
+    }
+}
+
+impl<N> Rem<Point2<N>> for Point3<N>
+    where N:Add<Output=N>+Sub<Output=N>+Mul<Output=N>+Div<Output=N>+Rem<Output=N>+Copy
+{
+    type Output = Self;
+
+    fn rem( self, other: Point2<N> ) -> Self {
+        return Point3 {
+            x : (self.x % other.x),
+            y : (self.y % other.y),
+            z : self.z,
         }
     }
 }
@@ -136,42 +149,42 @@ mod tests {
     #[test]
     fn create() {
         assert_eq!(
-            Vec3{ x: 1, y: 5, z : 3 },
-            Vec3{ x: 1, y: 5, z : 3 }
+            Point3{ x: 1, y: 5, z : 3 },
+            Point3{ x: 1, y: 5, z : 3 }
         );
     }
 
     #[test]
     fn new() {
         assert_eq!(
-            Vec3{ x: 1, y: 5, z : 3 },
-            Vec3::new( 1, 5,  3 )
+            Point3{ x: 1, y: 5, z : 3 },
+            Point3::new( 1, 5,  3 )
         );
     }
 
     #[test]
     fn add() {
         assert_eq!(
-            Vec3 { x:  1, y:  5, z : 10 } + Vec3 { x: 93, y: 28, z : -5 },
-            Vec3 { x: 94, y: 33, z : 5 }
+            Point3 { x:  1, y:  5, z : 10 } + Point3 { x: 93, y: 28, z : -5 },
+            Point3 { x: 94, y: 33, z : 5 }
         );
 
         assert_eq!(
-            Vec3 { x:  50, y: 10, z : -3 } + Vec3 { x: 100, y: 5, z : 3 },
-            Vec3 { x: 150, y: 15, z : 0 }
+            Point3 { x:  50, y: 10, z : -3 } + Point3 { x: 100, y: 5, z : 3 },
+            Point3 { x: 150, y: 15, z : 0 }
         );
     }
 
     #[test]
     fn sub() {
         assert_eq!(
-            Vec3{ x: 60, y: 30, z : 90 } - Vec3 { x: 1, y: 5, z : 10 },
-            Vec3{ x:59, y: 25, z : 80 }
+            Point3{ x: 60, y: 30, z : 90 } - Point3 { x: 1, y: 5, z : 10 },
+            Point3{ x:59, y: 25, z : 80 }
         );
 
         assert_eq!(
-            Vec3 { x: 50, y: 10, z : -150 } - Vec3 { x: 100, y: 5, z : -250 },
-            Vec3 { x: -50, y: 5, z : 100 }
+            Point3 { x: 50, y: 10, z : -150 } - Point3 { x: 100, y: 5, z : -250 },
+            Point3 { x: -50, y: 5, z : 100 }
         );
     }
 }

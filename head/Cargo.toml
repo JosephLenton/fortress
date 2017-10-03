@@ -10,8 +10,8 @@ default-features = false
 features = []
 version = "0.30"
 
-[dependencies.fortress]
-path = "../fortress"
+[dependencies.world]
+path = "../world"
 
 [dependencies.util]
 path = "../util"

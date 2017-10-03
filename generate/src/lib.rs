@@ -6,7 +6,7 @@
 
 extern crate rand;
 
-extern crate fortress;
+extern crate world;
 
 pub mod generate;
 

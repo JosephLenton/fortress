@@ -1,6 +1,6 @@
 
-use fortress::tile::tile_colour::tile_to_colour;
-use fortress::tile::Tile;
+use world::tile::tile_colour::tile_to_colour;
+use world::tile::Tile;
 
 use render::gfx::GFX;
 use render::camera::Camera;
@@ -10,7 +10,7 @@ use game::model::Game;
 use game::model::GameTile;
 
 use util::shapes::Size;
-use util::shapes::Vec2;
+use util::shapes::Point2;
 use util::shapes::Rect;
 
 pub struct RenderGame<'a> {
@@ -93,7 +93,7 @@ impl<'a> RenderGame<'a> {
         let game_height      = ( bottom_right_y - top_left_y ) as u32;
 
         for ( tile, x, y ) in self.game.slice( top_left_x, top_left_y, game_width, game_height ) {
-            let pos = Vec2::new(
+            let pos = Point2::new(
                 (window_width  as f32)/2.0 - ( (camera_x as i32 - x as i32) as f32 )*tile_size.width,
                 (window_height as f32)/2.0 - ( (camera_y as i32 - y as i32) as f32 )*tile_size.height,
             );
@@ -106,7 +106,7 @@ impl<'a> RenderGame<'a> {
             & self,
             gfx : & mut GFX,
             tile : GameTile,
-            pos : Vec2<f32>,
+            pos : Point2<f32>,
             size : Size<f32>,
     ) {
         let ( background, foreground ) = tile_to_colour( tile.tile );
@@ -118,7 +118,7 @@ impl<'a> RenderGame<'a> {
         gfx.rectangle( foreground, draw_front );
     }
 
-    pub fn translate_window_to_tile_xy( &self, pos : Vec2<f32> ) -> Rect<f32> {
+    pub fn translate_window_to_tile_xy( &self, pos : Point2<f32> ) -> Rect<f32> {
         let zoom      = self.camera.zoom();
         let tile_size = self.tile_size * zoom;
         let tile_pos  = pos - (pos % tile_size);
@@ -126,10 +126,10 @@ impl<'a> RenderGame<'a> {
         return pos.to_rect( tile_size );
     }
 
-    pub fn translate_window_to_tile_xy_inner( &self, pos : Vec2<f32> ) -> Rect<f32> {
+    pub fn translate_window_to_tile_xy_inner( &self, pos : Point2<f32> ) -> Rect<f32> {
         let pos = self.translate_window_to_tile_xy( pos );
 
-        return (pos + Vec2::new( 2.0, 2.0 )) - Size::new( 4.0, 4.0 );
+        return (pos + Point2::new( 2.0, 2.0 )) - Size::new( 4.0, 4.0 );
     }
 }
 

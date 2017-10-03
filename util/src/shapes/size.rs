@@ -5,7 +5,7 @@ use std::ops::Mul;
 use std::ops::Div;
 use std::ops::Rem;
 
-use super::Vec2;
+use super::Point2;
 
 #[derive(Debug)]
 #[derive(Copy, Clone)]
@@ -22,8 +22,8 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
         }
     }
 
-    pub fn to_vec2( &self ) -> Vec2<N> {
-        return Vec2 {
+    pub fn to_vec2( &self ) -> Point2<N> {
+        return Point2 {
             x : self.width,
             y : self.height,
         }
@@ -90,7 +90,7 @@ impl<N> Div<N> for Size<N>
     }
 }
 
-impl<N> Into<Size<N>> for Vec2<N>
+impl<N> Into<Size<N>> for Point2<N>
     where N:Add<Output=N>+Sub<Output=N>+Mul<Output=N>+Div<Output=N>+Rem<Output=N>+Copy
 {
     fn into(self) -> Size<N> {

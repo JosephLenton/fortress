@@ -13,13 +13,13 @@ use std::fs::File;
 extern crate structopt_derive;
 extern crate structopt;
 
-extern crate fortress;
+extern crate world;
 extern crate util;
 extern crate game;
 extern crate head;
 
 use args::Args;
-use fortress::load;
+use world::load;
 use util::shapes::Size;
 use game::model::Game;
 use head::render::setup::Setup;
