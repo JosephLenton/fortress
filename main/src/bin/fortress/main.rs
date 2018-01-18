@@ -20,6 +20,7 @@ extern crate head;
 
 use args::Args;
 use world::load;
+use world::player::Player;
 use util::shapes::Size;
 use game::model::Game;
 use head::render::setup::Setup;
@@ -52,9 +53,10 @@ fn main_run(
     let file = File::open( args.map )?;
     let mut file = BufReader::new( file );
 
-    let map   = load::read_to_map( &mut file )?;
-    let game  = Game::new( map );
-    let setup = Setup {
+    let player = Player::new( 22, 18 );
+    let map    = load::read_to_map( &mut file )?;
+    let game   = Game::new( map, player );
+    let setup  = Setup {
         title : "Fortress",
 
         window_size : Size { width: 800, height: 600 },

@@ -10,21 +10,25 @@ Note this repo is a mono repo containing multiple projects within.
 This is organised as a monorepo. The code base is split into multiple smaller
 projects to help organise where and how they can be used.
 
-    ├─ world     How data is represented. Holds all the core data and
-    │            definitions that everything else uses. For example creatures,
-    │            tiles, maps, and colours. Basically everything depends on
-    │            this.
-    │
-    ├─ main      Holds the main binary that runs the application.
+    ├─ main      Entry points. These are the binaries you can run.
+    │   │        Currently there are only two.      
+    │   │
+    │   ├─ fortress     Runs the game.
+    │   └─ generate     For map generation.
     │
     ├─ generate  The map generation logic is here.
     │
-    ├─ game      This is how you run the game play. It is headless however.
+    ├─ game      This is the engine for running the game. It is headless.
     │            It has no graphics, and no way of drawing or displaying items.
     │            It does have a UI however. It just doesn't know how to draw it.
     │
     ├─ head      This is what will draw the game to the screen, and offers
     │            events to hook into. Currently this only offers SDL2.
+    │
+    ├─ world     How data is represented. Holds all the core data and
+    │            definitions that everything else uses. For example creatures,
+    │            tiles, maps, and colours. Basically everything depends on
+    │            this.
     │
     └─ util      Data structures which are in no way specific to anything.
                  i.e. points, areas, sizes, and things like that.

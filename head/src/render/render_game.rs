@@ -1,6 +1,8 @@
 
 use world::tile::tile_colour::tile_to_colour;
 use world::tile::Tile;
+use world::colour::Colour;
+use world::player::Player;
 
 use render::gfx::GFX;
 use render::camera::Camera;
@@ -83,12 +85,12 @@ impl<'a> RenderGame<'a> {
 
         // Work out the area that we are rendering.
         // We want to skip areas outside of the window.
-        let num_game_tiles_x =   window_width  as f32 / tile_size.width;
-        let num_game_tiles_y =   window_height as f32 / tile_size.height;
-        let top_left_x       = ( camera_x as f32 - num_game_tiles_x/2.0 ).floor() as i32;
-        let top_left_y       = ( camera_y as f32 - num_game_tiles_y/2.0 ).floor() as i32;
-        let bottom_right_x   = ( camera_x as f32 + num_game_tiles_x/2.0 ).ceil() as i32;
-        let bottom_right_y   = ( camera_y as f32 + num_game_tiles_y/2.0 ).ceil() as i32;
+        let num_game_tiles_x =   (window_width as f32)  / tile_size.width;
+        let num_game_tiles_y =   (window_height as f32) / tile_size.height;
+        let top_left_x       = ( (camera_x as f32) - num_game_tiles_x/2.0 ).floor() as i32;
+        let top_left_y       = ( (camera_y as f32) - num_game_tiles_y/2.0 ).floor() as i32;
+        let bottom_right_x   = ( (camera_x as f32) + num_game_tiles_x/2.0 ).ceil() as i32;
+        let bottom_right_y   = ( (camera_y as f32) + num_game_tiles_y/2.0 ).ceil() as i32;
         let game_width       = ( bottom_right_x - top_left_x ) as u32;
         let game_height      = ( bottom_right_y - top_left_y ) as u32;
 
@@ -98,8 +100,25 @@ impl<'a> RenderGame<'a> {
                 (window_height as f32)/2.0 - ( (camera_y as i32 - y as i32) as f32 )*tile_size.height,
             );
 
-            self.tile( gfx, tile, pos, tile_size )
+            self.tile( gfx, tile, pos, tile_size );
         }
+
+        let player_pos = Point2::new(
+            (window_width  as f32)/2.0 - ( (camera_x as i32 - self.game.player.position.x as i32) as f32 )*tile_size.width,
+            (window_height as f32)/2.0 - ( (camera_y as i32 - self.game.player.position.x as i32) as f32 )*tile_size.height,
+        );
+        self.player( gfx, player_pos, tile_size );
+    }
+
+    fn player(
+            & self,
+            gfx : & mut GFX,
+            pos : Point2<f32>,
+            size : Size<f32>,
+    ) {
+        let draw_pos = ( pos - size / 2.0 ).to_rect( size );
+
+        gfx.rectangle( Colour::Pink, draw_pos );
     }
 
     fn tile(

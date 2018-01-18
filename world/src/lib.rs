@@ -6,6 +6,9 @@
 #![cfg_attr(feature="clippy", feature(plugin))]
 #![cfg_attr(feature="clippy", plugin(clippy))]
 
+extern crate util;
+
+pub mod player;
 pub mod tile;
 pub mod map;
 pub mod load;

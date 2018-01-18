@@ -57,12 +57,7 @@ pub fn run(
                 // User Input
                 //
 
-                Event::KeyUp {keycode: Some(Keycode::Left), ..} => {
-                    println!("left up");
-                }
-
                 Event::KeyDown {keycode: Some(Keycode::Left), ..} => {
-                    println!("left down");
                     rgame.move_camera( -1,  0 );
                 }
 
@@ -119,22 +114,6 @@ fn render(
         gfx,
     );
 
-    render_cursor(
-        rgame,
-        cursor,
-        gfx,
-    );
-
     gfx.finished_drawing();
-}
-
-fn render_cursor(
-        rgame   : & RenderGame,
-        cursor  : & Cursor,
-        gfx     : & mut GFX,
-) {
-    let screen_tile = rgame.translate_window_to_tile_xy( cursor.to_xy() );
-
-    gfx.rectangle_outline( Colour::LightGreen, screen_tile );
 }
 
