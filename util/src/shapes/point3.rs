@@ -14,12 +14,22 @@ use std::ops::Rem;
 
 use super::Point2;
 
+/// 
+/// A location in 3D space.
+/// 
 #[derive(Debug)]
 #[derive(Copy, Clone)]
 pub struct Point3<N: Add+Sub+Mul+Div+Rem+Copy> {
+
+    /// It's x location.
     pub x : N,
+
+    /// It's y location.
     pub y : N,
+
+    /// It's z location.
     pub z : N,
+    
 }
 
 impl<N: Add+Sub+Mul+Div+Rem+Copy> Point3<N> {
@@ -31,7 +41,7 @@ impl<N: Add+Sub+Mul+Div+Rem+Copy> Point3<N> {
     /// It's all the same to me.
     ///
     pub fn new( x : N, y : N, z : N ) -> Point3<N> {
-        return Point3 {
+        Point3 {
             x : x,
             y : y,
             z : z,
@@ -42,7 +52,7 @@ impl<N: Add+Sub+Mul+Div+Rem+Copy> Point3<N> {
     /// Gets the X and Y values of this location.
     ///
     pub fn to_xy( self ) -> Point2<N> {
-        return Point2 {
+        Point2 {
             x : self.x,
             y : self.y,
         }
@@ -54,7 +64,7 @@ impl<N> PartialEq for Point3<N>
     where N: Add+Sub+Div+Mul+Rem+Copy + PartialEq
 {
     fn eq(&self, other: &Self) -> bool {
-        return self.x == other.x && self.y == other.y && self.z == other.z;
+        self.x == other.x && self.y == other.y && self.z == other.z
     }
 }
 
@@ -64,7 +74,7 @@ impl<N> Add<Self> for Point3<N>
     type Output = Self;
 
     fn add( self, other: Self ) -> Self {
-        return Point3 {
+        Point3 {
             x : (self.x + other.x),
             y : (self.y + other.y),
             z : (self.z + other.z),
@@ -78,7 +88,7 @@ impl<N> Add<Point2<N>> for Point3<N>
     type Output = Self;
 
     fn add( self, other: Point2<N> ) -> Self {
-        return Point3 {
+        Point3 {
             x : (self.x + other.x),
             y : (self.y + other.y),
             z : self.z,
@@ -92,7 +102,7 @@ impl<N> Sub for Point3<N>
     type Output = Self;
 
     fn sub( self, other: Self ) -> Self {
-        return Point3 {
+        Point3 {
             x : (self.x - other.x),
             y : (self.y - other.y),
             z : (self.z - other.z),
@@ -106,7 +116,7 @@ impl<N> Sub<Point2<N>> for Point3<N>
     type Output = Self;
 
     fn sub( self, other: Point2<N> ) -> Self {
-        return Point3 {
+        Point3 {
             x : (self.x - other.x),
             y : (self.y - other.y),
             z : self.z,
@@ -120,7 +130,7 @@ impl<N> Rem<Self> for Point3<N>
     type Output = Self;
 
     fn rem( self, other: Self ) -> Self {
-        return Point3 {
+        Point3 {
             x : (self.x % other.x),
             y : (self.y % other.y),
             z : (self.z % other.z),
@@ -134,7 +144,7 @@ impl<N> Rem<Point2<N>> for Point3<N>
     type Output = Self;
 
     fn rem( self, other: Point2<N> ) -> Self {
-        return Point3 {
+        Point3 {
             x : (self.x % other.x),
             y : (self.y % other.y),
             z : self.z,

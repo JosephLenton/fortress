@@ -8,11 +8,19 @@ use std::ops::Rem;
 use super::Size;
 use super::Rect;
 
+/// 
+/// A point in 2D space.
+/// 
 #[derive(Debug)]
 #[derive(Copy, Clone)]
 pub struct Point2<N: Add+Sub+Mul+Div+Rem+Copy> {
+
+    /// It's x location.
     pub x : N,
+
+    /// It's y location.
     pub y : N,
+    
 }
 
 impl<N: Add+Sub+Mul+Div+Rem+Copy> Point2<N> {
@@ -24,7 +32,7 @@ impl<N: Add+Sub+Mul+Div+Rem+Copy> Point2<N> {
     /// It's all the same to me.
     ///
     pub fn new( x : N, y : N ) -> Point2<N> {
-        return Point2 {
+        Point2 {
             x : x,
             y : y,
         }
@@ -35,7 +43,7 @@ impl<N: Add+Sub+Mul+Div+Rem+Copy> Point2<N> {
     /// The rectangle is centred around this point.
     ///
     pub fn to_rect( self, size : Size<N> ) -> Rect<N> {
-        return Rect {
+        Rect {
             x : self.x,
             y : self.y,
 
@@ -50,7 +58,7 @@ impl<N> PartialEq for Point2<N>
     where N: Add+Sub+Div+Mul+Rem+Copy + PartialEq
 {
     fn eq(&self, other: &Self) -> bool {
-        return self.x == other.x && self.y == other.y;
+        self.x == other.x && self.y == other.y
     }
 }
 
@@ -60,7 +68,7 @@ impl<N> Add<Self> for Point2<N>
     type Output = Self;
 
     fn add( self, other: Self ) -> Self {
-        return Point2 {
+        Point2 {
             x : (self.x + other.x),
             y : (self.y + other.y),
         }
@@ -73,7 +81,7 @@ impl<N> Add<Size<N>> for Point2<N>
     type Output = Self;
 
     fn add( self, other: Size<N> ) -> Self {
-        return Point2 {
+        Point2 {
             x : (self.x + other.width),
             y : (self.y + other.height),
         }
@@ -86,7 +94,7 @@ impl<N> Sub for Point2<N>
     type Output = Self;
 
     fn sub( self, other: Self ) -> Self {
-        return Point2 {
+        Point2 {
             x : (self.x - other.x),
             y : (self.y - other.y),
         }
@@ -99,7 +107,7 @@ impl<N> Sub<Size<N>> for Point2<N>
     type Output = Self;
 
     fn sub( self, other: Size<N> ) -> Self {
-        return Point2 {
+        Point2 {
             x : (self.x - other.width),
             y : (self.y - other.height),
         }
@@ -112,7 +120,7 @@ impl<N> Rem<Self> for Point2<N>
     type Output = Self;
 
     fn rem( self, other: Self ) -> Self {
-        return Point2 {
+        Point2 {
             x : (self.x % other.x),
             y : (self.y % other.y),
         }
@@ -125,7 +133,7 @@ impl<N> Rem<Size<N>> for Point2<N>
     type Output = Self;
 
     fn rem( self, other: Size<N> ) -> Self {
-        return Point2 {
+        Point2 {
             x : (self.x % other.width),
             y : (self.y % other.height),
         }

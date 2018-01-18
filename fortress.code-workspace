@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "game"
+		},
+		{
+			"path": "generate"
+		},
+		{
+			"path": "head"
+		},
+		{
+			"path": "main"
+		},
+		{
+			"path": "util"
+		},
+		{
+			"path": "world"
+		}
+	],
+	"settings": {}
+}

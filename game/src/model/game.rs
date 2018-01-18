@@ -1,13 +1,9 @@
 
-use std::vec::Vec;
-
 use world::tile::Tile;
 use world::map::Map;
 use world::map::MapIterator;
 
 use model::GameTile;
-
-use util::shapes::Point3;
 
 pub struct Game {
 

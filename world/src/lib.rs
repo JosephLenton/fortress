@@ -1,4 +1,11 @@
 
+#![warn(missing_docs)]
+#![warn(unused_extern_crates)]
+#![warn(unused_import_braces)]
+
+#![cfg_attr(feature="clippy", feature(plugin))]
+#![cfg_attr(feature="clippy", plugin(clippy))]
+
 pub mod tile;
 pub mod map;
 pub mod load;
@@ -11,4 +18,3 @@ mod tests {
     fn it_works() {
     }
 }
-
