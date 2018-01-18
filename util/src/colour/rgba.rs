@@ -40,7 +40,7 @@ impl RGBA {
     ///
     /// Trivial constructor.
     ///
-    pub fn rgb( r : u8, g : u8, b : u8 ) -> RGBA {
+    pub fn new_rgb( r : u8, g : u8, b : u8 ) -> RGBA {
         RGBA {
             red   : r,
             blue  : b,
@@ -52,7 +52,7 @@ impl RGBA {
     ///
     /// Trivial constructor.
     ///
-    pub fn rgba( r : u8, g : u8, b : u8, a : u8 ) -> RGBA {
+    pub fn new_rgba( r : u8, g : u8, b : u8, a : u8 ) -> RGBA {
         RGBA {
             red   : r,
             blue  : b,

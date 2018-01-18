@@ -1,64 +1,39 @@
 
 use world::colour::Colour;
+use util::colour::RGBA;
 
-#[macro_use]
-mod macros {
-    #[macro_export]
-    macro_rules! colour {
-        ( $r:expr, $g:expr, $b:expr ) => {
-            RenderColour {
-                r : $r as u8,
-                g : $g as u8,
-                b : $b as u8,
-                a : 255 as u8,
-            }
-        }
-    }
+pub static BLACK        : RGBA = RGBA { red :   0, green :   0, blue :   0, alpha : 255, };
+pub static WHITE        : RGBA = RGBA { red : 255, green : 255, blue : 255, alpha : 255, };
+
+pub static LIGHT_RED    : RGBA = RGBA { red : 250, green : 128, blue : 144, alpha : 255, };
+pub static RED          : RGBA = RGBA { red : 255, green :   0, blue :   0, alpha : 255, };
+
+pub static PINK         : RGBA = RGBA { red : 255, green :   0, blue : 255, alpha : 255, };
+pub static PURPLE       : RGBA = RGBA { red : 128, green :   0, blue : 128, alpha : 255, };
+
+pub static BROWN        : RGBA = RGBA { red : 175, green :  90, blue :  35, alpha : 255, };
+pub static YELLOW       : RGBA = RGBA { red : 255, green : 215, blue :   0, alpha : 255, };
+
+pub static DARK_GREY    : RGBA = RGBA { red :  75, green :  75, blue :  75, alpha : 255, };
+pub static GREY         : RGBA = RGBA { red : 120, green : 120, blue : 120, alpha : 255, };
+pub static LIGHT_GREY   : RGBA = RGBA { red : 180, green : 180, blue : 180, alpha : 255, };
+
+pub static LIGHT_CYAN   : RGBA = RGBA { red :   0, green : 255, blue : 255, alpha : 255, };
+pub static CYAN         : RGBA = RGBA { red :  64, green : 224, blue : 208, alpha : 255, };
+
+pub static LIGHT_BLUE   : RGBA = RGBA { red :  30, green : 144, blue : 255, alpha : 255, };
+pub static BLUE         : RGBA = RGBA { red :   0, green :   0, blue : 255, alpha : 255, };
+
+pub static LIGHT_GREEN  : RGBA = RGBA { red :   0, green : 255, blue :   0, alpha : 255, };
+pub static GREEN        : RGBA = RGBA { red :  50, green : 205, blue :  50, alpha : 255, };
+
+pub trait ToRGBA {
+    fn to_rgba( self ) -> RGBA;
 }
 
-///
-/// The colour used when rendering.
-///
-#[derive(Copy, Clone)]
-pub struct RenderColour {
-    pub r : u8,
-    pub g : u8,
-    pub b : u8,
-    pub a : u8,
-}
-
-pub static BLACK        : RenderColour = colour!(   0,   0,   0 );
-pub static WHITE        : RenderColour = colour!( 255, 255, 255 );
-
-pub static LIGHT_RED    : RenderColour = colour!( 250, 128, 144 );
-pub static RED          : RenderColour = colour!( 255,   0,   0 );
-
-pub static PINK         : RenderColour = colour!( 255,   0, 255 );
-pub static PURPLE       : RenderColour = colour!( 128,   0, 128 );
-
-pub static BROWN        : RenderColour = colour!( 175,  90,  35 );
-pub static YELLOW       : RenderColour = colour!( 255, 215,   0 );
-
-pub static DARK_GREY    : RenderColour = colour!(  75,  75,  75 );
-pub static GREY         : RenderColour = colour!( 120, 120, 120 );
-pub static LIGHT_GREY   : RenderColour = colour!( 180, 180, 180 );
-
-pub static LIGHT_CYAN   : RenderColour = colour!(   0, 255, 255 );
-pub static CYAN         : RenderColour = colour!(  64, 224, 208 );
-
-pub static LIGHT_BLUE   : RenderColour = colour!(  30, 144, 255 );
-pub static BLUE         : RenderColour = colour!(   0,   0, 255 );
-
-pub static LIGHT_GREEN  : RenderColour = colour!(   0, 255,   0 );
-pub static GREEN        : RenderColour = colour!(  50, 205,  50 );
-
-pub trait ToRenderColour {
-    fn to_render_colour( self ) -> RenderColour;
-}
-
-impl ToRenderColour for Colour {
-    fn to_render_colour( self ) -> RenderColour {
-        return match self {
+impl ToRGBA for Colour {
+    fn to_rgba( self ) -> RGBA {
+        match self {
             Colour::Black        => BLACK,
             Colour::White        => WHITE,
 
