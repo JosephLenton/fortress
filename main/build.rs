@@ -1,4 +1,9 @@
 
+use std::env;
+
 fn main() {
-    println!(r"cargo:rustc-link-search=.\lib\sdl");
+    let out_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
+
+    println!("cargo:rustc-link-search=native={}/lib/sdl", out_dir);
 }
+
