@@ -12,6 +12,7 @@ use structopt::StructOpt;
 use generate::generate::new_map;
 use generate::generate::MapOptions;
 use world::print;
+use util::states::OnOff;
 
 ///
 /// The structure of the commands.
@@ -64,7 +65,7 @@ fn main() {
     let mut out = stdout();
     out.lock();
 
-    let colour = if args.colour == Some(ArgsColour::colour) { print::PrintColourOptions::On } else { print::PrintColourOptions::Off };
+    let colour = if args.colour == Some(ArgsColour::colour) { util::states::OnOff::On } else { util::states::OnOff };
     print::print_map( colour, & map, &mut out );
 }
 

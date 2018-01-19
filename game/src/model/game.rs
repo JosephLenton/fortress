@@ -3,10 +3,13 @@ use world::player::Player;
 use world::tile::Tile;
 use world::map::Map;
 use world::map::MapIterator;
+use world::world_setup::WorldSetup;
+use world::calendar::WorldTime;
 
 use model::GameTile;
+use model::GameSetup;
 
-pub struct Game {
+pub struct Game<'a> {
 
     ///
     /// The tiles in our game.
@@ -29,20 +32,43 @@ pub struct Game {
     ///
     pub player : Player,
 
+    ///
+    /// The current time. In seconds.
+    ///
+    time : u32,
+
+    ///
+    /// A setup or description of the world.
+    /// Like it's calendar, and things like that.
+    ///
+    world_setup : WorldSetup<'a>,
+
+    ///
+    /// Setup of the game for it's running.
+    ///
+    game_setup : GameSetup,
+
 }
 
-impl Game {
+impl<'a> Game<'a> {
     pub fn new(
             map : Map<Tile>,
             player : Player,
+            world_setup : WorldSetup<'a>,
+            game_setup : GameSetup,
     ) -> Game {
-        return Game {
+        Game {
             map : map.transform( GameTile::new ),
 
             width : map.width as u32,
             height : map.height as u32,
 
             player : player,
+
+            time : 0,
+
+            world_setup : world_setup,
+            game_setup : game_setup,
         }
     }
 
@@ -54,12 +80,16 @@ impl Game {
     /// to triggerring a random encounter, to causing other
     /// effects.
     ///
-    pub fn tick() {
-        // todo
+    pub fn tick( &mut self ) -> () {
+        self.time += self.game_setup.time_tick_speed;
+    }
+
+    pub fn get_time( &self ) -> WorldTime {
+        self.world_setup.calendar.get_time( self.time )
     }
 
     pub fn slice( &self, x : i32, y : i32, w : u32, h : u32 ) -> MapIterator<GameTile> {
-        return self.map.slice( x, y, w, h );
+        self.map.slice( x, y, w, h )
     }
 }
 

@@ -1,8 +1,6 @@
 
 use world::tile::tile_colour::tile_to_colour;
-use world::tile::Tile;
 use world::colour::Colour;
-use world::player::Player;
 
 use render::gfx::GFX;
 use render::camera::Camera;
@@ -20,7 +18,7 @@ pub struct RenderGame<'a> {
     ///
     /// The game state we are using for rendering.
     ///
-    game : &'a Game,
+    game : &'a Game<'a>,
 
     ///
     /// Current size of the Window.

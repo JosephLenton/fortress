@@ -5,7 +5,6 @@ use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
 use sdl2::mouse::MouseWheelDirection;
 
-use world::colour::Colour;
 use render::setup::Setup;
 use render::cursor::Cursor;
 use render::render_game::RenderGame;
@@ -13,11 +12,13 @@ use render::gfx::GFX;
 
 use game::model::Game;
 
+use world::world_setup::WorldSetup;
+
 use util::shapes::Point2;
 
-pub fn run(
+pub fn run<'a>(
         setup : Setup,
-        game  : Game,
+        game  : &'a Game,
 ) {
     let mut rgame = RenderGame::new( & setup, & game );
     let mut cursor = Cursor::new( setup.window_size.width as f32 / 2.0, setup.window_size.height as f32 / 2.0 );

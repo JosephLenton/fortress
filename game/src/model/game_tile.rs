@@ -8,7 +8,7 @@ pub struct GameTile {
 
 impl GameTile {
     pub fn new( tile : Tile ) -> GameTile {
-        return GameTile {
+        GameTile {
             tile : tile,
         }
     }

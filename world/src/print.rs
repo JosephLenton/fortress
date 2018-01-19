@@ -4,16 +4,12 @@ use tile::Tile;
 use tile::tile_colour::tile_to_cmd;
 use tile::display_tile::tile_to_char;
 
+use util::states::OnOff;
+
 use std::io;
 
-#[derive(PartialEq, Eq)]
-pub enum PrintColourOptions {
-    On,
-    Off,
-}
-
-pub fn print_map( colour : PrintColourOptions, map : & Map<Tile>, out : &mut io::Write ) {
-    let has_colour = colour == PrintColourOptions::On;
+pub fn print_map( colour : OnOff, map : & Map<Tile>, out : &mut io::Write ) {
+    let has_colour = colour == OnOff::On;
 
     for (tile, x, y) in map.slice_all() {
         let tile_char = tile_to_char( tile );
