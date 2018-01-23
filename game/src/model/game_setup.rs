@@ -1,4 +1,3 @@
-
 ///
 /// Describes parameters for the running of the game.
 ///
@@ -9,12 +8,9 @@
 /// Debug flag. Things like that.
 ///
 pub struct GameSetup {
-
     ///
     /// When the game performs a tick, it will increment the current time.
     /// This is how much to increment by. In seconds.
     ///
-    pub time_tick_speed : u32,
-
+    pub time_tick_speed: u32,
 }
-

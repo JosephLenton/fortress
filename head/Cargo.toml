@@ -4,19 +4,9 @@ version = "0.1.0"
 authors = ["joseph.lenton@askattest.com <joseph.lenton@askattest.com>"]
 
 [dependencies]
-clippy = { version = "*", optional = true }
+sdl2 = { version = "0.31", default-features = false, features = [] }
 
-[dependencies.sdl2]
-default-features = false
-features = []
-version = "0.31"
-
-[dependencies.world]
-path = "../world"
-
-[dependencies.util]
-path = "../util"
-
-[dependencies.game]
-path = "../game"
+game  = { path = "../game" }
+world = { path = "../world" }
+util  = { path = "../util" }
 

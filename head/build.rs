@@ -1,4 +1,3 @@
-
 use std::env;
 
 fn main() {
@@ -6,4 +5,3 @@ fn main() {
 
     println!("cargo:rustc-link-search=native={}/lib/sdl", out_dir);
 }
-

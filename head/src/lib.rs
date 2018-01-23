@@ -1,13 +1,12 @@
-
-#![cfg_attr(feature="clippy", feature(plugin))]
-#![cfg_attr(feature="clippy", plugin(clippy))]
+#![warn(missing_docs)]
+#![warn(unused_extern_crates)]
+#![warn(unused_import_braces)]
 
 extern crate sdl2;
 
-extern crate world;
-extern crate util;
 extern crate game;
+extern crate util;
+extern crate world;
 
 pub mod render;
 pub mod to_sdl2;
-

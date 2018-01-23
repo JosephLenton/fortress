@@ -1,4 +1,3 @@
-
 use structopt::StructOpt;
 
 ///
@@ -14,21 +13,16 @@ use structopt::StructOpt;
 #[derive(StructOpt, Debug)]
 #[structopt(name = "Fortress", about = "A Dwarf Fortress Clone.")]
 pub struct Args {
-
     /// The map file we will be using.
     #[structopt(short = "m", long = "map", help = "The map file to load.")]
     pub map: String,
-
 }
 
 impl Args {
-
     ///
     /// Builds a new args from the main arguments given.
     ///
     pub fn new_from_args() -> Args {
         return Args::from_args();
     }
-
 }
-

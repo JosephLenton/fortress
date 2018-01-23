@@ -1,7 +1,6 @@
-
-//! 
+//!
 //! A module of shapes, points, and sizes.
-//! 
+//!
 
 mod rect;
 mod size;

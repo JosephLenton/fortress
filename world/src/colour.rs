@@ -1,4 +1,3 @@
-
 ///
 /// This is an enum of colours.
 /// It's a high level representation.
@@ -7,7 +6,6 @@
 ///
 #[derive(Copy, Clone)]
 pub enum Colour {
-
     /// Black.
     Black,
 
@@ -58,6 +56,4 @@ pub enum Colour {
 
     /// I also hate green.
     Green,
-
 }
-

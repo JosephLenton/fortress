@@ -1,4 +1,3 @@
-
 #[derive(Copy, Clone)]
 pub enum Tile {
     Empty,
@@ -17,4 +16,3 @@ pub enum Tile {
 
     Ice,
 }
-

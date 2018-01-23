@@ -1,4 +1,3 @@
-
 use std::fmt;
 
 use colour::Colour;
@@ -7,26 +6,26 @@ use tile::tile_colour::tile_to_colour;
 
 #[derive(Copy, Clone)]
 pub struct DisplayTile {
-    pub tile       : Tile,
-    pub display    : char,
-    pub foreground : Colour,
-    pub background : Colour,
+    pub tile: Tile,
+    pub display: char,
+    pub foreground: Colour,
+    pub background: Colour,
 }
 
 impl DisplayTile {
-    pub fn new( tile : Tile ) -> DisplayTile {
-        let ( foreground, background ) = tile_to_colour( tile );
+    pub fn new(tile: Tile) -> DisplayTile {
+        let (foreground, background) = tile_to_colour(tile);
 
         return DisplayTile {
-            tile    : tile,
-            display : tile_to_char( tile ),
+            tile: tile,
+            display: tile_to_char(tile),
 
-            foreground : foreground,
-            background : background,
-        }
+            foreground: foreground,
+            background: background,
+        };
     }
 
-    pub fn to_char( self ) -> char {
+    pub fn to_char(self) -> char {
         return self.display;
     }
 
@@ -41,23 +40,22 @@ impl fmt::Display for DisplayTile {
     }
 }
 
-pub fn tile_to_char( tile : Tile ) -> char {
+pub fn tile_to_char(tile: Tile) -> char {
     return match tile {
-        Tile::Empty         => '.',
-        Tile::Ground        => ':',
+        Tile::Empty => '.',
+        Tile::Ground => ':',
 
-        Tile::Grass         => ',',
-        Tile::GrassThick    => '"',
+        Tile::Grass => ',',
+        Tile::GrassThick => '"',
 
-        Tile::Rocks         => '∩',
+        Tile::Rocks => '∩',
 
-        Tile::Hill          => '^',
+        Tile::Hill => '^',
 
-        Tile::Water         => '~',
-        Tile::Wall          => '#',
-        Tile::TreeStump     => 'o',
+        Tile::Water => '~',
+        Tile::Wall => '#',
+        Tile::TreeStump => 'o',
 
-        Tile::Ice           => '∴',
-    }
+        Tile::Ice => '∴',
+    };
 }
-

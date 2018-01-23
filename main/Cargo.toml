@@ -6,20 +6,10 @@ version = "0.1.0"
 [dependencies]
 structopt = "0.1.0"
 structopt-derive = "0.1.0"
-clippy = { version = "*", optional = true }
 
-[dependencies.world]
-path = "../world"
-
-[dependencies.util]
-path = "../util"
-
-[dependencies.generate]
-path = "../generate"
-
-[dependencies.game]
-path = "../game"
-
-[dependencies.head]
-path = "../head"
+world = { path = "../world" }
+util = { path = "../util" }
+generate = { path = "../generate" }
+game = { path = "../game" }
+head = { path = "../head" }
 

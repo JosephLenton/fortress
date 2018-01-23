@@ -1,4 +1,3 @@
-
 use calendar::WorldTime;
 
 ///
@@ -18,6 +17,5 @@ use calendar::WorldTime;
 /// of the time.
 ///
 pub trait WorldCalendar {
-    fn get_time( &self, time : u32 ) -> WorldTime ;
+    fn get_time(&self, time: u32) -> WorldTime;
 }
-

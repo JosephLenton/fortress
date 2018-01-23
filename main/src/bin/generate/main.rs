@@ -1,10 +1,9 @@
-
+extern crate structopt;
 #[macro_use]
 extern crate structopt_derive;
-extern crate structopt;
 
-extern crate world;
 extern crate generate;
+extern crate world;
 
 use std::io::stdout;
 use structopt::StructOpt;
@@ -12,7 +11,6 @@ use structopt::StructOpt;
 use generate::generate::new_map;
 use generate::generate::MapOptions;
 use world::print;
-use util::states::OnOff;
 
 ///
 /// The structure of the commands.
@@ -27,45 +25,56 @@ use util::states::OnOff;
 #[derive(StructOpt, Debug)]
 #[structopt(name = "Map Generator", about = "Generates maps.")]
 struct Args {
-
+    /// A seed for the map.
+    /// By seeding the map you can generate the same map again and again,
+    /// using the same seed value.
     #[structopt(short = "s", long = "seed", help = "Seed for the random generator.")]
-    pub seed : Option<usize>,
+    pub seed: Option<usize>,
 
-    #[structopt(short = "w", default_value="50", long = "width", help = "Set width for the map.")]
-    pub width : u32,
+    /// The width of the map we are building.
+    #[structopt(short = "w", default_value = "50", long = "width",
+                help = "Set width for the map.")]
+    pub width: u32,
 
-    #[structopt(short = "h", default_value="50", long = "height", help = "Set height for the map.")]
-    pub height : u32,
+    /// The height of the map we are building.
+    #[structopt(short = "h", default_value = "50", long = "height",
+                help = "Set height for the map.")]
+    pub height: u32,
 
+    /// Should colour be on or off.
     #[structopt(subcommand)]
-    pub colour : Option<ArgsColour>,
-
+    pub colour: Option<ArgsColour>,
 }
 
 ///
 /// For turning colour on or off.
 ///
-#[derive(StructOpt, Debug)]
-#[derive(PartialEq, Eq)]
+#[derive(StructOpt, Debug, PartialEq, Eq)]
 #[allow(non_camel_case_types)]
 enum ArgsColour {
     colour,
     no_colour,
 }
 
+///
+/// Entry point.
+///
 fn main() {
     let args = Args::from_args();
 
-    let map = new_map( MapOptions {
-        width : args.width,
-        height : args.height,
-        seed : args.seed,
+    let map = new_map(MapOptions {
+        width: args.width,
+        height: args.height,
+        seed: args.seed,
     });
 
     let mut out = stdout();
     out.lock();
 
-    let colour = if args.colour == Some(ArgsColour::colour) { util::states::OnOff::On } else { util::states::OnOff };
-    print::print_map( colour, & map, &mut out );
+    let colour = if args.colour == Some(ArgsColour::colour) {
+        print::OnOff::On
+    } else {
+        print::OnOff::Off
+    };
+    print::print_map(colour, &map, &mut out);
 }
-
