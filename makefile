@@ -35,7 +35,7 @@ init:
 #
 # These are commands to run for git.
 #
-pre-commit: format-all test-all
+pre-commit: format-all lint-all test-all
 
 
 
