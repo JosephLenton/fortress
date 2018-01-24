@@ -153,6 +153,12 @@ clean-all:
 
 
 
+# 
+# Format.
+#
+# Formats all code and replaces it with new layout.
+#
+
 fmt: format
 format: format-all
 format-all:

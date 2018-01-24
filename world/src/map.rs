@@ -56,7 +56,7 @@ impl<T: Copy> Map<T> {
     }
 
     pub fn slice_all(&self) -> MapIterator<T> {
-        return self.slice(0, 0, self.width as u32, self.height as u32);
+        return self.slice(0, 0, self.width, self.height);
     }
 
     pub fn slice(&self, mut x: i32, mut y: i32, w: u32, h: u32) -> MapIterator<T> {
