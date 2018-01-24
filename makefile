@@ -1,5 +1,6 @@
 
-cargo := cargo.exe
+cargo_stable := cargo.exe +stable
+cargo_nightly := cargo.exe +nightly
 .DEFAULT_GOAL := default
 default: make-dev
 
@@ -8,7 +9,7 @@ default: make-dev
 # 
 # Things we can build and run.
 #
-
+run: run-fortress
 run-fortress: make-dev
 	./target/debug/fortress.exe \
 			--map "./main/maps/map.map" 
@@ -16,6 +17,16 @@ run-fortress: make-dev
 run-generate: make-dev
 	./target/debug/generate.exe \
 			colour
+
+
+
+# 
+# Initialise.
+#
+init:
+	cp ./pre-commit-hook.sh .git/hooks/pre-commit
+	$(cargo_nightly) install --force clippy
+	rustup component add rustfmt-preview --toolchain=nightly
 
 
 
@@ -79,14 +90,14 @@ make-one-dev: lint-one compile-one-dev test-one
 # Just build.
 #
 compile-one-release:
-	$(cargo) build \
+	$(cargo_stable) build \
 			--manifest-path="${manifest-path}" \
 			--release
 
 compile-one-dev:
 	RUST_BACKTRACE="1"
 	export RUST_BACKTRACE
-	$(cargo) build \
+	$(cargo_stable) build \
 			--manifest-path="${manifest-path}"
 
 
@@ -99,11 +110,11 @@ compile-one-dev:
 
 lint: lint-all
 lint-all:
-	$(cargo) clippy \
+	$(cargo_nightly) clippy \
 		--all
 
 lint-one:
-	$(cargo) clippy \
+	$(cargo_nightly) clippy \
 			--manifest-path="${manifest-path}"
 
 
@@ -114,13 +125,13 @@ lint-one:
 
 test: test-all
 test-all:
-	$(cargo) test \
+	$(cargo_stable) test \
 		--all
 
 test-one:
 	RUST_BACKTRACE="1"
 	export RUST_BACKTRACE
-	$(cargo) test \
+	$(cargo_stable) test \
 			--manifest-path="${manifest-path}"
 
 
@@ -131,17 +142,18 @@ test-one:
 
 clean: clean-all
 clean-all:
-	$(cargo) clean
+	$(cargo_stable) clean
 
 
 
 fmt: format
+format: format-all
 format-all:
-	$(cargo) fmt \
+	$(cargo_nightly) fmt \
 		--all
 
 format-one:
-	$(cargo) fmt \
+	$(cargo_nightly) fmt \
 			--manifest-path="${manifest-path}"
 
 
