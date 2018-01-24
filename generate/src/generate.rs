@@ -1,4 +1,4 @@
-use world::tile::Tile;
+use world::tiles::Tile;
 use world::map::Map;
 
 use rand::StdRng;

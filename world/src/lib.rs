@@ -3,7 +3,7 @@ extern crate util;
 pub mod calendar;
 pub mod weather;
 pub mod player;
-pub mod tile;
+pub mod tiles;
 pub mod map;
 pub mod load;
 pub mod print;

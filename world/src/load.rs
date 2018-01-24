@@ -1,6 +1,7 @@
-use tile::Tile;
-use tile::display_tile::tile_to_char;
+use tiles::Tile;
+use tiles::display_tile::tile_to_char;
 use map::Map;
+use util::shapes::Size;
 
 use std::cmp;
 use std::collections::BTreeMap;
@@ -16,7 +17,7 @@ use std::vec::Vec;
 const CHAR_ETB: char = 27 as char;
 
 fn new_tile_map() -> BTreeMap<char, Tile> {
-    let mut map = BTreeMap::new() as BTreeMap<char, Tile>;
+    let mut map = BTreeMap::new();
 
     store_tile(&mut map, Tile::Empty);
 
@@ -34,7 +35,7 @@ fn new_tile_map() -> BTreeMap<char, Tile> {
 
     store_tile(&mut map, Tile::Ice);
 
-    return map;
+    map
 }
 
 fn store_tile(map: &mut BTreeMap<char, Tile>, tile: Tile) {
@@ -44,10 +45,10 @@ fn store_tile(map: &mut BTreeMap<char, Tile>, tile: Tile) {
 }
 
 fn char_to_tile(decode_map: &BTreeMap<char, Tile>, c: char) -> Tile {
-    return match decode_map.get(&c) {
+    match decode_map.get(&c) {
         Some(tile) => *tile,
         None => panic!("Tile not found for char, {}, code {}", c, c as u32),
-    };
+    }
 }
 
 pub fn read_to_map(read_in: &mut BufRead) -> Result<Map<Tile>> {
@@ -57,16 +58,16 @@ pub fn read_to_map(read_in: &mut BufRead) -> Result<Map<Tile>> {
     }
 
     let decode_map = new_tile_map();
-    let (width, height) = get_vec_size(&buf);
-    let mut map = Map::new(width, height, Tile::Empty);
+    let size = get_vec_size(&buf);
+    let mut map = Map::new(size.width, size.height, Tile::Empty);
 
     populate_map(&decode_map, &mut map, &buf);
 
-    return Ok(map);
+    Ok(map)
 }
 
-fn get_vec_size(buf: &Vec<String>) -> (u32, u32) {
-    let mut max_width = 0 as u32;
+fn get_vec_size(buf: &Vec<String>) -> Size<u32> {
+    let mut max_width = 0;
     let max_height = buf.len() as u32;
 
     for line in buf {
@@ -75,7 +76,7 @@ fn get_vec_size(buf: &Vec<String>) -> (u32, u32) {
         max_width = cmp::max(max_width, line_len);
     }
 
-    return (max_width, max_height);
+    Size { width : max_width, height : max_height }
 }
 
 fn populate_map(decode_map: &BTreeMap<char, Tile>, map: &mut Map<Tile>, buf: &Vec<String>) {

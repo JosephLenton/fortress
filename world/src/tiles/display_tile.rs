@@ -1,47 +1,42 @@
 use std::fmt;
 
-use colour::Colour;
-use tile::Tile;
-use tile::tile_colour::tile_to_colour;
+use tiles::Tile;
+use tiles::tile_colour::tile_to_colour;
+use tiles::tile_colour::TileColour;
 
 #[derive(Copy, Clone)]
 pub struct DisplayTile {
     pub tile: Tile,
     pub display: char,
-    pub foreground: Colour,
-    pub background: Colour,
+    pub colour: TileColour,
 }
 
 impl DisplayTile {
     pub fn new(tile: Tile) -> DisplayTile {
-        let (foreground, background) = tile_to_colour(tile);
-
-        return DisplayTile {
+        DisplayTile {
             tile: tile,
             display: tile_to_char(tile),
-
-            foreground: foreground,
-            background: background,
-        };
+            colour: tile_to_colour(tile),
+        }
     }
 
     pub fn to_char(self) -> char {
-        return self.display;
+        self.display
     }
 
     pub fn to_string(&self) -> String {
-        return self.to_char().to_string();
+        self.to_char().to_string()
     }
 }
 
 impl fmt::Display for DisplayTile {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        return write!(f, "{}", self.to_char());
+        write!(f, "{}", self.to_char())
     }
 }
 
 pub fn tile_to_char(tile: Tile) -> char {
-    return match tile {
+    match tile {
         Tile::Empty => '.',
         Tile::Ground => ':',
 
@@ -57,5 +52,6 @@ pub fn tile_to_char(tile: Tile) -> char {
         Tile::TreeStump => 'o',
 
         Tile::Ice => '∴',
-    };
+    }
 }
+

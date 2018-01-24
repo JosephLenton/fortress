@@ -1,5 +1,5 @@
 
-use tile::Tile;
+use tiles::Tile;
 
 pub enum MoveType {
 

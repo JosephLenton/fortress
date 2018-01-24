@@ -1,7 +1,7 @@
 use map::Map;
-use tile::Tile;
-use tile::tile_colour::tile_to_cmd;
-use tile::display_tile::tile_to_char;
+use tiles::Tile;
+use tiles::tile_colour::tile_to_cmd;
+use tiles::display_tile::tile_to_char;
 
 use std::io;
 
@@ -36,8 +36,9 @@ pub fn print_map(colour: OnOff, map: &Map<Tile>, out: &mut io::Write) {
 }
 
 fn write_end_of_line(out: &mut io::Write, has_colour: bool, msg: &'static str) {
-    match has_colour {
-        true => writeln!(out, "\x1B[0m").expect(msg),
-        false => writeln!(out, "").expect(msg),
+    if has_colour {
+        writeln!(out, "\x1B[0m").expect(msg);
+    } else {
+        writeln!(out, "").expect(msg);
     }
 }

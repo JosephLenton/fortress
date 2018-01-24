@@ -1,5 +1,5 @@
 use world::player::Player;
-use world::tile::Tile;
+use world::tiles::Tile;
 use world::map::Map;
 use world::map::MapIterator;
 use world::world_setup::WorldSetup;
@@ -57,8 +57,8 @@ impl<'a> Game<'a> {
         Game {
             map: map.transform(GameTile::new),
 
-            width: map.width as u32,
-            height: map.height as u32,
+            width: map.width,
+            height: map.height,
 
             player: player,
 

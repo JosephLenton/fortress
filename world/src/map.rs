@@ -10,20 +10,20 @@ type MapData<T> = Vec<T>;
 
 impl<T: Copy> Map<T> {
     pub fn new(width: u32, height: u32, default: T) -> Map<T> {
-        return Map {
+        Map {
             width: width,
             height: height,
             data: new_map_data(width, height, default),
-        };
+        }
     }
 
     pub fn get(&self, x: u32, y: u32) -> T {
         let index = map_index(x, y, self.width, self.height);
 
-        return self.data[index];
+        self.data[index]
     }
 
-    pub fn set(&mut self, x: u32, y: u32, tile: T) {
+    pub fn set(&mut self, x: u32, y: u32, tile: T) -> () {
         let index = map_index(x, y, self.width, self.height);
 
         self.data[index] = tile;
@@ -48,15 +48,15 @@ impl<T: Copy> Map<T> {
     where
         F: FnMut(T) -> T2,
     {
-        return Map {
+        Map {
             width: self.width,
             height: self.height,
             data: copy_map_data(&self.data, self.width, self.height, map_f),
-        };
+        }
     }
 
     pub fn slice_all(&self) -> MapIterator<T> {
-        return self.slice(0, 0, self.width, self.height);
+        self.slice(0, 0, self.width, self.height)
     }
 
     pub fn slice(&self, mut x: i32, mut y: i32, w: u32, h: u32) -> MapIterator<T> {
@@ -86,7 +86,7 @@ impl<T: Copy> Map<T> {
             sh = height;
         }
 
-        return MapIterator {
+        MapIterator {
             data: &self.data,
 
             x: x as u32,
@@ -98,7 +98,7 @@ impl<T: Copy> Map<T> {
             sx: x as u32,
             sw: sw as u32,
             sh: sh as u32,
-        };
+        }
     }
 }
 
@@ -161,7 +161,7 @@ impl<'a, T: Copy> Iterator for MapIterator<'a, T> {
             self.y += 1;
         }
 
-        return result;
+        result
     }
 }
 
@@ -175,7 +175,7 @@ fn new_map_data<T: Copy>(width: u32, height: u32, default: T) -> MapData<T> {
         map.push(default);
     }
 
-    return map;
+    map
 }
 
 fn copy_map_data<F, T1: Copy, T2: Copy>(
@@ -197,10 +197,10 @@ where
         map.push(new_tile);
     }
 
-    return map;
+    map
 }
 
-#[inline]
 fn map_index(x: u32, y: u32, _width: u32, height: u32) -> usize {
-    return (y * height + x) as usize;
+    (y * height + x) as usize
 }
+

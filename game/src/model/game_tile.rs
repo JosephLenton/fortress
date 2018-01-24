@@ -1,4 +1,4 @@
-use world::tile::Tile;
+use world::tiles::Tile;
 
 #[derive(Copy, Clone)]
 pub struct GameTile {
