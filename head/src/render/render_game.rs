@@ -5,8 +5,8 @@ use render::gfx::GFX;
 use render::camera::Camera;
 use render::setup::Setup;
 
-use game::model::Game;
-use game::model::GameTile;
+use game::Game;
+use game::GameTile;
 
 use util::shapes::Size;
 use util::shapes::Point2;

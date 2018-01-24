@@ -9,7 +9,7 @@ use render::cursor::Cursor;
 use render::render_game::RenderGame;
 use render::gfx::GFX;
 
-use game::model::Game;
+use game::Game;
 
 use world::world_setup::WorldSetup;
 

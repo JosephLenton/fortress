@@ -4,8 +4,8 @@ name = "main"
 version = "0.1.0"
 
 [dependencies]
-structopt = "0.1.0"
-structopt-derive = "0.1.0"
+structopt = "0.1.7"
+structopt-derive = "0.1.6"
 
 world = { path = "../world" }
 util = { path = "../util" }

@@ -19,11 +19,11 @@ default: make-dev
 # Things we can build and run.
 #
 run: run-fortress
-run-fortress: make-dev
+run-fortress: make-main-no-test
 	./target/debug/fortress.exe \
 			--map "./main/maps/map.map" 
 
-run-generate: make-dev
+run-generate: make-main-no-test
 	./target/debug/generate.exe \
 			colour
 
@@ -61,6 +61,9 @@ make-dev: make-main
 make-main:
 	make --no-print-directory make-one-dev manifest-path="./main/Cargo.toml"
 
+make-main-no-test:
+	make --no-print-directory make-one-dev-no-test manifest-path="./main/Cargo.toml"
+
 make-game:
 	make --no-print-directory make-one-dev manifest-path="./game/Cargo.toml"
 
@@ -88,7 +91,8 @@ make-world:
 # to lint, build, and test.
 #
 make-one-release: lint-one compile-one-release test-one
-make-one-dev: lint-one compile-one-dev test-one
+make-one-dev: make-one-dev-no-test test-one
+make-one-dev-no-test: lint-one compile-one-dev
 
 
 

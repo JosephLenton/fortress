@@ -21,8 +21,8 @@ use world::world_setup::WorldSetup;
 use world::calendar::WorldCalendar;
 use world::calendar::WorldTime;
 use util::shapes::Size;
-use game::model::Game;
-use game::model::GameSetup;
+use game::Game;
+use game::GameSetup;
 use head::render::setup::Setup;
 use head::render::run::run;
 
@@ -67,7 +67,7 @@ fn main_run(args: Args) -> Result<()> {
     let mut file = BufReader::new(file);
 
     let player = Player::new(22, 18);
-    let map = load::read_to_map(&mut file)?;
+    let map = & load::read_to_map(&mut file)?;
 
     let world_setup = WorldSetup {
         calendar: &FortressCalendar {},
@@ -92,5 +92,5 @@ fn main_run(args: Args) -> Result<()> {
 
     run(setup, &game);
 
-    return Ok(());
+    Ok(())
 }
