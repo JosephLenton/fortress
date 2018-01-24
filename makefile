@@ -111,7 +111,7 @@ compile-one-dev:
 lint: lint-all
 lint-all:
 	$(cargo_nightly) clippy \
-		--all
+			--all
 
 lint-one:
 	$(cargo_nightly) clippy \
@@ -126,7 +126,7 @@ lint-one:
 test: test-all
 test-all:
 	$(cargo_stable) test \
-		--all
+			--all
 
 test-one:
 	RUST_BACKTRACE="1"
@@ -150,7 +150,7 @@ fmt: format
 format: format-all
 format-all:
 	$(cargo_nightly) fmt \
-		--all
+			--all
 
 format-one:
 	$(cargo_nightly) fmt \
