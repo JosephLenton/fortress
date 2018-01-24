@@ -1,6 +1,15 @@
 
-cargo_stable := cargo.exe +stable
-cargo_nightly := cargo.exe +nightly
+lint_warnings := -W unreachable-pub -W missing-docs
+lint_denials := -D trivial-casts -D trivial-numeric-casts -D unused-extern-crates -D unused-import-braces
+
+RUSTFLAGS := $(lint_warnings) $(lint_denials)
+RUST_BACKTRACE := 1
+
+run_cmd := cmd.exe /C
+run_cargo := cargo.exe
+run_cargo_stable := $(run_cmd) set RUST_BACKTRACE=$(RUST_BACKTRACE) \&\& set RUSTFLAGS=$(RUSTFLAGS) \&\& $(run_cargo) +stable
+run_cargo_nightly := $(run_cmd) set RUST_BACKTRACE=$(RUST_BACKTRACE) \&\& set RUSTFLAGS=$(RUSTFLAGS) \&\& $(run_cargo) +nightly
+
 .DEFAULT_GOAL := default
 default: make-dev
 
@@ -25,7 +34,7 @@ run-generate: make-dev
 #
 init:
 	cp ./pre-commit-hook.sh .git/hooks/pre-commit
-	$(cargo_nightly) install --force clippy
+	$(run_cargo_nightly) install --force clippy
 	rustup component add rustfmt-preview --toolchain=nightly
 
 
@@ -90,14 +99,12 @@ make-one-dev: lint-one compile-one-dev test-one
 # Just build.
 #
 compile-one-release:
-	$(cargo_stable) build \
+	$(run_cargo_stable) build \
 			--manifest-path="${manifest-path}" \
 			--release
 
 compile-one-dev:
-	RUST_BACKTRACE="1"
-	export RUST_BACKTRACE
-	$(cargo_stable) build \
+	$(run_cargo_stable) build \
 			--manifest-path="${manifest-path}"
 
 
@@ -110,11 +117,11 @@ compile-one-dev:
 
 lint: lint-all
 lint-all:
-	$(cargo_nightly) clippy \
+	$(run_cargo_nightly) clippy \
 			--all
 
 lint-one:
-	$(cargo_nightly) clippy \
+	$(run_cargo_nightly) clippy \
 			--manifest-path="${manifest-path}"
 
 
@@ -125,13 +132,13 @@ lint-one:
 
 test: test-all
 test-all:
-	$(cargo_stable) test \
+	$(run_cargo_stable) test \
 			--all
 
 test-one:
 	RUST_BACKTRACE="1"
 	export RUST_BACKTRACE
-	$(cargo_stable) test \
+	$(run_cargo_stable) test \
 			--manifest-path="${manifest-path}"
 
 
@@ -142,18 +149,18 @@ test-one:
 
 clean: clean-all
 clean-all:
-	$(cargo_stable) clean
+	$(run_cargo_stable) clean
 
 
 
 fmt: format
 format: format-all
 format-all:
-	$(cargo_nightly) fmt \
+	$(run_cargo_nightly) fmt \
 			--all
 
 format-one:
-	$(cargo_nightly) fmt \
+	$(run_cargo_nightly) fmt \
 			--manifest-path="${manifest-path}"
 
 

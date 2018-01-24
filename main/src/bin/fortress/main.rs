@@ -1,5 +1,3 @@
-#![warn(unused_extern_crates)]
-#![warn(unused_import_braces)]
 
 use std::process::exit;
 use std::error::Error;

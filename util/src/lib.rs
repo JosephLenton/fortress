@@ -8,10 +8,6 @@
 //! and colours.
 //!
 
-#![warn(missing_docs)]
-#![warn(unused_extern_crates)]
-#![warn(unused_import_braces)]
-
 pub mod shapes;
 pub mod colour;
 pub mod states;
