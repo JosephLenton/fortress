@@ -8,6 +8,14 @@ use std::io;
 // Re-export this as ours for ease of use.
 pub use util::states::OnOff;
 
+/// Iterates over the map given, and writes it to the writer.
+/// Simple as that really.
+///
+/// If colour is set to on then it'll be colourful. This is used for command
+/// applications. By 'colour' we mean special characters injected into the
+/// output stream which will appear as colour on the terminal.
+///
+/// If colour is off then the tiles characters alone are printed.
 pub fn print_map(colour: OnOff, map: &Map<Tile>, out: &mut io::Write) {
     let has_colour = colour == OnOff::On;
 
