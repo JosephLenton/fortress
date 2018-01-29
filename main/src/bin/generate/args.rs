@@ -1,4 +1,3 @@
-
 use structopt::StructOpt;
 
 ///
@@ -55,4 +54,3 @@ impl Args {
         Args::from_args()
     }
 }
-

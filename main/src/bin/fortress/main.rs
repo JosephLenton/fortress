@@ -67,7 +67,7 @@ fn main_run(args: Args) -> Result<()> {
     let mut file = BufReader::new(file);
 
     let player = Player::new(22, 18);
-    let map = & load::read_to_map(&mut file)?;
+    let map = &load::read_to_map(&mut file)?;
 
     let world_setup = WorldSetup {
         calendar: &FortressCalendar {},
