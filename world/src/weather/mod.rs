@@ -1,3 +1,7 @@
+///
+/// A module for the weather modelling.
+/// This is the traits for modelling, and utility code.
+///
 mod temperature;
 mod weather_report;
 

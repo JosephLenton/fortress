@@ -16,18 +16,12 @@ pub struct TileColour {
 
 /// Converts the tile to it's colour, and then returns the command version
 /// of that colour.
-///
-/// @param tile The tile to convert to a colour.
-/// @return A string version of the tile.
 pub fn tile_to_cmd(tile: Tile) -> String {
     colour_to_cmd(tile_to_colour(tile))
 }
 
 /// Converts the tile into two colours; a back and front colour.
 /// These two colours are returned.
-///
-/// @param tile The tile to get the colour for.
-/// @return A tuple of background and foreground colour.
 pub fn tile_to_colour(tile: Tile) -> TileColour {
     match tile {
         Tile::Empty => TileColour { background: Colour::Black, foreground: Colour::Grey },
@@ -49,9 +43,7 @@ pub fn tile_to_colour(tile: Tile) -> TileColour {
 }
 
 /// Given a colour, this returns the string version for use on the command line.
-///
-/// @param colour The colour to convert.
-/// @return A string for use on the command line.
+/// That string will contain the colour code for this tile.
 pub fn colour_to_cmd(colour: TileColour) -> String {
     colour_to_cmd_background(colour.background) + &colour_to_cmd_foreground(colour.foreground)
 }

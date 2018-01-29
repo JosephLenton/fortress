@@ -1,7 +1,6 @@
 use map::Map;
 use tiles::Tile;
 use tiles::tile_colour::tile_to_cmd;
-use tiles::display_tile::tile_to_char;
 
 use std::io;
 
@@ -16,37 +15,31 @@ pub use util::states::OnOff;
 /// output stream which will appear as colour on the terminal.
 ///
 /// If colour is off then the tiles characters alone are printed.
-pub fn print_map(colour: OnOff, map: &Map<Tile>, out: &mut io::Write) {
-    let has_colour = colour == OnOff::On;
-
+pub fn print_map(has_colour: OnOff, map: &Map<Tile>, out: &mut io::Write) -> io::Result<()> {
     for (tile, x, y) in map.slice_all() {
-        let tile_char = tile_to_char(tile);
-
         // This is for the previous line, if we just ended it.
         if x == 0 && y > 0 {
-            write_end_of_line(out, has_colour, "failed to write end of line during print");
+            print_end_of_line(out, has_colour)?;
         }
 
-        if has_colour {
-            let tile_colour = tile_to_cmd(tile);
-
-            write!(out, "{}{}", tile_colour, tile_char).expect("failed to write tile");
-        } else {
-            write!(out, "{}", tile_char).expect("failed to write tile");
-        }
+        print_tile( out, tile, has_colour )?;
     }
 
-    write_end_of_line(
-        out,
-        has_colour,
-        "failed to perform final end of line after print",
-    );
+    print_end_of_line( out, has_colour)
 }
 
-fn write_end_of_line(out: &mut io::Write, has_colour: bool, msg: &'static str) {
-    if has_colour {
-        writeln!(out, "\x1B[0m").expect(msg);
-    } else {
-        writeln!(out, "").expect(msg);
+fn print_tile(out: &mut io::Write, tile : Tile, has_colour: OnOff) -> io::Result<()> {
+    if has_colour.is_on() {
+        write!(out, "{}", tile_to_cmd(tile) )?;
     }
+
+    write!(out, "{}", char::from(tile))
+}
+
+fn print_end_of_line(out: &mut io::Write, has_colour: OnOff) -> io::Result<()> {
+    if has_colour.is_on() {
+        write!(out, "\x1B[0m")?;
+    }
+
+    writeln!(out, "")
 }

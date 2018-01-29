@@ -1,3 +1,8 @@
+//!
+//! This crate represents modelling the world.
+//!
+//! Creatures, land, places, weather, time, and more.
+//!
 extern crate util;
 
 pub mod calendar;

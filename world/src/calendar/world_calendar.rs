@@ -17,5 +17,7 @@ use calendar::WorldTime;
 /// of the time.
 ///
 pub trait WorldCalendar {
+    /// Given a numerical time stamp, like a unix time, this will return a more
+    /// laid out version of that. A version with the exact date, hours, etc.
     fn get_time(&self, time: u32) -> WorldTime;
 }

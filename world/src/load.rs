@@ -1,5 +1,4 @@
 use tiles::Tile;
-use tiles::display_tile::tile_to_char;
 use map::Map;
 use util::shapes::Size;
 
@@ -38,19 +37,9 @@ fn new_tile_map() -> BTreeMap<char, Tile> {
     map
 }
 
-fn store_tile(map: &mut BTreeMap<char, Tile>, tile: Tile) {
-    let tile_char = tile_to_char(tile);
-
-    map.insert(tile_char, tile);
-}
-
-fn char_to_tile(decode_map: &BTreeMap<char, Tile>, c: char) -> Tile {
-    match decode_map.get(&c) {
-        Some(tile) => *tile,
-        None => panic!("Tile not found for char, {}, code {}", c, c as u32),
-    }
-}
-
+/// Given a buffer, this will return you a map of tiles.
+/// Every tile can be represented by a character.
+/// This converts from character to tile.
 pub fn read_to_map(read_in: &mut BufRead) -> Result<Map<Tile>> {
     let mut buf = Vec::new();
     for line in read_in.lines() {
@@ -64,6 +53,17 @@ pub fn read_to_map(read_in: &mut BufRead) -> Result<Map<Tile>> {
     populate_map(&decode_map, &mut map, &buf);
 
     Ok(map)
+}
+
+fn store_tile(map: &mut BTreeMap<char, Tile>, tile: Tile) {
+    map.insert(char::from(tile), tile);
+}
+
+fn char_to_tile(decode_map: &BTreeMap<char, Tile>, c: char) -> Tile {
+    match decode_map.get(&c) {
+        Some(tile) => *tile,
+        None => panic!("Tile not found for char, {}, code {}", c, c as u32),
+    }
 }
 
 fn get_vec_size(buf: &Vec<String>) -> Size<u32> {
