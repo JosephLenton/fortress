@@ -1,10 +1,9 @@
-
 use std::convert::From;
 
 use tiles::Tile;
 
 impl From<Tile> for char {
-    fn from( tile : Tile ) -> char {
+    fn from(tile: Tile) -> char {
         match tile {
             Tile::Empty => '.',
             Tile::Ground => ':',
@@ -24,4 +23,3 @@ impl From<Tile> for char {
         }
     }
 }
-

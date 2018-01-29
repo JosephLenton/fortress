@@ -22,15 +22,15 @@ pub fn print_map(has_colour: OnOff, map: &Map<Tile>, out: &mut io::Write) -> io:
             print_end_of_line(out, has_colour)?;
         }
 
-        print_tile( out, tile, has_colour )?;
+        print_tile(out, tile, has_colour)?;
     }
 
-    print_end_of_line( out, has_colour)
+    print_end_of_line(out, has_colour)
 }
 
-fn print_tile(out: &mut io::Write, tile : Tile, has_colour: OnOff) -> io::Result<()> {
+fn print_tile(out: &mut io::Write, tile: Tile, has_colour: OnOff) -> io::Result<()> {
     if has_colour.is_on() {
-        write!(out, "{}", tile_to_cmd(tile) )?;
+        write!(out, "{}", tile_to_cmd(tile))?;
     }
 
     write!(out, "{}", char::from(tile))

@@ -203,4 +203,3 @@ where
 fn map_index(x: u32, y: u32, _width: u32, height: u32) -> usize {
     (y * height + x) as usize
 }
-

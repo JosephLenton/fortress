@@ -1,4 +1,3 @@
-
 use colour::Colour;
 use tiles::Tile;
 
@@ -8,10 +7,10 @@ use tiles::Tile;
 #[derive(Copy, Clone)]
 pub struct TileColour {
     /// The background colour.
-    pub background : Colour,
+    pub background: Colour,
 
     /// The foreground colour.
-    pub foreground : Colour,
+    pub foreground: Colour,
 }
 
 /// Converts the tile to it's colour, and then returns the command version
@@ -24,21 +23,51 @@ pub fn tile_to_cmd(tile: Tile) -> String {
 /// These two colours are returned.
 pub fn tile_to_colour(tile: Tile) -> TileColour {
     match tile {
-        Tile::Empty => TileColour { background: Colour::Black, foreground: Colour::Grey },
-        Tile::Ground => TileColour { background: Colour::Black, foreground: Colour::Brown },
+        Tile::Empty => TileColour {
+            background: Colour::Black,
+            foreground: Colour::Grey,
+        },
+        Tile::Ground => TileColour {
+            background: Colour::Black,
+            foreground: Colour::Brown,
+        },
 
-        Tile::Grass => TileColour { background: Colour::Black, foreground: Colour::Green },
-        Tile::GrassThick => TileColour { background: Colour::Black, foreground: Colour::Green },
+        Tile::Grass => TileColour {
+            background: Colour::Black,
+            foreground: Colour::Green,
+        },
+        Tile::GrassThick => TileColour {
+            background: Colour::Black,
+            foreground: Colour::Green,
+        },
 
-        Tile::Rocks => TileColour { background: Colour::Black, foreground: Colour::LightGrey },
+        Tile::Rocks => TileColour {
+            background: Colour::Black,
+            foreground: Colour::LightGrey,
+        },
 
-        Tile::Hill => TileColour { background: Colour::Black, foreground: Colour::Green },
+        Tile::Hill => TileColour {
+            background: Colour::Black,
+            foreground: Colour::Green,
+        },
 
-        Tile::Water => TileColour { background: Colour::Black, foreground: Colour::Blue },
-        Tile::Wall => TileColour { background: Colour::Grey, foreground: Colour::LightGrey },
-        Tile::TreeStump => TileColour { background: Colour::Black, foreground: Colour::Brown },
+        Tile::Water => TileColour {
+            background: Colour::Black,
+            foreground: Colour::Blue,
+        },
+        Tile::Wall => TileColour {
+            background: Colour::Grey,
+            foreground: Colour::LightGrey,
+        },
+        Tile::TreeStump => TileColour {
+            background: Colour::Black,
+            foreground: Colour::Brown,
+        },
 
-        Tile::Ice => TileColour { background: Colour::LightCyan, foreground: Colour::White },
+        Tile::Ice => TileColour {
+            background: Colour::LightCyan,
+            foreground: Colour::White,
+        },
     }
 }
 
@@ -84,4 +113,3 @@ fn colour_to_cmd_colour(colour: Colour) -> &'static str {
         Colour::Green => "50;205;50",
     }
 }
-

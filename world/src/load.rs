@@ -76,7 +76,10 @@ fn get_vec_size(buf: &Vec<String>) -> Size<u32> {
         max_width = cmp::max(max_width, line_len);
     }
 
-    Size { width : max_width, height : max_height }
+    Size {
+        width: max_width,
+        height: max_height,
+    }
 }
 
 fn populate_map(decode_map: &BTreeMap<char, Tile>, map: &mut Map<Tile>, buf: &Vec<String>) {

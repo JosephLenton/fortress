@@ -30,7 +30,7 @@ impl OnOff {
 
 /// This allows you to convert `OnOff` directly into a bool.
 impl From<OnOff> for bool {
-    fn from( on_off : OnOff ) -> bool {
+    fn from(on_off: OnOff) -> bool {
         on_off.is_on()
     }
 }
@@ -41,21 +41,20 @@ mod tests {
 
     #[test]
     fn on_off() {
-        assert!( OnOff::On.is_on() );
-        assert!( OnOff::Off.is_off() );
+        assert!(OnOff::On.is_on());
+        assert!(OnOff::Off.is_off());
     }
 
     #[test]
     fn on_off_relationship() {
-        assert_ne!( OnOff::On.is_on(), OnOff::On.is_off() );
-        assert_ne!( OnOff::On.is_on(), OnOff::Off.is_on() );
-        assert_ne!( OnOff::Off.is_on(), OnOff::Off.is_off() );
+        assert_ne!(OnOff::On.is_on(), OnOff::On.is_off());
+        assert_ne!(OnOff::On.is_on(), OnOff::Off.is_on());
+        assert_ne!(OnOff::Off.is_on(), OnOff::Off.is_off());
     }
 
     #[test]
     fn on_off_as_bools() {
-        assert_eq!( bool::from(OnOff::On), true );
-        assert_eq!( bool::from(OnOff::Off), false );
+        assert_eq!(bool::from(OnOff::On), true);
+        assert_eq!(bool::from(OnOff::Off), false);
     }
 }
-

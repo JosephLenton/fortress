@@ -4,7 +4,7 @@ use weather::Temperature;
 /// A description of the current weather.
 pub struct WeatherReport {
     /// The current temperature, in celsius.
-    pub temperature : Temperature,
+    pub temperature: Temperature,
 }
 
 impl WeatherReport {
@@ -20,7 +20,6 @@ impl WeatherReport {
     fn generate_temperature(time: WorldTime) -> Temperature {
         let celcius = (20 - (16 - time.hour as i32).abs()) as f32;
 
-        Temperature::from_celcius( celcius )
+        Temperature::from_celcius(celcius)
     }
 }
-
