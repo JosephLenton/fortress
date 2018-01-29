@@ -24,7 +24,8 @@ pub struct Game<'a> {
     /// The player in the world.
     pub player: Player,
 
-    /// The current time. In seconds.
+    /// The current time.
+    /// In seconds.
     time: u32,
 
     /// A setup or description of the world.
