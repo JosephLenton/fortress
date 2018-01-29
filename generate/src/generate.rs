@@ -38,7 +38,7 @@ fn new_map_rng(options: &MapOptions) -> StdRng {
 }
 
 fn add_ground_vegetation(mut map: &mut Map<Tile>, mut rng: &mut StdRng) {
-    map.map(|_, _, _| random_tile(&mut rng));
+    map.fill(|_, _, _| random_tile(&mut rng));
 }
 
 fn add_buildings(mut map: &mut Map<Tile>, mut rng: &mut StdRng) {

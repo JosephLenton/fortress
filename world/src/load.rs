@@ -6,7 +6,6 @@ use std::cmp;
 use std::collections::BTreeMap;
 use std::io::BufRead;
 use std::io::Result;
-use std::vec::Vec;
 
 ///
 /// The ETB character is 'end of transmission'.
@@ -66,7 +65,7 @@ fn char_to_tile(decode_map: &BTreeMap<char, Tile>, c: char) -> Tile {
     }
 }
 
-fn get_vec_size(buf: &Vec<String>) -> Size<u32> {
+fn get_vec_size(buf: &[String]) -> Size<u32> {
     let mut max_width = 0;
     let max_height = buf.len() as u32;
 
@@ -82,7 +81,7 @@ fn get_vec_size(buf: &Vec<String>) -> Size<u32> {
     }
 }
 
-fn populate_map(decode_map: &BTreeMap<char, Tile>, map: &mut Map<Tile>, buf: &Vec<String>) {
+fn populate_map(decode_map: &BTreeMap<char, Tile>, map: &mut Map<Tile>, buf: &[String]) {
     let mut y = 0;
 
     for line in buf {

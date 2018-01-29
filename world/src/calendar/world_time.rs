@@ -1,6 +1,7 @@
 ///
 /// This represents time in our world.
 ///
+#[derive(Copy, Clone)]
 pub struct WorldTime {
     /// The second.
     /// Value from 0 to 60 (or whatever bounds the world uses).

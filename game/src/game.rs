@@ -44,7 +44,7 @@ impl<'a> Game<'a> {
         game_setup: GameSetup,
     ) -> Game<'a> {
         Game {
-            map: map.transform(GameTile::new),
+            map: map.map(|&t| GameTile::new(t)),
 
             width: map.width,
             height: map.height,

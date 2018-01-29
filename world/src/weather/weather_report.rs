@@ -18,7 +18,7 @@ impl WeatherReport {
 
     /// Generates the temperature for the time given.
     fn generate_temperature(time: WorldTime) -> Temperature {
-        let celcius = (20 - (16 - time.hour as i32).abs()) as f32;
+        let celcius = (20 - (16 - i32::from(time.hour)).abs()) as f32;
 
         Temperature::from_celcius(celcius)
     }

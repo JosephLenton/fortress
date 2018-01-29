@@ -1,64 +1,78 @@
 use std::iter::Iterator;
 
-pub struct Map<T> {
+/// Holds the data for a Map.
+pub struct Map<T: Copy> {
+    /// The width of the map.
     pub width: u32,
+
+    /// The hgitht of the map.
     pub height: u32,
-    data: MapData<T>,
+
+    /// The raw data inside of the map.
+    data: Vec<T>,
 }
 
-type MapData<T> = Vec<T>;
-
 impl<T: Copy> Map<T> {
+    /// Creates a new map with the width and height given.
+    /// This map is filled with the default value.
     pub fn new(width: u32, height: u32, default: T) -> Map<T> {
         Map {
             width: width,
             height: height,
-            data: new_map_data(width, height, default),
+            data: vec![ default; (width * height) as usize ],
         }
     }
 
+    /// Returns the tile at the position given.
     pub fn get(&self, x: u32, y: u32) -> T {
         let index = map_index(x, y, self.width, self.height);
 
         self.data[index]
     }
 
+    /// Sets a tile at the position given.
     pub fn set(&mut self, x: u32, y: u32, tile: T) -> () {
         let index = map_index(x, y, self.width, self.height);
 
         self.data[index] = tile;
     }
 
-    pub fn map<F>(&mut self, mut map_f: F)
+    /// Maps this data against the function given.
+    /// This permanently changes the contents of this map.
+    pub fn fill<F>(&mut self, mut map_f: F)
     where
-        F: FnMut(T, u32, u32) -> T,
+        F: FnMut(&T, u32, u32) -> T,
     {
         let mut i = 0;
 
         for y in 0..self.height {
             for x in 0..self.width {
-                self.data[i] = map_f(self.data[i], x, y);
+                self.data[i] = map_f(&self.data[i], x, y);
 
                 i += 1;
             }
         }
     }
 
-    pub fn transform<F, T2: Copy>(&self, map_f: F) -> Map<T2>
+    /// Maps the data in this map against the function given.
+    /// However the result is returned in a new map.
+    pub fn map<F, T2: Copy>(&self, map_f: F) -> Map<T2>
     where
-        F: FnMut(T) -> T2,
+        F: FnMut(&T) -> T2,
     {
         Map {
             width: self.width,
             height: self.height,
-            data: copy_map_data(&self.data, self.width, self.height, map_f),
+            data: self.data.iter().map(map_f).collect(),
         }
     }
 
+    /// Returns a slice which encompasses the entire map.
     pub fn slice_all(&self) -> MapIterator<T> {
         self.slice(0, 0, self.width, self.height)
     }
 
+    /// Returns a slice of this map.
     pub fn slice(&self, mut x: i32, mut y: i32, w: u32, h: u32) -> MapIterator<T> {
         let width = self.width as i32;
         let height = self.height as i32;
@@ -102,39 +116,29 @@ impl<T: Copy> Map<T> {
     }
 }
 
+/// An iterator for the `Map`.
 pub struct MapIterator<'a, T: 'a> {
-    data: &'a MapData<T>,
+    /// The raw data we are iterating over.
+    data: &'a Vec<T>,
 
-    ///
     /// The x position of where we are iterating.
-    ///
     x: u32,
 
-    ///
     /// The y position of where we are iterating.
-    ///
     y: u32,
 
-    ///
     /// Full size of the data map.
-    ///
     w: u32,
     h: u32,
 
-    ///
     /// sx stands for 'slice x'.
     /// It's the x position of the top left corner of the map.
-    ///
     sx: u32,
 
-    ///
     /// sw is the 'slice width'.
-    ///
     sw: u32,
 
-    ///
     /// sh is the 'slice height'.
-    ///
     sh: u32,
 }
 
@@ -167,39 +171,7 @@ impl<'a, T: Copy> Iterator for MapIterator<'a, T> {
 
 type MapIteratorItem<T> = (T, u32, u32);
 
-fn new_map_data<T: Copy>(width: u32, height: u32, default: T) -> MapData<T> {
-    let size = (width * height) as usize;
-    let mut map = Vec::with_capacity(size);
-
-    for _ in 0..size {
-        map.push(default);
-    }
-
-    map
-}
-
-fn copy_map_data<F, T1: Copy, T2: Copy>(
-    src: &MapData<T1>,
-    width: u32,
-    height: u32,
-    mut map_f: F,
-) -> MapData<T2>
-where
-    F: FnMut(T1) -> T2,
-{
-    let size = (width * height) as usize;
-    let mut map = Vec::with_capacity(size);
-
-    for i in 0..size {
-        let old_tile = src[i];
-        let new_tile = map_f(old_tile);
-
-        map.push(new_tile);
-    }
-
-    map
-}
-
 fn map_index(x: u32, y: u32, _width: u32, height: u32) -> usize {
     (y * height + x) as usize
 }
+
