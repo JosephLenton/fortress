@@ -24,5 +24,5 @@ pub mod map;
 pub mod world_setup;
 
 /// How to load things in the world.
-#[deprecated(note="needs to be moved out of fortress/world")]
+#[deprecated(note = "needs to be moved out of fortress/world")]
 pub mod load;

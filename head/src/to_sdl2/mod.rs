@@ -1,4 +1,3 @@
-
 mod to_sdl2;
 mod to_sdl2_rgba;
 mod to_sdl2_rect;
@@ -11,4 +10,3 @@ pub use self::to_sdl2_rgba::*;
 
 /// Adds conversation to SDL2's size types to our own.
 pub use self::to_sdl2_rect::*;
-

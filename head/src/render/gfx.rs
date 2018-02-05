@@ -1,4 +1,3 @@
-
 use theme::colours;
 use sdl2::render::WindowCanvas;
 

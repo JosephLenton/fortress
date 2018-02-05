@@ -1,13 +1,13 @@
-
 use world::map::Map;
 use world::tiles::Tile;
 
 use std::io;
 
+use super::colour::tile_to_cmd;
+use theme::Theme;
+
 // Re-export this as ours for ease of use.
 pub use util::states::OnOff;
-
-use super::colour::tile_to_cmd;
 
 /// Iterates over the map given, and writes it to the writer.
 /// Simple as that really.
@@ -26,15 +26,15 @@ pub fn print_map(has_colour: OnOff, map: &Map<Tile>, out: &mut io::Write) -> io:
             print_end_of_line(out, has_colour)?;
         }
 
-        print_tile(out, theme, tile, has_colour)?;
+        print_tile(out, &theme, tile, has_colour)?;
     }
 
     print_end_of_line(out, has_colour)
 }
 
-fn print_tile(out: &mut io::Write, theme: Theme, tile: Tile, has_colour: OnOff) -> io::Result<()> {
+fn print_tile(out: &mut io::Write, theme: &Theme, tile: Tile, has_colour: OnOff) -> io::Result<()> {
     if has_colour.is_on() {
-        let colour = theme.get_tile_colour( tile );
+        let colour = theme.get_tile_colour(tile);
 
         write!(out, "{}", tile_to_cmd(colour))?;
     }
@@ -49,4 +49,3 @@ fn print_end_of_line(out: &mut io::Write, has_colour: OnOff) -> io::Result<()> {
 
     writeln!(out, "")
 }
-

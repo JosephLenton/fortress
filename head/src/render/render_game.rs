@@ -1,4 +1,3 @@
-
 use theme::Theme;
 use render::gfx::GFX;
 use render::camera::Camera;
@@ -71,10 +70,8 @@ impl<'a> RenderGame<'a> {
             .slice(top_left_x, top_left_y, game_width, game_height)
         {
             let pos = Point2::new(
-                window_width / 2.0
-                    - ((camera_x - x as i32) as f32) * tile_size.width,
-                window_height / 2.0
-                    - ((camera_y - y as i32) as f32) * tile_size.height,
+                window_width / 2.0 - ((camera_x - x as i32) as f32) * tile_size.width,
+                window_height / 2.0 - ((camera_y - y as i32) as f32) * tile_size.height,
             );
 
             self.tile(gfx, tile, pos, tile_size);
@@ -84,8 +81,7 @@ impl<'a> RenderGame<'a> {
             window_width / 2.0
                 - ((camera_x - self.game.player.position.x as i32) as f32) * tile_size.width,
             window_height / 2.0
-                - ((camera_y - self.game.player.position.x as i32) as f32)
-                    * tile_size.height,
+                - ((camera_y - self.game.player.position.x as i32) as f32) * tile_size.height,
         );
         self.player(gfx, player_pos, tile_size);
     }

@@ -19,7 +19,7 @@ impl<T: Copy> Map<T> {
         Map {
             width: width,
             height: height,
-            data: vec![ default; (width * height) as usize ],
+            data: vec![default; (width * height) as usize],
         }
     }
 
@@ -174,4 +174,3 @@ type MapIteratorItem<T> = (T, u32, u32);
 fn map_index(x: u32, y: u32, _width: u32, height: u32) -> usize {
     (y * height + x) as usize
 }
-

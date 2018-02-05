@@ -9,7 +9,7 @@ extern crate structopt;
 extern crate structopt_derive;
 
 extern crate generate;
-extern crate world;
+extern crate head;
 
 use std::io::stdout;
 
@@ -17,7 +17,7 @@ use args::Args;
 use args::ArgsColour;
 use generate::generate::new_map;
 use generate::generate::MapOptions;
-use world::print;
+use head::native::cmd::print;
 
 mod args;
 

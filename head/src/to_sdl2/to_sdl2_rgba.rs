@@ -1,4 +1,3 @@
-
 use super::ToSDL2;
 use util::colour::RGBA;
 
@@ -9,4 +8,3 @@ impl ToSDL2<SDL2Color> for RGBA {
         return SDL2Color::RGBA(self.red, self.green, self.blue, self.alpha);
     }
 }
-

@@ -1,4 +1,3 @@
-
 use util::colour::RGBA;
 use theme::colours;
 use theme::TileColour;
@@ -6,21 +5,20 @@ use game::GameTile;
 use world::tiles::Tile;
 
 /// This holds the colour type.
-pub struct Theme {
-}
+pub struct Theme {}
 
 impl Theme {
     pub fn new() -> Theme {
-        Theme { }
+        Theme {}
     }
 
     /// Converts the tile into two colours; a back and front colour.
     /// These two colours are returned.
-    pub fn get_game_tile_colour( &self, tile : GameTile ) -> TileColour {
-        self.get_tile_colour( tile.tile )
+    pub fn get_game_tile_colour(&self, tile: GameTile) -> TileColour {
+        self.get_tile_colour(tile.tile)
     }
 
-    pub fn get_tile_colour( &self, tile : Tile ) -> TileColour {
+    pub fn get_tile_colour(&self, tile: Tile) -> TileColour {
         match tile {
             Tile::Empty => TileColour {
                 background: colours::BLACK,
@@ -70,9 +68,7 @@ impl Theme {
         }
     }
 
-    pub fn get_player_colour( &self ) -> RGBA {
+    pub fn get_player_colour(&self) -> RGBA {
         colours::PINK
     }
 }
-
-

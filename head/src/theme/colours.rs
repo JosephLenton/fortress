@@ -135,4 +135,3 @@ pub const GREEN: RGBA = RGBA {
     blue: 50,
     alpha: 255,
 };
-

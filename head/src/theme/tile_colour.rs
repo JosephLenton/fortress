@@ -1,4 +1,3 @@
-
 use util::colour::RGBA;
 
 /// The colour for a tile.
@@ -12,4 +11,3 @@ pub struct TileColour {
     /// The foreground colour.
     pub foreground: RGBA,
 }
-
