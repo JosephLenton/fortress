@@ -4,6 +4,8 @@ use sdl2::event::WindowEvent;
 use sdl2::keyboard::Keycode;
 use sdl2::mouse::MouseWheelDirection;
 
+use theme::Theme;
+
 use render::setup::Setup;
 use render::cursor::Cursor;
 use render::render_game::RenderGame;
@@ -11,12 +13,11 @@ use render::gfx::GFX;
 
 use game::Game;
 
-use world::world_setup::WorldSetup;
-
 use util::shapes::Point2;
 
 pub fn run<'a>(setup: Setup, game: &'a Game) {
-    let mut rgame = RenderGame::new(&setup, &game);
+    let theme = Theme::new();
+    let mut rgame = RenderGame::new(&setup, &game, &theme);
     let mut cursor = Cursor::new(
         setup.window_size.width as f32 / 2.0,
         setup.window_size.height as f32 / 2.0,
@@ -105,7 +106,7 @@ pub fn run<'a>(setup: Setup, game: &'a Game) {
                     direction: MouseWheelDirection::Normal,
                     ..
                 } => {
-                    rgame.on_mouse_scroll(y);
+                    // do nothing
                 }
 
                 Event::MouseWheel {
@@ -113,7 +114,7 @@ pub fn run<'a>(setup: Setup, game: &'a Game) {
                     direction: MouseWheelDirection::Flipped,
                     ..
                 } => {
-                    rgame.on_mouse_scroll(-y);
+                    // do nothing
                 }
 
                 _ => {}

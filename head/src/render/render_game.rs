@@ -1,6 +1,5 @@
-use world::tiles::tile_colour::tile_to_colour;
-use world::colour::Colour;
 
+use theme::Theme;
 use render::gfx::GFX;
 use render::camera::Camera;
 use render::setup::Setup;
@@ -13,31 +12,28 @@ use util::shapes::Point2;
 use util::shapes::Rect;
 
 pub struct RenderGame<'a> {
-    ///
+    /// How we get visual setup information.
+    theme: &'a Theme,
+
     /// The game state we are using for rendering.
-    ///
     game: &'a Game<'a>,
 
-    ///
     /// Current size of the Window.
-    ///
     window_size: Size<u32>,
 
-    ///
     /// Used for rendering.
     ///
     /// The size of the tile when drawn to the screen.
     tile_size: Size<f32>,
 
-    ///
     /// The camera whilst drawing.
-    ///
     camera: Camera,
 }
 
 impl<'a> RenderGame<'a> {
-    pub fn new(setup: &Setup, game: &'a Game) -> RenderGame<'a> {
+    pub fn new(setup: &Setup, game: &'a Game, theme: &'a Theme) -> RenderGame<'a> {
         return RenderGame {
+            theme: theme,
             game: game,
             tile_size: Size::new(setup.tile_size.width as f32, setup.tile_size.height as f32),
             camera: Camera::new((game.width / 2) as i32, (game.height / 2) as i32),
@@ -49,25 +45,16 @@ impl<'a> RenderGame<'a> {
         self.window_size = Size::new(w, h);
     }
 
-    pub fn on_mouse_scroll(&mut self, y: i32) {
-        if y > 0 {
-            self.camera.zoom_in();
-        } else if y < 0 {
-            self.camera.zoom_out();
-        }
-    }
-
     pub fn move_camera(&mut self, x: i32, y: i32) {
         self.camera.add_xy(x, y);
     }
 
     pub fn render(&self, gfx: &mut GFX) {
-        let zoom = self.camera.zoom();
         let camera_x = self.camera.x();
         let camera_y = self.camera.y();
         let window_width = self.window_size.width as f32;
         let window_height = self.window_size.height as f32;
-        let tile_size = self.tile_size * zoom;
+        let tile_size = self.tile_size;
 
         // Work out the area that we are rendering.
         // We want to skip areas outside of the window.
@@ -105,12 +92,13 @@ impl<'a> RenderGame<'a> {
 
     fn player(&self, gfx: &mut GFX, pos: Point2<f32>, size: Size<f32>) {
         let draw_pos = (pos - size / 2.0).to_rect(size);
+        let colour = self.theme.get_player_colour();
 
-        gfx.rectangle(Colour::Pink, draw_pos);
+        gfx.rectangle(colour, draw_pos);
     }
 
     fn tile(&self, gfx: &mut GFX, tile: GameTile, pos: Point2<f32>, size: Size<f32>) {
-        let colour = tile_to_colour(tile.tile);
+        let colour = self.theme.get_game_tile_colour(tile);
 
         let draw_back = (pos - size / 2.0).to_rect(size);
         let draw_front = (pos - size / 4.0).to_rect(size / 2.0);
@@ -120,8 +108,7 @@ impl<'a> RenderGame<'a> {
     }
 
     pub fn translate_window_to_tile_xy(&self, pos: Point2<f32>) -> Rect<f32> {
-        let zoom = self.camera.zoom();
-        let tile_size = self.tile_size * zoom;
+        let tile_size = self.tile_size;
         let tile_pos = pos - (pos % tile_size);
 
         return pos.to_rect(tile_size);
