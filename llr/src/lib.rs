@@ -8,14 +8,14 @@
 extern crate sdl2;
 extern crate util;
 
+/// Here lies the various llr implementations.
+mod implementations;
+
 /// The generic LLR trait.
 mod llr;
 
 /// Options for setting up an LLR.
 mod llr_options;
-
-/// SDL2 implementation of the LLR.
-mod llr_sdl2;
 
 /// Information for drawing a single pixel.
 mod llr_pixel;
@@ -36,8 +36,8 @@ pub use llr_options::LLROptions;
 pub use llr_pixel::LLRPixel;
 
 /// An SDL2 specific LLR.
-pub use llr_sdl2::LLRSDL2;
+pub use implementations::LLRSDL2;
 
 /// A terminal based LLR.
-pub use llr_terminal::LLRTerminal;
+pub use implementations::LLRTerminal;
 

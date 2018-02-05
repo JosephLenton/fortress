@@ -25,6 +25,7 @@ impl LLR for LLRTerminal {
         rectable: Rect<f32>,
     ) -> Result<(), String> {
         // TODO
+        Ok(())
     }
 
     fn finished_drawing(&mut self) -> () {

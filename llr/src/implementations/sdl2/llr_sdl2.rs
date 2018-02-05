@@ -8,12 +8,12 @@ use sdl2::event::Event;
 use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
 
-use llr_sdl2::to_sdl2::*;
+use super::to_sdl2::*;
 
 use util::shapes::Rect;
 
 /// An SDL2 based LLR.
-pub struct LLRSDL2Impl {
+pub struct LLRSDL2 {
     options: LLROptions,
 
     canvas: WindowCanvas,
@@ -21,11 +21,11 @@ pub struct LLRSDL2Impl {
     events: EventPump,
 }
 
-impl LLRSDL2Impl {
+impl LLRSDL2 {
     /// Creates a new SDL2 based LLR.
     ///
     /// A window will appear for the user as a result of calling this.
-    pub fn new(options: LLROptions) -> LLRSDL2Impl {
+    pub fn new(options: LLROptions) -> LLRSDL2 {
         let sdl_context = sdl2::init().unwrap();
         let video_subsys = sdl_context.video().unwrap();
         let window = video_subsys
@@ -40,7 +40,7 @@ impl LLRSDL2Impl {
         let canvas = window.into_canvas().build().unwrap();
         let events = sdl_context.event_pump().unwrap();
 
-        LLRSDL2Impl {
+        LLRSDL2 {
             options: options,
             canvas: canvas,
             events: events,
@@ -54,7 +54,7 @@ impl LLRSDL2Impl {
     }
 }
 
-impl LLR for LLRSDL2Impl {
+impl LLR for LLRSDL2 {
     fn clear(&mut self) {
         let black = Color::RGBA(0, 0, 0, 255);
         self.canvas.set_draw_color(black);
