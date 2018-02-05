@@ -1,7 +1,7 @@
 //! # Generate.
 //!
 //! This is a command line utility for generating maps.
-//!
+//! 
 
 extern crate structopt;
 #[macro_use]

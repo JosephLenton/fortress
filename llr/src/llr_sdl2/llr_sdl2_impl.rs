@@ -1,15 +1,11 @@
-
 use LLR;
 use LLROptions;
 
 use sdl2;
-use sdl2::event::Event;
-use sdl2::event::WindowEvent;
-use sdl2::keyboard::Keycode;
-use sdl2::mouse::MouseWheelDirection;
-use sdl2::render::WindowCanvas;
 use sdl2::EventPump;
+use sdl2::event::Event;
 use sdl2::pixels::Color;
+use sdl2::render::WindowCanvas;
 
 use llr_sdl2::to_sdl2::*;
 
@@ -18,15 +14,18 @@ use util::shapes::Rect;
 
 /// An SDL2 based LLR.
 pub struct LLRSDL2Impl {
-    options : LLROptions,
+    options: LLROptions,
 
-    canvas : WindowCanvas,
+    canvas: WindowCanvas,
 
-    pub events : EventPump,
+    pub events: EventPump,
 }
 
 impl LLRSDL2Impl {
-    pub fn new( options : LLROptions ) -> LLRSDL2Impl {
+    /// Creates a new SDL2 based LLR.
+    ///
+    /// A window will appear for the user as a result of calling this.
+    pub fn new(options: LLROptions) -> LLRSDL2Impl {
         let sdl_context = sdl2::init().unwrap();
         let video_subsys = sdl_context.video().unwrap();
         let window = video_subsys
@@ -42,10 +41,16 @@ impl LLRSDL2Impl {
         let events = sdl_context.event_pump().unwrap();
 
         LLRSDL2Impl {
-            options : options,
-            canvas : canvas,
-            events : events,
+            options: options,
+            canvas: canvas,
+            events: events,
         }
+    }
+
+    /// Blocks indefinitely until a user event has occurred.
+    /// When the event happens this will return.
+    pub fn poll(&mut self) -> Event {
+        self.events.wait_event()
     }
 }
 

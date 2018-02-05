@@ -1,4 +1,5 @@
 [workspace]
+publish = false
 members = [
     "world",
     "util",

@@ -17,8 +17,8 @@ extern crate world;
 use args::Args;
 use game::Game;
 use game::GameSetup;
+use head::RenderOptions;
 use head::render::run::run;
-use head::render::setup::Setup;
 use util::shapes::Size;
 use world::calendar::WorldCalendar;
 use world::calendar::WorldTime;
@@ -82,13 +82,14 @@ fn main_run(args: Args) -> Result<()> {
 
     let game = Game::new(map, player, world_setup, game_setup);
 
-    let setup = Setup {
+    let setup = RenderOptions {
         title: "Fortress",
 
         window_size: Size {
             width: 800,
             height: 600,
         },
+
         tile_size: Size {
             width: 24,
             height: 24,

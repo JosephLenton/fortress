@@ -1,4 +1,3 @@
-
 use util::shapes::Size;
 
 /// Describes how to setup a low level renderer.
@@ -10,4 +9,3 @@ pub struct LLROptions {
     pub window_size: Size<u32>,
     pub tile_size: Size<u32>,
 }
-

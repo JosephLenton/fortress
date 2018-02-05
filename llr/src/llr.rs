@@ -1,4 +1,3 @@
-
 use util::colour::RGBA;
 use util::shapes::Rect;
 
@@ -28,4 +27,3 @@ pub trait LLR {
     /// Call when all the drawing is over for the current loop.
     fn finished_drawing(&mut self) -> ();
 }
-

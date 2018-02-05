@@ -1,4 +1,3 @@
-
 use super::to_sdl2::ToSDL2;
 use sdl2::rect::Rect as SDL2Rect;
 use util::shapes::Rect;
@@ -20,12 +19,7 @@ impl ToSDL2<SDL2Rect> for Rect<f32> {
             h = -h;
         }
 
-        SDL2Rect::new(
-            x.round() as i32,
-            y.round() as i32,
-            w.round() as u32,
-            h.round() as u32,
-        )
+        SDL2Rect::new(x.round() as i32, y.round() as i32, w.round() as u32, h.round() as u32)
     }
 }
 

@@ -1,6 +1,4 @@
 use render::camera::Camera;
-use render::gfx::GFX;
-use render::setup::Setup;
 use theme::Theme;
 
 use game::Game;
@@ -9,6 +7,8 @@ use game::GameTile;
 use util::shapes::Point2;
 use util::shapes::Rect;
 use util::shapes::Size;
+
+use llr::LLR;
 
 pub struct RenderGame<'a> {
     /// How we get visual setup information.
@@ -31,16 +31,17 @@ pub struct RenderGame<'a> {
 
 impl<'a> RenderGame<'a> {
     pub fn new(
-        setup: &Setup,
         game: &'a Game,
         theme: &'a Theme,
+        tile_size: Size<u32>,
+        window_size: Size<u32>,
     ) -> RenderGame<'a> {
         return RenderGame {
             theme: theme,
             game: game,
-            tile_size: Size::new(setup.tile_size.width as f32, setup.tile_size.height as f32),
+            tile_size: Size::new(tile_size.width as f32, tile_size.height as f32),
             camera: Camera::new((game.width / 2) as i32, (game.height / 2) as i32),
-            window_size: Size::new(setup.window_size.width, setup.window_size.height),
+            window_size: window_size,
         };
     }
 
@@ -61,8 +62,17 @@ impl<'a> RenderGame<'a> {
     }
 
     pub fn render(
-        &self,
-        gfx: &mut GFX,
+        &mut self,
+        llr: &mut LLR,
+    ) {
+        llr.clear();
+        self.render_game(llr);
+        llr.finished_drawing();
+    }
+
+    pub fn render_game(
+        &mut self,
+        llr: &mut LLR,
     ) {
         let camera_x = self.camera.x();
         let camera_y = self.camera.y();
@@ -87,7 +97,7 @@ impl<'a> RenderGame<'a> {
                 window_height / 2.0 - ((camera_y - y as i32) as f32) * tile_size.height,
             );
 
-            self.tile(gfx, tile, pos, tile_size);
+            self.tile(llr, tile, pos, tile_size);
         }
 
         let player_pos = Point2::new(
@@ -96,24 +106,24 @@ impl<'a> RenderGame<'a> {
             window_height / 2.0
                 - ((camera_y - self.game.player.position.x as i32) as f32) * tile_size.height,
         );
-        self.player(gfx, player_pos, tile_size);
+        self.player(llr, player_pos, tile_size);
     }
 
     fn player(
-        &self,
-        gfx: &mut GFX,
+        &mut self,
+        llr: &mut LLR,
         pos: Point2<f32>,
         size: Size<f32>,
     ) {
         let draw_pos = (pos - size / 2.0).to_rect(size);
         let colour = self.theme.get_player_colour();
 
-        gfx.rectangle(colour, draw_pos);
+        llr.rectangle(colour, draw_pos);
     }
 
     fn tile(
-        &self,
-        gfx: &mut GFX,
+        &mut self,
+        llr: &mut LLR,
         tile: GameTile,
         pos: Point2<f32>,
         size: Size<f32>,
@@ -123,8 +133,8 @@ impl<'a> RenderGame<'a> {
         let draw_back = (pos - size / 2.0).to_rect(size);
         let draw_front = (pos - size / 4.0).to_rect(size / 2.0);
 
-        gfx.rectangle(colour.background, draw_back);
-        gfx.rectangle(colour.foreground, draw_front);
+        llr.rectangle(colour.background, draw_back);
+        llr.rectangle(colour.foreground, draw_front);
     }
 
     pub fn translate_window_to_tile_xy(
@@ -134,7 +144,7 @@ impl<'a> RenderGame<'a> {
         let tile_size = self.tile_size;
         let tile_pos = pos - (pos % tile_size);
 
-        return pos.to_rect(tile_size);
+        return tile_pos.to_rect(tile_size);
     }
 
     pub fn translate_window_to_tile_xy_inner(

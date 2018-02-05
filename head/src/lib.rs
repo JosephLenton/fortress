@@ -5,7 +5,7 @@
 //! 
 
 extern crate game;
-extern crate sdl2;
+extern crate llr;
 extern crate util;
 extern crate world;
 
@@ -13,13 +13,17 @@ extern crate world;
 /// i.e. what are the colour of tiles.
 pub mod theme;
 
-/// How to render world stuff.
+/// High Level Renderer.
+///
+/// It's high level as in 'draw these tiles', 'draw the player', or 'render the
+/// weather information'.
+///
+/// It doesn't do any actual drawing.
 pub mod render;
 
-/// How to draw to the screen in an SDL2 specific way.
-pub mod to_sdl2;
-
-/// The native heads you can render to.
-/// These are the real implementations.
-/// No abstractions.
+/// Contains code for printing.
+#[deprecated(note = "This will be rolled into the llr as the cmd line interface")]
 pub mod native;
+
+/// Used for setting up the hl renderer.
+pub use llr::LLROptions as RenderOptions;
