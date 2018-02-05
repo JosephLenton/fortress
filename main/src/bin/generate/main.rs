@@ -1,7 +1,7 @@
 //! # Generate.
 //!
 //! This is a command line utility for generating maps.
-//! 
+//!
 
 extern crate structopt;
 #[macro_use]
@@ -21,7 +21,6 @@ use head::native::cmd::print;
 mod args;
 
 /// Entry point.
-/// 
 fn main() {
     let args = Args::new_from_args();
 
