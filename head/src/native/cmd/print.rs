@@ -3,8 +3,9 @@ use world::tiles::Tile;
 
 use std::io;
 
-use super::colour::tile_to_cmd;
+use super::colour::pixel_to_cmd_code;
 use theme::Theme;
+use llr::LLRPixel;
 
 // Re-export this as ours for ease of use.
 pub use util::states::OnOff;
@@ -30,25 +31,22 @@ pub fn print_map(
             print_end_of_line(out, has_colour)?;
         }
 
-        print_tile(out, &theme, tile, has_colour)?;
+        print_pixel(out, theme.get_tile(tile), has_colour)?;
     }
 
     print_end_of_line(out, has_colour)
 }
 
-fn print_tile(
+fn print_pixel(
     out: &mut io::Write,
-    theme: &Theme,
-    tile: Tile,
+    pixel: LLRPixel,
     has_colour: OnOff,
 ) -> io::Result<()> {
     if has_colour.is_on() {
-        let colour = theme.get_tile_colour(tile);
-
-        write!(out, "{}", tile_to_cmd(colour))?;
+        write!(out, "{}", pixel_to_cmd_code(pixel))?;
     }
 
-    write!(out, "{}", char::from(tile))
+    write!(out, "{}", pixel.character)
 }
 
 fn print_end_of_line(

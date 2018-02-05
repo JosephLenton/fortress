@@ -1,3 +1,6 @@
+
+use std::convert::From;
+
 use std::ops::Add;
 use std::ops::Div;
 use std::ops::Mul;
@@ -11,9 +14,9 @@ use super::Size;
 ///
 /// It has a position, and a size. It's generic parameter allows
 /// you to use any numerical type for it. Integers, floats, etc.
-/// 
-#[derive(Copy, Clone)]
-pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy> {
+///
+#[derive(Copy, Clone, Debug)]
+pub struct Rect<N> {
     /// It's x location.
     pub x: N,
 
@@ -29,11 +32,19 @@ pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy> {
     pub height: N,
 }
 
-impl<N: Add + Sub + Div + Mul + Rem + Copy> Rect<N> {
+impl<N> Rect<N>
+    where
+        N: Add<Output = N>
+        + Sub<Output = N>
+        + Div<Output = N>
+        + Mul<Output = N>
+        + Rem<Output = N>
+        + From<u8>
+        + Copy,
+{
     /// Trivial constructor.
     ///
     /// Creates a new Rect with the size given.
-    /// 
     pub fn new(
         x: N,
         y: N,
@@ -46,6 +57,19 @@ impl<N: Add + Sub + Div + Mul + Rem + Copy> Rect<N> {
 
             width: w,
             height: h,
+        }
+    }
+
+    /// Divides the rectangles size by the amount given.
+    /// This is done around the centre of the rectangle.
+    ///
+    /// So this affects both the x/y values, as well as the width and height.
+    pub fn divide_around_centre( &self, divider : N ) -> Rect<N> {
+        Rect {
+            x: self.x + (self.width / divider) / N::from( 2 ),
+            y: self.y + (self.height / divider) / N::from( 2 ),
+            width: self.width / divider,
+            height: self.height / divider,
         }
     }
 }
@@ -145,3 +169,34 @@ where
         }
     }
 }
+
+impl<N> PartialEq for Rect<N>
+where
+    N: Add<Output = N>
+        + Sub<Output = N>
+        + Div<Output = N>
+        + Mul<Output = N>
+        + Rem<Output = N>
+        + Copy + PartialEq,
+{
+    fn eq(
+        &self,
+        other: &Self,
+    ) -> bool {
+        self.x == other.x && self.y == other.y && self.width == other.width && self.height == other.height
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    pub fn divide_around_centre() {
+        assert_eq!(
+            Rect::new( 1, 50, 2, 60 ),
+            Rect::new( 0, 20, 4, 120 ).divide_around_centre(2),
+        );
+    }
+}
+

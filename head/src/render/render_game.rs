@@ -36,13 +36,13 @@ impl<'a> RenderGame<'a> {
         tile_size: Size<u32>,
         window_size: Size<u32>,
     ) -> RenderGame<'a> {
-        return RenderGame {
+        RenderGame {
             theme: theme,
             game: game,
             tile_size: Size::new(tile_size.width as f32, tile_size.height as f32),
             camera: Camera::new((game.width / 2) as i32, (game.height / 2) as i32),
             window_size: window_size,
-        };
+        }
     }
 
     pub fn on_resize(
@@ -116,9 +116,9 @@ impl<'a> RenderGame<'a> {
         size: Size<f32>,
     ) {
         let draw_pos = (pos - size / 2.0).to_rect(size);
-        let colour = self.theme.get_player_colour();
+        let colour = self.theme.get_player();
 
-        llr.rectangle(colour, draw_pos);
+        llr.pixel(colour, draw_pos);
     }
 
     fn tile(
@@ -128,13 +128,10 @@ impl<'a> RenderGame<'a> {
         pos: Point2<f32>,
         size: Size<f32>,
     ) {
-        let colour = self.theme.get_game_tile_colour(tile);
+        let colour = self.theme.get_game_tile(tile);
+        let draw_rect = (pos - size / 2.0).to_rect(size);
 
-        let draw_back = (pos - size / 2.0).to_rect(size);
-        let draw_front = (pos - size / 4.0).to_rect(size / 2.0);
-
-        llr.rectangle(colour.background, draw_back);
-        llr.rectangle(colour.foreground, draw_front);
+        llr.pixel(colour, draw_rect);
     }
 
     pub fn translate_window_to_tile_xy(
@@ -144,7 +141,7 @@ impl<'a> RenderGame<'a> {
         let tile_size = self.tile_size;
         let tile_pos = pos - (pos % tile_size);
 
-        return tile_pos.to_rect(tile_size);
+        tile_pos.to_rect(tile_size)
     }
 
     pub fn translate_window_to_tile_xy_inner(
@@ -153,6 +150,6 @@ impl<'a> RenderGame<'a> {
     ) -> Rect<f32> {
         let pos = self.translate_window_to_tile_xy(pos);
 
-        return (pos + Point2::new(2.0, 2.0)) - Size::new(4.0, 4.0);
+        (pos + Point2::new(2.0, 2.0)) - Size::new(4.0, 4.0)
     }
 }

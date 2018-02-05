@@ -1,26 +1,20 @@
-use util::colour::RGBA;
+use LLRPixel;
 use util::shapes::Rect;
 
 /// Represents rendering.
 ///
 /// This handles all drawing logic.
 pub trait LLR {
-    /// Call this before you begin drawing.
+    /// Clears everything.
+    ///
+    /// You can call this before you begin drawing.
     fn clear(&mut self) -> ();
 
     /// Draws a rectangle at the location given,
     /// with the given colour.
-    fn rectangle(
+    fn pixel(
         &mut self,
-        colour: RGBA,
-        rectable: Rect<f32>,
-    ) -> Result<(), String>;
-
-    /// Draws a rectangle at the location given,
-    /// with the given colour.
-    fn rectangle_outline(
-        &mut self,
-        colour: RGBA,
+        pixel: LLRPixel,
         rectable: Rect<f32>,
     ) -> Result<(), String>;
 

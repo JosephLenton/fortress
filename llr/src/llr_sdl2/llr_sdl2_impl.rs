@@ -1,4 +1,5 @@
 use LLR;
+use LLRPixel;
 use LLROptions;
 
 use sdl2;
@@ -9,7 +10,6 @@ use sdl2::render::WindowCanvas;
 
 use llr_sdl2::to_sdl2::*;
 
-use util::colour::RGBA;
 use util::shapes::Rect;
 
 /// An SDL2 based LLR.
@@ -18,7 +18,7 @@ pub struct LLRSDL2Impl {
 
     canvas: WindowCanvas,
 
-    pub events: EventPump,
+    events: EventPump,
 }
 
 impl LLRSDL2Impl {
@@ -61,22 +61,15 @@ impl LLR for LLRSDL2Impl {
         self.canvas.clear();
     }
 
-    fn rectangle(
+    fn pixel(
         &mut self,
-        colour: RGBA,
+        pixel: LLRPixel,
         rect: Rect<f32>,
     ) -> Result<(), String> {
-        self.canvas.set_draw_color(colour.to_sdl2());
-        self.canvas.fill_rect(rect.to_sdl2())
-    }
-
-    fn rectangle_outline(
-        &mut self,
-        colour: RGBA,
-        rect: Rect<f32>,
-    ) -> Result<(), String> {
-        self.canvas.set_draw_color(colour.to_sdl2());
-        self.canvas.draw_rect(rect.to_sdl2())
+        self.canvas.set_draw_color(pixel.background.to_sdl2());
+        self.canvas.fill_rect(rect.to_sdl2());
+        self.canvas.set_draw_color(pixel.foreground.to_sdl2());
+        self.canvas.fill_rect(rect.divide_around_centre(2.0).to_sdl2())
     }
 
     fn finished_drawing(&mut self) {

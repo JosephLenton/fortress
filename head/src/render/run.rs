@@ -5,7 +5,6 @@ use llr::temp::Keycode;
 use llr::temp::MouseWheelDirection;
 use llr::temp::WindowEvent;
 
-use llr::LLR;
 use llr::LLROptions;
 use llr::LLRSDL2;
 use render::cursor::Cursor;
@@ -50,7 +49,7 @@ pub fn run<'a>(
             },
 
             // User Input
-            // 
+            //
             Event::KeyDown {
                 keycode: Some(Keycode::Left),
                 ..

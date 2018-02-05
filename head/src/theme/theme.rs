@@ -1,100 +1,117 @@
 use game::GameTile;
-use theme::TileColour;
+use llr::LLRPixel;
 use theme::colours;
-use util::colour::RGBA;
 use world::tiles::Tile;
 
 /// This holds the colour type.
 pub struct Theme {}
 
 impl Theme {
+    /// Trivial constructor.
     pub fn new() -> Theme {
         Theme {}
     }
 
-    /// Converts the tile into two colours; a back and front colour.
-    /// These two colours are returned.
-    pub fn get_game_tile_colour(
-        &self,
-        tile: GameTile,
-    ) -> TileColour {
-        self.get_tile_colour(tile.tile)
+    /// Gets the players draw information.
+    pub fn get_player(&self) -> LLRPixel {
+        LLRPixel {
+            character : '@',
+            background : colours::PINK,
+            foreground : colours::BLACK,
+        }
     }
 
-    pub fn get_tile_colour(
+    /// Gets the pixel information to use when drawing, for the tile inside of
+    /// the game tile.
+    pub fn get_game_tile(
+        &self,
+        tile: GameTile,
+    ) -> LLRPixel {
+        self.get_tile( tile.tile )
+    }
+
+    /// Converts the tile into two colours; a back and front colour.
+    /// These two colours are returned.
+    pub fn get_tile(
         &self,
         tile: Tile,
-    ) -> TileColour {
+    ) -> LLRPixel {
         match tile {
             Tile::Empty => {
-                TileColour {
+                LLRPixel {
+                    character: '.',
                     background: colours::BLACK,
                     foreground: colours::GREY,
                 }
             },
             Tile::Ground => {
-                TileColour {
+                LLRPixel {
+                    character: ':',
                     background: colours::BLACK,
                     foreground: colours::BROWN,
                 }
             },
 
             Tile::Grass => {
-                TileColour {
+                LLRPixel {
+                    character: ',',
                     background: colours::BLACK,
                     foreground: colours::GREEN,
                 }
             },
             Tile::GrassThick => {
-                TileColour {
+                LLRPixel {
+                    character: '"',
                     background: colours::BLACK,
                     foreground: colours::GREEN,
                 }
             },
 
             Tile::Rocks => {
-                TileColour {
+                LLRPixel {
+                    character: '∩',
                     background: colours::BLACK,
                     foreground: colours::LIGHT_GREY,
                 }
             },
 
             Tile::Hill => {
-                TileColour {
+                LLRPixel {
+                    character: '^',
                     background: colours::BLACK,
                     foreground: colours::GREEN,
                 }
             },
 
             Tile::Water => {
-                TileColour {
+                LLRPixel {
+                    character: '~',
                     background: colours::BLACK,
                     foreground: colours::BLUE,
                 }
             },
             Tile::Wall => {
-                TileColour {
+                LLRPixel {
+                    character: '#',
                     background: colours::GREY,
                     foreground: colours::LIGHT_GREY,
                 }
             },
             Tile::TreeStump => {
-                TileColour {
+                LLRPixel {
+                    character: 'o',
                     background: colours::BLACK,
                     foreground: colours::BROWN,
                 }
             },
 
             Tile::Ice => {
-                TileColour {
+                LLRPixel {
+                    character: '∴',
                     background: colours::LIGHT_CYAN,
                     foreground: colours::WHITE,
                 }
             },
         }
-    }
-
-    pub fn get_player_colour(&self) -> RGBA {
-        colours::PINK
     }
 }
