@@ -17,7 +17,11 @@ pub use util::states::OnOff;
 /// output stream which will appear as colour on the terminal.
 ///
 /// If colour is off then the tiles characters alone are printed.
-pub fn print_map(has_colour: OnOff, map: &Map<Tile>, out: &mut io::Write) -> io::Result<()> {
+pub fn print_map(
+    has_colour: OnOff,
+    map: &Map<Tile>,
+    out: &mut io::Write,
+) -> io::Result<()> {
     let theme = Theme::new();
 
     for (tile, x, y) in map.slice_all() {
@@ -32,7 +36,12 @@ pub fn print_map(has_colour: OnOff, map: &Map<Tile>, out: &mut io::Write) -> io:
     print_end_of_line(out, has_colour)
 }
 
-fn print_tile(out: &mut io::Write, theme: &Theme, tile: Tile, has_colour: OnOff) -> io::Result<()> {
+fn print_tile(
+    out: &mut io::Write,
+    theme: &Theme,
+    tile: Tile,
+    has_colour: OnOff,
+) -> io::Result<()> {
     if has_colour.is_on() {
         let colour = theme.get_tile_colour(tile);
 
@@ -42,7 +51,10 @@ fn print_tile(out: &mut io::Write, theme: &Theme, tile: Tile, has_colour: OnOff)
     write!(out, "{}", char::from(tile))
 }
 
-fn print_end_of_line(out: &mut io::Write, has_colour: OnOff) -> io::Result<()> {
+fn print_end_of_line(
+    out: &mut io::Write,
+    has_colour: OnOff,
+) -> io::Result<()> {
     if has_colour.is_on() {
         write!(out, "\x1B[0m")?;
     }

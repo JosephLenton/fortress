@@ -1,9 +1,9 @@
-use world::tiles::Tile;
 use world::map::Map;
+use world::tiles::Tile;
 
-use rand::StdRng;
-use rand::SeedableRng;
 use rand::Rng;
+use rand::SeedableRng;
+use rand::StdRng;
 
 pub struct MapOptions {
     pub width: u32,
@@ -30,20 +30,25 @@ fn new_map_rng(options: &MapOptions) -> StdRng {
     match options.seed {
         Some(seed) => {
             rng.reseed(&[seed]);
-        }
-        None => { /* do nothing */ }
+        },
+        None => { /* do nothing */ },
     }
 
     return rng;
 }
 
-fn add_ground_vegetation(mut map: &mut Map<Tile>, mut rng: &mut StdRng) {
+fn add_ground_vegetation(
+    mut map: &mut Map<Tile>,
+    mut rng: &mut StdRng,
+) {
     map.fill(|_, _, _| random_tile(&mut rng));
 }
 
-fn add_buildings(mut map: &mut Map<Tile>, mut rng: &mut StdRng) {
-    // todo,
-    // change this to some proper building building code
+fn add_buildings(
+    mut map: &mut Map<Tile>,
+    mut rng: &mut StdRng,
+) {
+    // TODO change this to some proper building building code.
     for x in 20..30 {
         map.set(x, 15, Tile::Wall);
     }

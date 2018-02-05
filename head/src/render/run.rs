@@ -6,31 +6,28 @@ use sdl2::mouse::MouseWheelDirection;
 
 use theme::Theme;
 
-use render::setup::Setup;
 use render::cursor::Cursor;
-use render::render_game::RenderGame;
 use render::gfx::GFX;
+use render::render_game::RenderGame;
+use render::setup::Setup;
 
 use game::Game;
 
 use util::shapes::Point2;
 
-pub fn run<'a>(setup: Setup, game: &'a Game) {
+pub fn run<'a>(
+    setup: Setup,
+    game: &'a Game,
+) {
     let theme = Theme::new();
     let mut rgame = RenderGame::new(&setup, &game, &theme);
-    let mut cursor = Cursor::new(
-        setup.window_size.width as f32 / 2.0,
-        setup.window_size.height as f32 / 2.0,
-    );
+    let mut cursor =
+        Cursor::new(setup.window_size.width as f32 / 2.0, setup.window_size.height as f32 / 2.0);
 
     let sdl_context = sdl2::init().unwrap();
     let video_subsys = sdl_context.video().unwrap();
     let mut window = video_subsys
-        .window(
-            setup.title,
-            setup.window_size.width,
-            setup.window_size.height,
-        )
+        .window(setup.title, setup.window_size.width, setup.window_size.height)
         .position_centered()
         .allow_highdpi()
         .resizable()
@@ -46,9 +43,14 @@ pub fn run<'a>(setup: Setup, game: &'a Game) {
     'main: loop {
         for event in events.wait_iter() {
             match event {
-                Event::Quit { .. } | Event::AppTerminating { .. } => {
-                    break 'main;
+                Event::Quit {
+                    ..
                 }
+                | Event::AppTerminating {
+                    ..
+                } => {
+                    break 'main;
+                },
 
                 Event::Window {
                     win_event: WindowEvent::SizeChanged(width, height),
@@ -59,47 +61,53 @@ pub fn run<'a>(setup: Setup, game: &'a Game) {
                     ..
                 } => {
                     rgame.on_resize(width as u32, height as u32);
-                }
+                },
 
-                //
                 // User Input
-                //
+                // 
                 Event::KeyDown {
                     keycode: Some(Keycode::Left),
                     ..
                 } => {
                     rgame.move_camera(-1, 0);
-                }
+                },
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Right),
                     ..
                 } => {
                     rgame.move_camera(1, 0);
-                }
+                },
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Up),
                     ..
                 } => {
                     rgame.move_camera(0, -1);
-                }
+                },
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Down),
                     ..
                 } => {
                     rgame.move_camera(0, 1);
-                }
+                },
                 Event::MouseButtonDown {
-                    x, y, mouse_btn, ..
+                    x,
+                    y,
+                    mouse_btn,
+                    ..
                 } => {
-                    // todo
-                }
+                    // do nothing
+                },
 
-                Event::MouseMotion { x, y, .. } => {
+                Event::MouseMotion {
+                    x,
+                    y,
+                    ..
+                } => {
                     cursor.xy(Point2::new(x as f32, y as f32));
-                }
+                },
 
                 Event::MouseWheel {
                     y,
@@ -107,7 +115,7 @@ pub fn run<'a>(setup: Setup, game: &'a Game) {
                     ..
                 } => {
                     // do nothing
-                }
+                },
 
                 Event::MouseWheel {
                     y,
@@ -115,9 +123,9 @@ pub fn run<'a>(setup: Setup, game: &'a Game) {
                     ..
                 } => {
                     // do nothing
-                }
+                },
 
-                _ => {}
+                _ => {},
             }
 
             // Re-render everything after each event.
@@ -128,7 +136,11 @@ pub fn run<'a>(setup: Setup, game: &'a Game) {
     println!("goodbye!");
 }
 
-fn render(rgame: &RenderGame, cursor: &Cursor, gfx: &mut GFX) {
+fn render(
+    rgame: &RenderGame,
+    cursor: &Cursor,
+    gfx: &mut GFX,
+) {
     gfx.clear();
 
     rgame.render(gfx);

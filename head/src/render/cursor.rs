@@ -8,7 +8,10 @@ pub struct Cursor {
 }
 
 impl Cursor {
-    pub fn new(x: f32, y: f32) -> Cursor {
+    pub fn new(
+        x: f32,
+        y: f32,
+    ) -> Cursor {
         return Cursor {
             pos: Point2::new(x, y),
             start_pos: Point2::new(x, y),
@@ -30,7 +33,10 @@ impl Cursor {
         self.is_down = false;
     }
 
-    pub fn xy(&mut self, pos: Point2<f32>) {
+    pub fn xy(
+        &mut self,
+        pos: Point2<f32>,
+    ) {
         self.pos = pos;
     }
 }

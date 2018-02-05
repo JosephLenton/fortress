@@ -1,9 +1,9 @@
-use std::process::exit;
 use std::error::Error;
-use std::path::Path;
-use std::io::Result;
-use std::io::BufReader;
 use std::fs::File;
+use std::io::BufReader;
+use std::io::Result;
+use std::path::Path;
+use std::process::exit;
 
 extern crate structopt;
 #[macro_use]
@@ -15,23 +15,26 @@ extern crate util;
 extern crate world;
 
 use args::Args;
+use game::Game;
+use game::GameSetup;
+use head::render::run::run;
+use head::render::setup::Setup;
+use util::shapes::Size;
+use world::calendar::WorldCalendar;
+use world::calendar::WorldTime;
 use world::load;
 use world::player::Player;
 use world::world_setup::WorldSetup;
-use world::calendar::WorldCalendar;
-use world::calendar::WorldTime;
-use util::shapes::Size;
-use game::Game;
-use game::GameSetup;
-use head::render::setup::Setup;
-use head::render::run::run;
 
 mod args;
 
 struct FortressCalendar {}
 
 impl WorldCalendar for FortressCalendar {
-    fn get_time(&self, time: u32) -> WorldTime {
+    fn get_time(
+        &self,
+        time: u32,
+    ) -> WorldTime {
         WorldTime {
             second: (time % 60) as u8,
             minute: 1,
@@ -57,8 +60,8 @@ fn main() {
         Err(err) => {
             eprintln!("Error, {}", err.description());
             panic!(err);
-        }
-        Ok(()) => {}
+        },
+        Ok(()) => {},
     }
 }
 
@@ -73,7 +76,9 @@ fn main_run(args: Args) -> Result<()> {
         calendar: &FortressCalendar {},
     };
 
-    let game_setup = GameSetup { time_tick_speed: 5 };
+    let game_setup = GameSetup {
+        time_tick_speed: 5,
+    };
 
     let game = Game::new(map, player, world_setup, game_setup);
 

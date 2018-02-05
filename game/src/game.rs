@@ -1,12 +1,12 @@
-use world::player::Player;
-use world::tiles::Tile;
+use world::calendar::WorldTime;
 use world::map::Map;
 use world::map::MapIterator;
+use world::player::Player;
+use world::tiles::Tile;
 use world::world_setup::WorldSetup;
-use world::calendar::WorldTime;
 
-use GameTile;
 use GameSetup;
+use GameTile;
 
 /// This models, and runs, the core game.
 /// It includes updating the game based on the events given.
@@ -59,14 +59,13 @@ impl<'a> Game<'a> {
         }
     }
 
-    ///
     /// A lot of the world has natural ways to update.
     /// Calling this will cause the world to update.
     ///
     /// This update can range from updating the weather,
     /// to triggerring a random encounter, to causing other
     /// effects.
-    ///
+    /// 
     pub fn tick(&mut self) -> () {
         self.time += self.game_setup.time_tick_speed;
     }
@@ -78,7 +77,13 @@ impl<'a> Game<'a> {
     }
 
     /// Returns a slice of the maps terrain.
-    pub fn slice(&self, x: i32, y: i32, w: u32, h: u32) -> MapIterator<GameTile> {
+    pub fn slice(
+        &self,
+        x: i32,
+        y: i32,
+        w: u32,
+        h: u32,
+    ) -> MapIterator<GameTile> {
         self.map.slice(x, y, w, h)
     }
 }

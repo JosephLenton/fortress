@@ -1,5 +1,5 @@
-use tiles::Tile;
 use map::Map;
+use tiles::Tile;
 use util::shapes::Size;
 
 use std::cmp;
@@ -7,11 +7,10 @@ use std::collections::BTreeMap;
 use std::io::BufRead;
 use std::io::Result;
 
-///
 /// The ETB character is 'end of transmission'.
 /// It's the end of the stdin to say there is
 /// no more content.
-///
+/// 
 const CHAR_ETB: char = 27 as char;
 
 fn new_tile_map() -> BTreeMap<char, Tile> {
@@ -54,11 +53,17 @@ pub fn read_to_map(read_in: &mut BufRead) -> Result<Map<Tile>> {
     Ok(map)
 }
 
-fn store_tile(map: &mut BTreeMap<char, Tile>, tile: Tile) {
+fn store_tile(
+    map: &mut BTreeMap<char, Tile>,
+    tile: Tile,
+) {
     map.insert(char::from(tile), tile);
 }
 
-fn char_to_tile(decode_map: &BTreeMap<char, Tile>, c: char) -> Tile {
+fn char_to_tile(
+    decode_map: &BTreeMap<char, Tile>,
+    c: char,
+) -> Tile {
     match decode_map.get(&c) {
         Some(tile) => *tile,
         None => panic!("Tile not found for char, {}, code {}", c, c as u32),
@@ -81,7 +86,11 @@ fn get_vec_size(buf: &[String]) -> Size<u32> {
     }
 }
 
-fn populate_map(decode_map: &BTreeMap<char, Tile>, map: &mut Map<Tile>, buf: &[String]) {
+fn populate_map(
+    decode_map: &BTreeMap<char, Tile>,
+    map: &mut Map<Tile>,
+    buf: &[String],
+) {
     let mut y = 0;
 
     for line in buf {

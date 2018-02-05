@@ -1,8 +1,7 @@
-//!
 //! This crate represents modelling the world.
 //!
 //! Creatures, land, places, weather, time, and more.
-//!
+//! 
 extern crate util;
 
 /// How time and dates work in the world.

@@ -1,38 +1,36 @@
 use super::RGBA;
 
-///
 /// A HSV colour, with alpha.
-///
+/// 
 #[derive(Debug, Copy, Clone)]
 pub struct HSVA {
-    ///
     /// The hue of this colour.
-    ///
+    /// 
     pub hue: f32,
 
-    ///
     /// The saturation.
-    ///
+    /// 
     pub saturation: f32,
 
-    ///
     /// The value.
-    ///
+    /// 
     pub value: f32,
 
-    ///
     /// The alpha.
     ///
     /// A value from 0 to 255.
-    ///
+    /// 
     pub alpha: u8,
 }
 
 impl HSVA {
-    ///
     /// Trivial constructor.
-    ///
-    pub fn hsv(h: f32, s: f32, v: f32) -> HSVA {
+    /// 
+    pub fn hsv(
+        h: f32,
+        s: f32,
+        v: f32,
+    ) -> HSVA {
         HSVA {
             hue: h,
             saturation: s,
@@ -41,10 +39,14 @@ impl HSVA {
         }
     }
 
-    ///
     /// Trivial constructor.
-    ///
-    pub fn hsva(h: f32, s: f32, v: f32, a: u8) -> HSVA {
+    /// 
+    pub fn hsva(
+        h: f32,
+        s: f32,
+        v: f32,
+        a: u8,
+    ) -> HSVA {
         HSVA {
             hue: h,
             saturation: s,
@@ -53,10 +55,9 @@ impl HSVA {
         }
     }
 
-    ///
     /// Converts this into RGB and returns that colour.
     /// It has the same alpha channel as this one.
-    ///
+    /// 
     pub fn to_rgba(&self) -> RGBA {
         let r;
         let g;
@@ -73,32 +74,32 @@ impl HSVA {
                 r = self.value;
                 g = t;
                 b = p;
-            }
+            },
             1 => {
                 r = q;
                 g = self.value;
                 b = p;
-            }
+            },
             2 => {
                 r = p;
                 g = self.value;
                 b = t;
-            }
+            },
             3 => {
                 r = p;
                 g = q;
                 b = self.value;
-            }
+            },
             4 => {
                 r = t;
                 g = p;
                 b = self.value;
-            }
+            },
             _ => {
                 r = self.value;
                 g = p;
                 b = q;
-            }
+            },
         }
 
         RGBA {
@@ -109,10 +110,12 @@ impl HSVA {
         }
     }
 
-    ///
     /// Returns a copy lightened by the amount given.
-    ///
-    pub fn lighten(&self, amount: f32) -> HSVA {
+    /// 
+    pub fn lighten(
+        &self,
+        amount: f32,
+    ) -> HSVA {
         HSVA {
             hue: self.hue,
             saturation: (self.saturation + amount).max(1.0),
@@ -121,10 +124,12 @@ impl HSVA {
         }
     }
 
-    ///
     /// Returns a copy darkened by the amount given.
-    ///
-    pub fn darken(&self, amount: f32) -> HSVA {
+    /// 
+    pub fn darken(
+        &self,
+        amount: f32,
+    ) -> HSVA {
         HSVA {
             hue: self.hue,
             saturation: (self.saturation - amount).max(0.0),
@@ -133,10 +138,12 @@ impl HSVA {
         }
     }
 
-    ///
     /// Clones this colour, with the new opacity.
-    ///
-    pub fn alpha(&self, alpha: u8) -> HSVA {
+    /// 
+    pub fn alpha(
+        &self,
+        alpha: u8,
+    ) -> HSVA {
         HSVA {
             hue: self.hue,
             saturation: self.saturation,
@@ -147,7 +154,10 @@ impl HSVA {
 }
 
 impl PartialEq for HSVA {
-    fn eq(&self, other: &Self) -> bool {
+    fn eq(
+        &self,
+        other: &Self,
+    ) -> bool {
         self.hue == other.hue && self.saturation == other.saturation && self.value == other.value
             && self.alpha == other.alpha
     }

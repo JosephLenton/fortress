@@ -1,40 +1,38 @@
 use super::HSVA;
 
-///
 /// An RGBA colour.
-///
+/// 
 #[derive(Debug, Copy, Clone)]
 pub struct RGBA {
-    ///
     /// The red component.
     /// 0 to 255.
-    ///
+    /// 
     pub red: u8,
 
-    ///
     /// The green component.
     /// 0 to 255.
-    ///
+    /// 
     pub green: u8,
 
-    ///
     /// The green component.
     /// 0 to 255.
-    ///
+    /// 
     pub blue: u8,
 
-    ///
     /// The alpha component.
     /// 0 to 255.
-    ///
+    /// 
     pub alpha: u8,
 }
 
 impl RGBA {
-    ///
     /// Trivial constructor.
-    ///
-    pub fn new_rgb(r: u8, g: u8, b: u8) -> RGBA {
+    /// 
+    pub fn new_rgb(
+        r: u8,
+        g: u8,
+        b: u8,
+    ) -> RGBA {
         RGBA {
             red: r,
             blue: b,
@@ -43,10 +41,14 @@ impl RGBA {
         }
     }
 
-    ///
     /// Trivial constructor.
-    ///
-    pub fn new_rgba(r: u8, g: u8, b: u8, a: u8) -> RGBA {
+    /// 
+    pub fn new_rgba(
+        r: u8,
+        g: u8,
+        b: u8,
+        a: u8,
+    ) -> RGBA {
         RGBA {
             red: r,
             blue: b,
@@ -55,9 +57,8 @@ impl RGBA {
         }
     }
 
-    ///
     /// Returns the HSVA equivalent of the RGBA object.
-    ///
+    /// 
     pub fn to_hsva(&self) -> HSVA {
         if self.red == self.green && self.red == self.blue {
             return HSVA {
@@ -108,10 +109,12 @@ impl RGBA {
         }
     }
 
-    ///
     /// Clones this colour, with the new opacity.
-    ///
-    pub fn opacity(&self, alpha: u8) -> RGBA {
+    /// 
+    pub fn opacity(
+        &self,
+        alpha: u8,
+    ) -> RGBA {
         RGBA {
             red: self.red,
             blue: self.blue,
@@ -120,23 +123,30 @@ impl RGBA {
         }
     }
 
-    ///
     /// Returns a copy lightened by the amount given.
-    ///
-    pub fn lighten(&self, amount: f32) -> RGBA {
+    /// 
+    pub fn lighten(
+        &self,
+        amount: f32,
+    ) -> RGBA {
         self.to_hsva().lighten(amount).to_rgba()
     }
 
-    ///
     /// Returns a copy darkened by the amount given.
-    ///
-    pub fn darken(&self, amount: f32) -> RGBA {
+    /// 
+    pub fn darken(
+        &self,
+        amount: f32,
+    ) -> RGBA {
         self.to_hsva().darken(amount).to_rgba()
     }
 }
 
 impl PartialEq for RGBA {
-    fn eq(&self, other: &Self) -> bool {
+    fn eq(
+        &self,
+        other: &Self,
+    ) -> bool {
         self.red == other.red && self.green == other.green && self.blue == other.blue
             && self.alpha == other.alpha
     }

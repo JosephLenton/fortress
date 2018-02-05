@@ -1,16 +1,15 @@
 use std::ops::Add;
-use std::ops::Sub;
-use std::ops::Mul;
 use std::ops::Div;
+use std::ops::Mul;
 use std::ops::Rem;
+use std::ops::Sub;
 
 use super::Point2;
 
-///
 /// A Size is an area of space with no location.
 /// The size of a box, the size of a window, the size of a player.
 /// But they don't have a location.
-///
+/// 
 #[derive(Debug, Copy, Clone)]
 pub struct Size<N: Add + Sub + Mul + Div + Rem + Copy> {
     /// The width of the area.
@@ -21,21 +20,22 @@ pub struct Size<N: Add + Sub + Mul + Div + Rem + Copy> {
 }
 
 impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
-    ///
     /// Trivial constructor.
     ///
     /// Creates a new Size with the width and height given.
-    ///
-    pub fn new(width: N, height: N) -> Size<N> {
+    /// 
+    pub fn new(
+        width: N,
+        height: N,
+    ) -> Size<N> {
         Size {
             width: width,
             height: height,
         }
     }
 
-    ///
     /// Converts this to a Point2.
-    ///
+    /// 
     pub fn to_point2(&self) -> Point2<N> {
         Point2 {
             x: self.width,
@@ -48,7 +48,10 @@ impl<N> PartialEq for Size<N>
 where
     N: Add + Sub + Mul + Div + Rem + Copy + PartialEq,
 {
-    fn eq(&self, other: &Self) -> bool {
+    fn eq(
+        &self,
+        other: &Self,
+    ) -> bool {
         self.width == other.width && self.height == other.height
     }
 }
@@ -64,7 +67,10 @@ where
 {
     type Output = Self;
 
-    fn add(self, other: Self) -> Self {
+    fn add(
+        self,
+        other: Self,
+    ) -> Self {
         Size {
             width: (self.width + other.width),
             height: (self.height + other.height),
@@ -83,7 +89,10 @@ where
 {
     type Output = Self;
 
-    fn sub(self, other: Self) -> Self {
+    fn sub(
+        self,
+        other: Self,
+    ) -> Self {
         Size {
             width: (self.width - other.width),
             height: (self.height - other.height),
@@ -102,7 +111,10 @@ where
 {
     type Output = Self;
 
-    fn mul(self, other: N) -> Self {
+    fn mul(
+        self,
+        other: N,
+    ) -> Self {
         Size {
             width: (self.width * other),
             height: (self.height * other),
@@ -121,7 +133,10 @@ where
 {
     type Output = Self;
 
-    fn div(self, other: N) -> Self {
+    fn div(
+        self,
+        other: N,
+    ) -> Self {
         Size {
             width: (self.width / other),
             height: (self.height / other),
@@ -177,7 +192,13 @@ mod tests {
 
     #[test]
     fn to_point2() {
-        assert_eq!(Point2 { x: 1, y: 5 }, Size::new(1, 5).to_point2());
+        assert_eq!(
+            Point2 {
+                x: 1,
+                y: 5,
+            },
+            Size::new(1, 5).to_point2()
+        );
     }
 
     #[test]

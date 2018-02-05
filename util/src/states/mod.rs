@@ -1,6 +1,5 @@
-//!
 //! A module for random useful state stuff.
-//!
+//! 
 
 mod on_off;
 

@@ -1,6 +1,5 @@
-///
 /// This represents time in our world.
-///
+/// 
 #[derive(Copy, Clone)]
 pub struct WorldTime {
     /// The second.

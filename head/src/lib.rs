@@ -1,9 +1,8 @@
-//!
 //! This crate is things specific to how the world is drawn and run.
 //! It also does things like create windows.
 //!
 //! Anything visual is here.
-//!
+//! 
 
 extern crate game;
 extern crate sdl2;

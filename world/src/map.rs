@@ -15,7 +15,11 @@ pub struct Map<T: Copy> {
 impl<T: Copy> Map<T> {
     /// Creates a new map with the width and height given.
     /// This map is filled with the default value.
-    pub fn new(width: u32, height: u32, default: T) -> Map<T> {
+    pub fn new(
+        width: u32,
+        height: u32,
+        default: T,
+    ) -> Map<T> {
         Map {
             width: width,
             height: height,
@@ -24,14 +28,23 @@ impl<T: Copy> Map<T> {
     }
 
     /// Returns the tile at the position given.
-    pub fn get(&self, x: u32, y: u32) -> T {
+    pub fn get(
+        &self,
+        x: u32,
+        y: u32,
+    ) -> T {
         let index = map_index(x, y, self.width, self.height);
 
         self.data[index]
     }
 
     /// Sets a tile at the position given.
-    pub fn set(&mut self, x: u32, y: u32, tile: T) -> () {
+    pub fn set(
+        &mut self,
+        x: u32,
+        y: u32,
+        tile: T,
+    ) -> () {
         let index = map_index(x, y, self.width, self.height);
 
         self.data[index] = tile;
@@ -39,8 +52,10 @@ impl<T: Copy> Map<T> {
 
     /// Maps this data against the function given.
     /// This permanently changes the contents of this map.
-    pub fn fill<F>(&mut self, mut map_f: F)
-    where
+    pub fn fill<F>(
+        &mut self,
+        mut map_f: F,
+    ) where
         F: FnMut(&T, u32, u32) -> T,
     {
         let mut i = 0;
@@ -56,7 +71,10 @@ impl<T: Copy> Map<T> {
 
     /// Maps the data in this map against the function given.
     /// However the result is returned in a new map.
-    pub fn map<F, T2: Copy>(&self, map_f: F) -> Map<T2>
+    pub fn map<F, T2: Copy>(
+        &self,
+        map_f: F,
+    ) -> Map<T2>
     where
         F: FnMut(&T) -> T2,
     {
@@ -73,7 +91,13 @@ impl<T: Copy> Map<T> {
     }
 
     /// Returns a slice of this map.
-    pub fn slice(&self, mut x: i32, mut y: i32, w: u32, h: u32) -> MapIterator<T> {
+    pub fn slice(
+        &self,
+        mut x: i32,
+        mut y: i32,
+        w: u32,
+        h: u32,
+    ) -> MapIterator<T> {
         let width = self.width as i32;
         let height = self.height as i32;
 
@@ -171,6 +195,11 @@ impl<'a, T: Copy> Iterator for MapIterator<'a, T> {
 
 type MapIteratorItem<T> = (T, u32, u32);
 
-fn map_index(x: u32, y: u32, _width: u32, height: u32) -> usize {
+fn map_index(
+    x: u32,
+    y: u32,
+    _width: u32,
+    height: u32,
+) -> usize {
     (y * height + x) as usize
 }

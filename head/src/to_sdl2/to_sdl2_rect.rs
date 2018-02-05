@@ -1,5 +1,5 @@
-use sdl2::rect::Rect as SDL2Rect;
 use super::ToSDL2;
+use sdl2::rect::Rect as SDL2Rect;
 use util::shapes::Rect;
 
 impl ToSDL2<SDL2Rect> for Rect<f32> {

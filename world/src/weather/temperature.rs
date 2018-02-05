@@ -12,7 +12,9 @@ impl Temperature {
     ///
     /// @param c Celcius value.
     pub fn from_celcius(c: f32) -> Temperature {
-        Temperature { celcius: c }
+        Temperature {
+            celcius: c,
+        }
     }
 
     /// Creates a temperature from the fahrenheit value given.

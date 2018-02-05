@@ -11,6 +11,8 @@ pub struct GameTile {
 impl GameTile {
     /// Trivial constructor.
     pub fn new(tile: Tile) -> GameTile {
-        GameTile { tile: tile }
+        GameTile {
+            tile: tile,
+        }
     }
 }

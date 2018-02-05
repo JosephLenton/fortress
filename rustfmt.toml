@@ -1,0 +1,39 @@
+
+# 
+# Using changes which ensure utmost consistency.
+# Aim for is for a commit to cause the least number of git changes.
+# 
+# Some options can give a different layout, depending on the length of code.
+# Where possible, those options have been set to always give the same layout.
+# 
+# Some layouts force breaking into multiple blocks. This is enforced. When you
+# delete that block then the previous line won't show up on git as a change.
+# 
+
+reorder_extern_crates_in_group = true
+reorder_extern_crates = true
+reorder_imports_in_group = true
+reorder_imported_names = true
+reorder_imports = true
+
+empty_item_single_line = false
+use_small_heuristics = false
+combine_control_expr = false
+fn_args_density = "Vertical"
+imports_indent = "Block"
+force_multiline_blocks = true
+struct_lit_single_line = false
+
+match_block_trailing_comma = true
+
+wrap_comments = true
+normalize_comments = true
+
+report_todo = "Always"
+report_fixme = "Always"
+
+use_try_shorthand = true
+
+blank_lines_lower_bound = 0
+blank_lines_upper_bound = 1
+

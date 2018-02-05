@@ -1,18 +1,17 @@
 use std::ops::Add;
-use std::ops::Sub;
-use std::ops::Mul;
 use std::ops::Div;
+use std::ops::Mul;
 use std::ops::Rem;
+use std::ops::Sub;
 
 use super::Point2;
 use super::Size;
 
-///
 /// A rectangle.
 ///
 /// It has a position, and a size. It's generic parameter allows
 /// you to use any numerical type for it. Integers, floats, etc.
-///
+/// 
 #[derive(Copy, Clone)]
 pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy> {
     /// It's x location.
@@ -31,12 +30,16 @@ pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy> {
 }
 
 impl<N: Add + Sub + Div + Mul + Rem + Copy> Rect<N> {
-    ///
     /// Trivial constructor.
     ///
     /// Creates a new Rect with the size given.
-    ///
-    pub fn new(x: N, y: N, w: N, h: N) -> Rect<N> {
+    /// 
+    pub fn new(
+        x: N,
+        y: N,
+        w: N,
+        h: N,
+    ) -> Rect<N> {
         Rect {
             x: x,
             y: y,
@@ -58,7 +61,10 @@ where
 {
     type Output = Self;
 
-    fn add(self, other: Point2<N>) -> Self {
+    fn add(
+        self,
+        other: Point2<N>,
+    ) -> Self {
         Rect {
             x: (self.x + other.x),
             y: (self.y + other.y),
@@ -79,7 +85,10 @@ where
 {
     type Output = Self;
 
-    fn add(self, other: Size<N>) -> Self {
+    fn add(
+        self,
+        other: Size<N>,
+    ) -> Self {
         Rect {
             x: self.x,
             y: self.y,
@@ -100,7 +109,10 @@ where
 {
     type Output = Self;
 
-    fn sub(self, other: Point2<N>) -> Self {
+    fn sub(
+        self,
+        other: Point2<N>,
+    ) -> Self {
         Rect {
             x: (self.x - other.x),
             y: (self.y - other.y),
@@ -121,7 +133,10 @@ where
 {
     type Output = Self;
 
-    fn sub(self, other: Size<N>) -> Self {
+    fn sub(
+        self,
+        other: Size<N>,
+    ) -> Self {
         Rect {
             x: self.x,
             y: self.y,

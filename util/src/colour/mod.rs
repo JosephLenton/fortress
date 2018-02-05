@@ -1,6 +1,5 @@
-//!
 //! Colour structs.
-//!
+//! 
 
 mod hsva;
 mod rgba;

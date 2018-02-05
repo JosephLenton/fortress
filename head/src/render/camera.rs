@@ -5,7 +5,10 @@ pub struct Camera {
 }
 
 impl Camera {
-    pub fn new(x: i32, y: i32) -> Camera {
+    pub fn new(
+        x: i32,
+        y: i32,
+    ) -> Camera {
         return Camera {
             zoom: 1.0,
             x: x,
@@ -41,7 +44,11 @@ impl Camera {
         return self.y;
     }
 
-    pub fn add_xy(&mut self, x: i32, y: i32) {
+    pub fn add_xy(
+        &mut self,
+        x: i32,
+        y: i32,
+    ) {
         self.x += x;
         self.y += y;
     }
