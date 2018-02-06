@@ -10,7 +10,7 @@ use std::ops::Sub;
 /// A Size is an area of space with no location.
 /// The size of a box, the size of a window, the size of a player.
 /// But they don't have a location.
-#[derive(Debug, Copy, Clone)]
+#[derive(Default, Debug, Copy, Clone)]
 pub struct Size<N: Add + Sub + Mul + Div + Rem + Copy> {
     /// The width of the area.
     pub width: N,
@@ -26,7 +26,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
     pub const fn new(
         width: N,
         height: N,
-    ) -> Size<N> {
+    ) -> Self {
         Size {
             width: width,
             height: height,
@@ -39,6 +39,66 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
             x: self.width,
             y: self.height,
         }
+    }
+}
+
+impl Size<u8> {
+    pub const fn zero() -> Self {
+        Size { width: 0, height: 0 }
+    }
+}
+
+impl Size<u16> {
+    pub const fn zero() -> Self {
+        Size { width: 0, height: 0 }
+    }
+}
+
+impl Size<i16> {
+    pub const fn zero() -> Self {
+        Size { width: 0, height: 0 }
+    }
+}
+
+impl Size<u32> {
+    pub const fn zero() -> Self {
+        Size { width: 0, height: 0 }
+    }
+}
+
+impl Size<i32> {
+    pub const fn zero() -> Self {
+        Size { width: 0, height: 0 }
+    }
+}
+
+impl Size<u64> {
+    pub const fn zero() -> Self {
+        Size { width: 0, height: 0 }
+    }
+}
+
+impl Size<i64> {
+    pub const fn zero() -> Self {
+        Size { width: 0, height: 0 }
+    }
+}
+
+impl Size<f32> {
+    pub const fn zero() -> Self {
+        Size { width: 0.0, height: 0.0 }
+    }
+}
+
+impl Size<f64> {
+    pub const fn zero() -> Self {
+        Size { width: 0.0, height: 0.0 }
+    }
+}
+
+impl Size<usize> {
+    pub const fn zero() -> Self {
+        Size { width: 0, height: 0 }
     }
 }
 
@@ -163,6 +223,14 @@ impl<U: Num<U>> Size<U> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_default() {
+        assert_eq!(
+            Size::default(),
+            Size { width: 0, height: 0 },
+        );
+    }
 
     #[test]
     fn create() {
