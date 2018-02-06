@@ -22,8 +22,20 @@ projects to help organise where and how they can be used.
     │            It has no graphics, and no way of drawing or displaying items.
     │            It does have a UI however. It just doesn't know how to draw it.
     │
-    ├─ head      This is what will draw the game to the screen, and offers
-    │            events to hook into. Currently this only offers SDL2.
+    ├─ head      High Level Renderer. This is what draws the map to the screen,
+    │            decides the players colour (and draws them), and so on.
+    │            It manages a lot of drawing items which don't need to care 
+    │            about how items are drawn. Like the camera position, and 
+    │            offsetting the items when drawn.
+    │
+    │            For the actual drawing this uses the low level renderer.
+    │
+    ├─ llr       Low Level Renderer. This is the drawing implementation.   
+    │            It uses a generic implementation, and under that it is 
+    │            implemented. The workings of the implementations are hidden.
+    │            This is to allow the implementations to be swapped in and out.
+    │            Whilst this is a drawing backend, it is unconventional.
+    │            It has a very precise API catered to the style of the game.
     │
     ├─ world     How data is represented. Holds all the core data and
     │            definitions that everything else uses. For example creatures,
