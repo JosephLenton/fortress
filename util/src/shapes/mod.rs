@@ -1,5 +1,5 @@
 //! A module of shapes, points, and sizes.
-//!
+//! 
 
 mod num;
 mod rect;

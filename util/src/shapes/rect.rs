@@ -1,10 +1,10 @@
 use std::convert::From;
 
 use std::ops::Add;
-use std::ops::Sub;
-use std::ops::Mul;
 use std::ops::Div;
+use std::ops::Mul;
 use std::ops::Rem;
+use std::ops::Sub;
 
 use super::Num;
 
@@ -15,7 +15,7 @@ use super::Size;
 ///
 /// It has a position, and a size. It's generic parameter allows
 /// you to use any numerical type for it. Integers, floats, etc.
-///
+/// 
 #[derive(Copy, Clone, Debug)]
 pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy> {
     /// It's x location.
@@ -33,8 +33,7 @@ pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy> {
     pub height: N,
 }
 
-impl<N: Add + Sub + Mul + Div + Rem + Copy + From<u8>> Rect<N>
-{
+impl<N: Add + Sub + Mul + Div + Rem + Copy + From<u8>> Rect<N> {
     /// Trivial constructor.
     ///
     /// Creates a new Rect with the size given.
@@ -72,8 +71,7 @@ impl<N: Num<N> + From<u8>> Rect<N> {
     }
 }
 
-impl<N: Num<N>> Add<Point2<N>> for Rect<N>
-{
+impl<N: Num<N>> Add<Point2<N>> for Rect<N> {
     type Output = Self;
 
     fn add(
@@ -89,8 +87,7 @@ impl<N: Num<N>> Add<Point2<N>> for Rect<N>
     }
 }
 
-impl<N: Num<N>> Add<Size<N>> for Rect<N>
-{
+impl<N: Num<N>> Add<Size<N>> for Rect<N> {
     type Output = Self;
 
     fn add(
@@ -106,8 +103,7 @@ impl<N: Num<N>> Add<Size<N>> for Rect<N>
     }
 }
 
-impl<N: Num<N>> Sub<Point2<N>> for Rect<N>
-{
+impl<N: Num<N>> Sub<Point2<N>> for Rect<N> {
     type Output = Self;
 
     fn sub(
@@ -123,8 +119,7 @@ impl<N: Num<N>> Sub<Point2<N>> for Rect<N>
     }
 }
 
-impl<N: Num<N>> Sub<Size<N>> for Rect<N>
-{
+impl<N: Num<N>> Sub<Size<N>> for Rect<N> {
     type Output = Self;
 
     fn sub(
@@ -140,8 +135,7 @@ impl<N: Num<N>> Sub<Size<N>> for Rect<N>
     }
 }
 
-impl<N: Num<N>> PartialEq for Rect<N>
-{
+impl<N: Num<N>> PartialEq for Rect<N> {
     fn eq(
         &self,
         other: &Self,

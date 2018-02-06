@@ -1,4 +1,3 @@
-
 use std::ops::Add;
 use std::ops::Div;
 use std::ops::Mul;
@@ -50,8 +49,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point2<N> {
     }
 }
 
-impl<N: Num<N>> PartialEq for Point2<N>
-{
+impl<N: Num<N>> PartialEq for Point2<N> {
     fn eq(
         &self,
         other: &Self,
@@ -60,8 +58,7 @@ impl<N: Num<N>> PartialEq for Point2<N>
     }
 }
 
-impl<N: Num<N>> Add<Self> for Point2<N>
-{
+impl<N: Num<N>> Add<Self> for Point2<N> {
     type Output = Self;
 
     fn add(
@@ -75,8 +72,7 @@ impl<N: Num<N>> Add<Self> for Point2<N>
     }
 }
 
-impl<N: Num<N>> Add<Size<N>> for Point2<N>
-{
+impl<N: Num<N>> Add<Size<N>> for Point2<N> {
     type Output = Self;
 
     fn add(
@@ -90,8 +86,7 @@ impl<N: Num<N>> Add<Size<N>> for Point2<N>
     }
 }
 
-impl<N: Num<N>> Sub for Point2<N>
-{
+impl<N: Num<N>> Sub for Point2<N> {
     type Output = Self;
 
     fn sub(
@@ -105,8 +100,7 @@ impl<N: Num<N>> Sub for Point2<N>
     }
 }
 
-impl<N: Num<N>> Sub<Size<N>> for Point2<N>
-{
+impl<N: Num<N>> Sub<Size<N>> for Point2<N> {
     type Output = Self;
 
     fn sub(
@@ -120,8 +114,7 @@ impl<N: Num<N>> Sub<Size<N>> for Point2<N>
     }
 }
 
-impl<N: Num<N>> Mul<N> for Point2<N>
-{
+impl<N: Num<N>> Mul<N> for Point2<N> {
     type Output = Self;
 
     fn mul(
@@ -135,8 +128,7 @@ impl<N: Num<N>> Mul<N> for Point2<N>
     }
 }
 
-impl<N: Num<N>> Div<N> for Point2<N>
-{
+impl<N: Num<N>> Div<N> for Point2<N> {
     type Output = Self;
 
     fn div(
@@ -150,8 +142,7 @@ impl<N: Num<N>> Div<N> for Point2<N>
     }
 }
 
-impl<N:Num<N>> Rem<N> for Point2<N>
-{
+impl<N: Num<N>> Rem<N> for Point2<N> {
     type Output = Self;
 
     fn rem(
@@ -165,8 +156,7 @@ impl<N:Num<N>> Rem<N> for Point2<N>
     }
 }
 
-impl<N: Num<N>> Rem<Self> for Point2<N>
-{
+impl<N: Num<N>> Rem<Self> for Point2<N> {
     type Output = Self;
 
     fn rem(
@@ -180,8 +170,7 @@ impl<N: Num<N>> Rem<Self> for Point2<N>
     }
 }
 
-impl<N: Num<N>> Rem<Size<N>> for Point2<N>
-{
+impl<N: Num<N>> Rem<Size<N>> for Point2<N> {
     type Output = Self;
 
     fn rem(
@@ -196,12 +185,22 @@ impl<N: Num<N>> Rem<Size<N>> for Point2<N>
 }
 
 /// For converting Point2 to Size.
-impl<N: Num<N>> Into<Size<N>> for Point2<N>
-{
+impl<N: Num<N>> Into<Size<N>> for Point2<N> {
     fn into(self) -> Size<N> {
         Size {
             width: self.x,
             height: self.y,
+        }
+    }
+}
+
+/// This is to allow creating a new Point, with a new type, from the type given.
+/// i.e. `Point2::new(1 as u8, 1 as u8)::to::<u32>()`
+impl<U: Num<U>> Point2<U> {
+    pub fn to<F: Num<F> + From<U>>(&self) -> Point2<F> {
+        Point2 {
+            x: F::from(self.x),
+            y: F::from(self.y),
         }
     }
 }
@@ -357,5 +356,14 @@ mod tests {
                 y: 5,
             }
         );
+    }
+
+    #[test]
+    pub fn test_from_u8_to_u32() {
+        let point_u8 = Point2::new(4 as u8, 5 as u8);
+        let point_u32 = Point2::new(4 as u32, 5 as u32);
+        let point_u8_as_u32 = point_u8.to::<u32>();
+
+        assert_eq!(point_u32, point_u8_as_u32);
     }
 }

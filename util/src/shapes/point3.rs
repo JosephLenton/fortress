@@ -2,12 +2,11 @@
 ///
 /// It's a 3D version of the Point2. It offers some interaction with the Point2
 /// as well.
-
 use super::Num;
 use std::ops::Add;
-use std::ops::Rem;
-use std::ops::Mul;
 use std::ops::Div;
+use std::ops::Mul;
+use std::ops::Rem;
 use std::ops::Sub;
 
 use super::Point2;
@@ -51,8 +50,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point3<N> {
     }
 }
 
-impl<N: Num<N>> PartialEq for Point3<N>
-{
+impl<N: Num<N>> PartialEq for Point3<N> {
     fn eq(
         &self,
         other: &Self,
@@ -61,8 +59,7 @@ impl<N: Num<N>> PartialEq for Point3<N>
     }
 }
 
-impl<N: Num<N>> Add<Self> for Point3<N>
-{
+impl<N: Num<N>> Add<Self> for Point3<N> {
     type Output = Self;
 
     fn add(
@@ -77,8 +74,7 @@ impl<N: Num<N>> Add<Self> for Point3<N>
     }
 }
 
-impl<N: Num<N>> Add<Point2<N>> for Point3<N>
-{
+impl<N: Num<N>> Add<Point2<N>> for Point3<N> {
     type Output = Self;
 
     fn add(
@@ -93,8 +89,7 @@ impl<N: Num<N>> Add<Point2<N>> for Point3<N>
     }
 }
 
-impl<N: Num<N>> Sub for Point3<N>
-{
+impl<N: Num<N>> Sub for Point3<N> {
     type Output = Self;
 
     fn sub(
@@ -109,8 +104,7 @@ impl<N: Num<N>> Sub for Point3<N>
     }
 }
 
-impl<N: Num<N>> Sub<Point2<N>> for Point3<N>
-{
+impl<N: Num<N>> Sub<Point2<N>> for Point3<N> {
     type Output = Self;
 
     fn sub(
@@ -125,8 +119,7 @@ impl<N: Num<N>> Sub<Point2<N>> for Point3<N>
     }
 }
 
-impl<N: Num<N>> Rem<Self> for Point3<N>
-{
+impl<N: Num<N>> Rem<Self> for Point3<N> {
     type Output = Self;
 
     fn rem(
@@ -141,8 +134,7 @@ impl<N: Num<N>> Rem<Self> for Point3<N>
     }
 }
 
-impl<N: Num<N>> Rem<Point2<N>> for Point3<N>
-{
+impl<N: Num<N>> Rem<Point2<N>> for Point3<N> {
     type Output = Self;
 
     fn rem(

@@ -11,7 +11,8 @@ use std::ops::Sub;
 /// So we have had to build our own.
 ///
 /// The Points, Rects, and Shapes, all use these traits.
-pub trait Num<N> : Add<Output = N>
+pub trait Num<N>
+    : Add<Output = N>
     + Sub<Output = N>
     + Mul<Output = N>
     + Div<Output = N>
@@ -28,14 +29,14 @@ pub trait Num<N> : Add<Output = N>
 /// implemented, for `U`'*. This applies for cases where `U` matches the `Num`
 /// trait.
 impl<N, U> Num<N> for U
-where U: Add<Output = N>
-    + Sub<Output = N>
-    + Mul<Output = N>
-    + Div<Output = N>
-    + Rem<Output = N>
-    + Copy
-    + PartialEq {
+where
+    U: Add<Output = N>
+        + Sub<Output = N>
+        + Mul<Output = N>
+        + Div<Output = N>
+        + Rem<Output = N>
+        + Copy
+        + PartialEq,
+{
     type Output = Self;
-    }
-
-
+}

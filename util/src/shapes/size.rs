@@ -1,11 +1,11 @@
+use super::Num;
+use super::Point2;
 use std::convert::From;
 use std::ops::Add;
 use std::ops::Div;
 use std::ops::Mul;
 use std::ops::Rem;
 use std::ops::Sub;
-use super::Num;
-use super::Point2;
 
 /// A Size is an area of space with no location.
 /// The size of a box, the size of a window, the size of a player.
@@ -42,8 +42,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
     }
 }
 
-impl<N: Num<N>> Add<Size<N>> for Size<N>
-{
+impl<N: Num<N>> Add<Size<N>> for Size<N> {
     type Output = Self;
 
     fn add(
@@ -57,8 +56,7 @@ impl<N: Num<N>> Add<Size<N>> for Size<N>
     }
 }
 
-impl<N: Num<N>> Sub<Size<N>> for Size<N>
-{
+impl<N: Num<N>> Sub<Size<N>> for Size<N> {
     type Output = Self;
 
     fn sub(
@@ -72,8 +70,7 @@ impl<N: Num<N>> Sub<Size<N>> for Size<N>
     }
 }
 
-impl<N: Num<N>> Mul<N> for Size<N>
-{
+impl<N: Num<N>> Mul<N> for Size<N> {
     type Output = Self;
 
     fn mul(
@@ -87,8 +84,7 @@ impl<N: Num<N>> Mul<N> for Size<N>
     }
 }
 
-impl<N: Num<N>> Div<N> for Size<N>
-{
+impl<N: Num<N>> Div<N> for Size<N> {
     type Output = Self;
 
     fn div(
@@ -102,8 +98,7 @@ impl<N: Num<N>> Div<N> for Size<N>
     }
 }
 
-impl<N:Num<N>> Rem<N> for Size<N>
-{
+impl<N: Num<N>> Rem<N> for Size<N> {
     type Output = Self;
 
     fn rem(
@@ -117,8 +112,7 @@ impl<N:Num<N>> Rem<N> for Size<N>
     }
 }
 
-impl<N: Num<N>> PartialEq for Size<N>
-{
+impl<N: Num<N>> PartialEq for Size<N> {
     fn eq(
         &self,
         other: &Self,
@@ -129,8 +123,7 @@ impl<N: Num<N>> PartialEq for Size<N>
 
 /// This is to allow creating a new Size, with a new type, from the type given.
 /// i.e. `Size::new(1 as u8, 1 as u8)::to::<f32>()`
-impl<U: Num<U>> Size<U>
-{
+impl<U: Num<U>> Size<U> {
     pub fn to<F: Num<F> + From<U>>(&self) -> Size<F> {
         Size {
             width: F::from(self.width),
@@ -242,11 +235,11 @@ mod tests {
     }
 
     #[test]
-    pub fn test_from_u8_to_f32() {
-        let size_u8 = Size::new( 4 as u8, 5 as u8 );
-        let size_u32 = Size::new( 4 as u32, 5 as u32 );
+    pub fn test_from_u8_to_u32() {
+        let size_u8 = Size::new(4 as u8, 5 as u8);
+        let size_u32 = Size::new(4 as u32, 5 as u32);
         let size_u8_as_u32 = size_u8.to::<u32>();
 
-        assert_eq!( size_u32, size_u8_as_u32 );
+        assert_eq!(size_u32, size_u8_as_u32);
     }
 }
