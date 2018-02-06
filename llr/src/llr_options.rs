@@ -6,6 +6,6 @@ use util::shapes::Size;
 #[derive(Copy, Clone)]
 pub struct LLROptions {
     pub title: &'static str,
-    pub window_size: Size<u32>,
-    pub tile_size: Size<u32>,
+    pub window_size: Size<u16>,
+    pub tile_size: Size<u8>,
 }

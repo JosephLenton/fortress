@@ -1,16 +1,13 @@
-
 use LLR;
 use LLRPixel;
 use util::shapes::Rect;
 
-pub struct LLRTerminal {
-}
+pub struct LLRTerminal {}
 
 impl LLRTerminal {
     /// Trivial constructor.
     pub fn new() -> LLRTerminal {
-        LLRTerminal {
-        }
+        LLRTerminal {}
     }
 }
 
@@ -32,4 +29,3 @@ impl LLR for LLRTerminal {
         // TODO
     }
 }
-

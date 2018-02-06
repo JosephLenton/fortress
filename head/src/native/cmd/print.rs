@@ -4,8 +4,8 @@ use world::tiles::Tile;
 use std::io;
 
 use super::colour::pixel_to_cmd_code;
-use theme::Theme;
 use llr::LLRPixel;
+use theme::Theme;
 
 // Re-export this as ours for ease of use.
 pub use util::states::OnOff;

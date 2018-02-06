@@ -15,9 +15,9 @@ impl Theme {
     /// Gets the players draw information.
     pub fn get_player(&self) -> LLRPixel {
         LLRPixel {
-            character : '@',
-            background : colours::PINK,
-            foreground : colours::BLACK,
+            character: '@',
+            background: colours::PINK,
+            foreground: colours::BLACK,
         }
     }
 
@@ -27,7 +27,7 @@ impl Theme {
         &self,
         tile: GameTile,
     ) -> LLRPixel {
-        self.get_tile( tile.tile )
+        self.get_tile(tile.tile)
     }
 
     /// Converts the tile into two colours; a back and front colour.

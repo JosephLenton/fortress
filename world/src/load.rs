@@ -10,7 +10,7 @@ use std::io::Result;
 /// The ETB character is 'end of transmission'.
 /// It's the end of the stdin to say there is
 /// no more content.
-///
+/// 
 const CHAR_ETB: char = 27 as char;
 
 fn new_tile_map() -> BTreeMap<char, Tile> {
@@ -110,22 +110,21 @@ fn populate_map(
 }
 
 fn tile_to_char(tile: Tile) -> char {
-        match tile {
-            Tile::Empty => '.',
-            Tile::Ground => ':',
+    match tile {
+        Tile::Empty => '.',
+        Tile::Ground => ':',
 
-            Tile::Grass => ',',
-            Tile::GrassThick => '"',
+        Tile::Grass => ',',
+        Tile::GrassThick => '"',
 
-            Tile::Rocks => '∩',
+        Tile::Rocks => '∩',
 
-            Tile::Hill => '^',
+        Tile::Hill => '^',
 
-            Tile::Water => '~',
-            Tile::Wall => '#',
-            Tile::TreeStump => 'o',
+        Tile::Water => '~',
+        Tile::Wall => '#',
+        Tile::TreeStump => 'o',
 
-            Tile::Ice => '∴',
-        }
+        Tile::Ice => '∴',
     }
-
+}

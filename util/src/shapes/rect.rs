@@ -1,11 +1,12 @@
-
 use std::convert::From;
 
 use std::ops::Add;
-use std::ops::Div;
-use std::ops::Mul;
-use std::ops::Rem;
 use std::ops::Sub;
+use std::ops::Mul;
+use std::ops::Div;
+use std::ops::Rem;
+
+use super::Num;
 
 use super::Point2;
 use super::Size;
@@ -16,7 +17,7 @@ use super::Size;
 /// you to use any numerical type for it. Integers, floats, etc.
 ///
 #[derive(Copy, Clone, Debug)]
-pub struct Rect<N> {
+pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy> {
     /// It's x location.
     pub x: N,
 
@@ -32,15 +33,7 @@ pub struct Rect<N> {
     pub height: N,
 }
 
-impl<N> Rect<N>
-    where
-        N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + From<u8>
-        + Copy,
+impl<N: Add + Sub + Mul + Div + Rem + Copy + From<u8>> Rect<N>
 {
     /// Trivial constructor.
     ///
@@ -59,29 +52,27 @@ impl<N> Rect<N>
             height: h,
         }
     }
+}
 
+impl<N: Num<N> + From<u8>> Rect<N> {
     /// Divides the rectangles size by the amount given.
     /// This is done around the centre of the rectangle.
     ///
     /// So this affects both the x/y values, as well as the width and height.
-    pub fn divide_around_centre( &self, divider : N ) -> Rect<N> {
+    pub fn divide_around_centre(
+        &self,
+        divider: N,
+    ) -> Rect<N> {
         Rect {
-            x: self.x + (self.width / divider) / N::from( 2 ),
-            y: self.y + (self.height / divider) / N::from( 2 ),
+            x: self.x + (self.width / divider) / N::from(2),
+            y: self.y + (self.height / divider) / N::from(2),
             width: self.width / divider,
             height: self.height / divider,
         }
     }
 }
 
-impl<N> Add<Point2<N>> for Rect<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Add<Point2<N>> for Rect<N>
 {
     type Output = Self;
 
@@ -98,14 +89,7 @@ where
     }
 }
 
-impl<N> Add<Size<N>> for Rect<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Add<Size<N>> for Rect<N>
 {
     type Output = Self;
 
@@ -122,14 +106,7 @@ where
     }
 }
 
-impl<N> Sub<Point2<N>> for Rect<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Sub<Point2<N>> for Rect<N>
 {
     type Output = Self;
 
@@ -146,14 +123,7 @@ where
     }
 }
 
-impl<N> Sub<Size<N>> for Rect<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Sub<Size<N>> for Rect<N>
 {
     type Output = Self;
 
@@ -170,20 +140,14 @@ where
     }
 }
 
-impl<N> PartialEq for Rect<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy + PartialEq,
+impl<N: Num<N>> PartialEq for Rect<N>
 {
     fn eq(
         &self,
         other: &Self,
     ) -> bool {
-        self.x == other.x && self.y == other.y && self.width == other.width && self.height == other.height
+        self.x == other.x && self.y == other.y && self.width == other.width
+            && self.height == other.height
     }
 }
 
@@ -193,10 +157,6 @@ mod test {
 
     #[test]
     pub fn divide_around_centre() {
-        assert_eq!(
-            Rect::new( 1, 50, 2, 60 ),
-            Rect::new( 0, 20, 4, 120 ).divide_around_centre(2),
-        );
+        assert_eq!(Rect::new(1, 50, 2, 60), Rect::new(0, 20, 4, 120).divide_around_centre(2),);
     }
 }
-

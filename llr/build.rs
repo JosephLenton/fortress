@@ -1,7 +1,6 @@
-//!
 //! Adds the SDL libraries to the link path.
 //! Otherwise they don't get found.
-//!
+//! 
 
 use std::env;
 
@@ -12,4 +11,3 @@ fn main() {
 
     println!("cargo:rustc-link-search=native={}/lib/sdl", out_dir);
 }
-

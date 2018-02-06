@@ -1,14 +1,15 @@
+
 use std::ops::Add;
 use std::ops::Div;
 use std::ops::Mul;
 use std::ops::Rem;
 use std::ops::Sub;
 
+use super::Num;
 use super::Rect;
 use super::Size;
 
 /// A point in 2D space.
-/// 
 #[derive(Debug, Copy, Clone)]
 pub struct Point2<N: Add + Sub + Mul + Div + Rem + Copy> {
     /// It's x location.
@@ -23,7 +24,6 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point2<N> {
     ///
     /// You can make it by hand, or you can use this constructor.
     /// It's all the same to me.
-    /// 
     pub fn new(
         x: N,
         y: N,
@@ -36,7 +36,6 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point2<N> {
 
     /// Creates a new rectangle and returns it.
     /// The rectangle is centred around this point.
-    /// 
     pub fn to_rect(
         self,
         size: Size<N>,
@@ -51,9 +50,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point2<N> {
     }
 }
 
-impl<N> PartialEq for Point2<N>
-where
-    N: Add + Sub + Div + Mul + Rem + Copy + PartialEq,
+impl<N: Num<N>> PartialEq for Point2<N>
 {
     fn eq(
         &self,
@@ -63,14 +60,7 @@ where
     }
 }
 
-impl<N> Add<Self> for Point2<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Add<Self> for Point2<N>
 {
     type Output = Self;
 
@@ -85,14 +75,7 @@ where
     }
 }
 
-impl<N> Add<Size<N>> for Point2<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Add<Size<N>> for Point2<N>
 {
     type Output = Self;
 
@@ -107,14 +90,7 @@ where
     }
 }
 
-impl<N> Sub for Point2<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Sub for Point2<N>
 {
     type Output = Self;
 
@@ -129,14 +105,7 @@ where
     }
 }
 
-impl<N> Sub<Size<N>> for Point2<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Sub<Size<N>> for Point2<N>
 {
     type Output = Self;
 
@@ -151,14 +120,52 @@ where
     }
 }
 
-impl<N> Rem<Self> for Point2<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Mul<Output = N>
-        + Div<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Mul<N> for Point2<N>
+{
+    type Output = Self;
+
+    fn mul(
+        self,
+        other: N,
+    ) -> Self {
+        Point2 {
+            x: (self.x * other),
+            y: (self.y * other),
+        }
+    }
+}
+
+impl<N: Num<N>> Div<N> for Point2<N>
+{
+    type Output = Self;
+
+    fn div(
+        self,
+        other: N,
+    ) -> Self {
+        Point2 {
+            x: (self.x / other),
+            y: (self.y / other),
+        }
+    }
+}
+
+impl<N:Num<N>> Rem<N> for Point2<N>
+{
+    type Output = Self;
+
+    fn rem(
+        self,
+        other: N,
+    ) -> Self {
+        Point2 {
+            x: (self.x % other),
+            y: (self.y % other),
+        }
+    }
+}
+
+impl<N: Num<N>> Rem<Self> for Point2<N>
 {
     type Output = Self;
 
@@ -173,14 +180,7 @@ where
     }
 }
 
-impl<N> Rem<Size<N>> for Point2<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Mul<Output = N>
-        + Div<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Rem<Size<N>> for Point2<N>
 {
     type Output = Self;
 
@@ -191,6 +191,17 @@ where
         Point2 {
             x: (self.x % other.width),
             y: (self.y % other.height),
+        }
+    }
+}
+
+/// For converting Point2 to Size.
+impl<N: Num<N>> Into<Size<N>> for Point2<N>
+{
+    fn into(self) -> Size<N> {
+        Size {
+            width: self.x,
+            height: self.y,
         }
     }
 }

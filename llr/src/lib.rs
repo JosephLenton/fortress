@@ -40,4 +40,3 @@ pub use implementations::LLRSDL2;
 
 /// A terminal based LLR.
 pub use implementations::LLRTerminal;
-

@@ -74,48 +74,30 @@ impl<'a> RenderGame<'a> {
         &mut self,
         llr: &mut LLR,
     ) {
-        let camera_x = self.camera.x();
-        let camera_y = self.camera.y();
-        let window_width = self.window_size.width as f32;
-        let window_height = self.window_size.height as f32;
-        let tile_size = self.tile_size;
+        let camera_pos = self.camera.position();
+        let llr_size = llr.size();
 
         // Work out the area that we are rendering.
         // We want to skip areas outside of the window.
-        let num_game_tiles_x = window_width / tile_size.width;
-        let num_game_tiles_y = window_height / tile_size.height;
-        let top_left_x = ((camera_x as f32) - num_game_tiles_x / 2.0).floor() as i32;
-        let top_left_y = ((camera_y as f32) - num_game_tiles_y / 2.0).floor() as i32;
-        let bottom_right_x = ((camera_x as f32) + num_game_tiles_x / 2.0).ceil() as i32;
-        let bottom_right_y = ((camera_y as f32) + num_game_tiles_y / 2.0).ceil() as i32;
-        let game_width = (bottom_right_x - top_left_x) as u32;
-        let game_height = (bottom_right_y - top_left_y) as u32;
+        let top_left_x = ((camera_pos.x as f32) - (llr_size.width as f32) / 2.0).floor() as i32;
+        let top_left_y = ((camera_pos.y as f32) - (llr_size.height as f32) / 2.0).floor() as i32;
+        let llr_width = llr_size.width + 1;
+        let llr_height = llr_size.height + 1;
 
-        for (tile, x, y) in self.game.slice(top_left_x, top_left_y, game_width, game_height) {
-            let pos = Point2::new(
-                window_width / 2.0 - ((camera_x - x as i32) as f32) * tile_size.width,
-                window_height / 2.0 - ((camera_y - y as i32) as f32) * tile_size.height,
-            );
-
-            self.tile(llr, tile, pos, tile_size);
+        for (tile, draw_pos) in self.game.slice(top_left_x, top_left_y, llr_width, llr_height) {
+            let draw_pos = camera_pos - tile_pos;
+            self.tile(llr, tile, pos);
         }
 
-        let player_pos = Point2::new(
-            window_width / 2.0
-                - ((camera_x - self.game.player.position.x as i32) as f32) * tile_size.width,
-            window_height / 2.0
-                - ((camera_y - self.game.player.position.x as i32) as f32) * tile_size.height,
-        );
-        self.player(llr, player_pos, tile_size);
+        let player_draw_pos = camera_pos - self.game.player.position;
+        self.player(llr, player_pos);
     }
 
     fn player(
         &mut self,
         llr: &mut LLR,
-        pos: Point2<f32>,
-        size: Size<f32>,
+        draw_pos: Point2<f32>,
     ) {
-        let draw_pos = (pos - size / 2.0).to_rect(size);
         let colour = self.theme.get_player();
 
         llr.pixel(colour, draw_pos);
@@ -125,31 +107,10 @@ impl<'a> RenderGame<'a> {
         &mut self,
         llr: &mut LLR,
         tile: GameTile,
-        pos: Point2<f32>,
-        size: Size<f32>,
+        draw_pos: Point2<f32>,
     ) {
         let colour = self.theme.get_game_tile(tile);
-        let draw_rect = (pos - size / 2.0).to_rect(size);
 
-        llr.pixel(colour, draw_rect);
-    }
-
-    pub fn translate_window_to_tile_xy(
-        &self,
-        pos: Point2<f32>,
-    ) -> Rect<f32> {
-        let tile_size = self.tile_size;
-        let tile_pos = pos - (pos % tile_size);
-
-        tile_pos.to_rect(tile_size)
-    }
-
-    pub fn translate_window_to_tile_xy_inner(
-        &self,
-        pos: Point2<f32>,
-    ) -> Rect<f32> {
-        let pos = self.translate_window_to_tile_xy(pos);
-
-        (pos + Point2::new(2.0, 2.0)) - Size::new(4.0, 4.0)
+        llr.pixel(colour, draw_pos);
     }
 }

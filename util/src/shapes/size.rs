@@ -1,15 +1,15 @@
+use std::convert::From;
 use std::ops::Add;
 use std::ops::Div;
 use std::ops::Mul;
 use std::ops::Rem;
 use std::ops::Sub;
-
+use super::Num;
 use super::Point2;
 
 /// A Size is an area of space with no location.
 /// The size of a box, the size of a window, the size of a player.
 /// But they don't have a location.
-/// 
 #[derive(Debug, Copy, Clone)]
 pub struct Size<N: Add + Sub + Mul + Div + Rem + Copy> {
     /// The width of the area.
@@ -23,7 +23,6 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
     /// Trivial constructor.
     ///
     /// Creates a new Size with the width and height given.
-    /// 
     pub fn new(
         width: N,
         height: N,
@@ -35,7 +34,6 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
     }
 
     /// Converts this to a Point2.
-    /// 
     pub fn to_point2(&self) -> Point2<N> {
         Point2 {
             x: self.width,
@@ -44,26 +42,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
     }
 }
 
-impl<N> PartialEq for Size<N>
-where
-    N: Add + Sub + Mul + Div + Rem + Copy + PartialEq,
-{
-    fn eq(
-        &self,
-        other: &Self,
-    ) -> bool {
-        self.width == other.width && self.height == other.height
-    }
-}
-
-impl<N> Add for Size<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Mul<Output = N>
-        + Div<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Add<Size<N>> for Size<N>
 {
     type Output = Self;
 
@@ -78,14 +57,7 @@ where
     }
 }
 
-impl<N> Sub for Size<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Mul<Output = N>
-        + Div<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Sub<Size<N>> for Size<N>
 {
     type Output = Self;
 
@@ -100,14 +72,7 @@ where
     }
 }
 
-impl<N> Mul<N> for Size<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Mul<Output = N>
-        + Div<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Mul<N> for Size<N>
 {
     type Output = Self;
 
@@ -122,14 +87,7 @@ where
     }
 }
 
-impl<N> Div<N> for Size<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Mul<Output = N>
-        + Div<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Div<N> for Size<N>
 {
     type Output = Self;
 
@@ -144,19 +102,39 @@ where
     }
 }
 
-impl<N> Into<Size<N>> for Point2<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Mul<Output = N>
-        + Div<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N:Num<N>> Rem<N> for Size<N>
 {
-    fn into(self) -> Size<N> {
+    type Output = Self;
+
+    fn rem(
+        self,
+        other: N,
+    ) -> Self {
         Size {
-            width: self.x,
-            height: self.y,
+            width: (self.width % other),
+            height: (self.height % other),
+        }
+    }
+}
+
+impl<N: Num<N>> PartialEq for Size<N>
+{
+    fn eq(
+        &self,
+        other: &Self,
+    ) -> bool {
+        self.width == other.width && self.height == other.height
+    }
+}
+
+/// This is to allow creating a new Size, with a new type, from the type given.
+/// i.e. `Size::new(1 as u8, 1 as u8)::to::<f32>()`
+impl<U: Num<U>> Size<U>
+{
+    pub fn to<F: Num<F> + From<U>>(&self) -> Size<F> {
+        Size {
+            width: F::from(self.width),
+            height: F::from(self.height),
         }
     }
 }
@@ -261,5 +239,14 @@ mod tests {
                 height: 5,
             }
         );
+    }
+
+    #[test]
+    pub fn test_from_u8_to_f32() {
+        let size_u8 = Size::new( 4 as u8, 5 as u8 );
+        let size_u32 = Size::new( 4 as u32, 5 as u32 );
+        let size_u8_as_u32 = size_u8.to::<u32>();
+
+        assert_eq!( size_u32, size_u8_as_u32 );
     }
 }

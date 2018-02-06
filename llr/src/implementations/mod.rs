@@ -1,4 +1,3 @@
-
 mod sdl2;
 mod terminal;
 
@@ -7,4 +6,3 @@ pub use self::sdl2::LLRSDL2;
 
 /// Terminal implementation.
 pub use self::terminal::LLRTerminal;
-

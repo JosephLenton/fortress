@@ -1,19 +1,18 @@
-//! Point3 is a position in 3 dimensional space.
-//!
-//! It's a 3D version of the Point2. It offers some interaction with the Point2
-//! as well.
-//! 
+/// Point3 is a position in 3 dimensional space.
+///
+/// It's a 3D version of the Point2. It offers some interaction with the Point2
+/// as well.
 
+use super::Num;
 use std::ops::Add;
-use std::ops::Div;
-use std::ops::Mul;
 use std::ops::Rem;
+use std::ops::Mul;
+use std::ops::Div;
 use std::ops::Sub;
 
 use super::Point2;
 
 /// A location in 3D space.
-/// 
 #[derive(Debug, Copy, Clone)]
 pub struct Point3<N: Add + Sub + Mul + Div + Rem + Copy> {
     /// It's x location.
@@ -31,7 +30,6 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point3<N> {
     ///
     /// You can make it by hand, or you can use this constructor.
     /// It's all the same to me.
-    /// 
     pub fn new(
         x: N,
         y: N,
@@ -45,7 +43,6 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point3<N> {
     }
 
     /// Gets the X and Y values of this location.
-    /// 
     pub fn to_xy(self) -> Point2<N> {
         Point2 {
             x: self.x,
@@ -54,9 +51,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point3<N> {
     }
 }
 
-impl<N> PartialEq for Point3<N>
-where
-    N: Add + Sub + Div + Mul + Rem + Copy + PartialEq,
+impl<N: Num<N>> PartialEq for Point3<N>
 {
     fn eq(
         &self,
@@ -66,14 +61,7 @@ where
     }
 }
 
-impl<N> Add<Self> for Point3<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Add<Self> for Point3<N>
 {
     type Output = Self;
 
@@ -89,14 +77,7 @@ where
     }
 }
 
-impl<N> Add<Point2<N>> for Point3<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Add<Point2<N>> for Point3<N>
 {
     type Output = Self;
 
@@ -112,14 +93,7 @@ where
     }
 }
 
-impl<N> Sub for Point3<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Sub for Point3<N>
 {
     type Output = Self;
 
@@ -135,14 +109,7 @@ where
     }
 }
 
-impl<N> Sub<Point2<N>> for Point3<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Div<Output = N>
-        + Mul<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Sub<Point2<N>> for Point3<N>
 {
     type Output = Self;
 
@@ -158,14 +125,7 @@ where
     }
 }
 
-impl<N> Rem<Self> for Point3<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Mul<Output = N>
-        + Div<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Rem<Self> for Point3<N>
 {
     type Output = Self;
 
@@ -181,14 +141,7 @@ where
     }
 }
 
-impl<N> Rem<Point2<N>> for Point3<N>
-where
-    N: Add<Output = N>
-        + Sub<Output = N>
-        + Mul<Output = N>
-        + Div<Output = N>
-        + Rem<Output = N>
-        + Copy,
+impl<N: Num<N>> Rem<Point2<N>> for Point3<N>
 {
     type Output = Self;
 

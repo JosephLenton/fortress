@@ -1,4 +1,3 @@
-
 use util::colour::RGBA;
 
 /// All information to use when drawing.
@@ -14,4 +13,3 @@ pub struct LLRPixel {
     /// This is the display character to display the tile.
     pub character: char,
 }
-

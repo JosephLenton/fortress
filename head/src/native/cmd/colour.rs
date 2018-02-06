@@ -3,7 +3,7 @@ use util::colour::RGBA;
 
 /// Converts the pixel to it's colour, and then returns the command version
 /// of that colour.
-pub fn pixel_to_cmd_code(pixel : LLRPixel) -> String {
+pub fn pixel_to_cmd_code(pixel: LLRPixel) -> String {
     let foreground = to_foreground_colour_code(pixel.foreground);
     let background = to_background_colour_code(pixel.background);
 

@@ -5,7 +5,9 @@
 //!
 //! It's mostly maths related code. Like points, shapes,
 //! and colours.
-//! 
+//!
+
+#![feature(associated_type_defaults)]
 
 pub mod shapes;
 pub mod colour;
