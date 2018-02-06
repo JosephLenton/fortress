@@ -25,9 +25,9 @@ pub fn print_map(
 ) -> io::Result<()> {
     let theme = Theme::new();
 
-    for (tile, x, y) in map.slice_all() {
+    for (tile, pos) in map.slice_all() {
         // This is for the previous line, if we just ended it.
-        if x == 0 && y > 0 {
+        if pos.x == 0 && pos.y > 0 {
             print_end_of_line(out, has_colour)?;
         }
 

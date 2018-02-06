@@ -37,7 +37,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy + From<u8>> Rect<N> {
     /// Trivial constructor.
     ///
     /// Creates a new Rect with the size given.
-    pub fn new(
+    pub const fn new(
         x: N,
         y: N,
         w: N,

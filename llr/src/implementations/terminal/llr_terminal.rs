@@ -1,6 +1,7 @@
 use LLR;
 use LLRPixel;
-use util::shapes::Rect;
+use util::shapes::Point2;
+use util::shapes::Size;
 
 pub struct LLRTerminal {}
 
@@ -19,7 +20,7 @@ impl LLR for LLRTerminal {
     fn pixel(
         &mut self,
         pixel: LLRPixel,
-        rectable: Rect<f32>,
+        pos: Point2<u16>,
     ) -> Result<(), String> {
         // TODO
         Ok(())
@@ -27,5 +28,10 @@ impl LLR for LLRTerminal {
 
     fn finished_drawing(&mut self) -> () {
         // TODO
+    }
+
+    fn size(&self) -> Size<u16> {
+        // TODO
+        Size::new(1, 1)
     }
 }

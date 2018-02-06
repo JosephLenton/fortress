@@ -23,7 +23,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point2<N> {
     ///
     /// You can make it by hand, or you can use this constructor.
     /// It's all the same to me.
-    pub fn new(
+    pub const fn new(
         x: N,
         y: N,
     ) -> Point2<N> {
@@ -35,7 +35,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point2<N> {
 
     /// Creates a new rectangle and returns it.
     /// The rectangle is centred around this point.
-    pub fn to_rect(
+    pub fn combine(
         self,
         size: Size<N>,
     ) -> Rect<N> {
@@ -128,6 +128,20 @@ impl<N: Num<N>> Mul<N> for Point2<N> {
     }
 }
 
+impl<N: Num<N>> Mul<Size<N>> for Point2<N> {
+    type Output = Self;
+
+    fn mul(
+        self,
+        other: Size<N>,
+    ) -> Self {
+        Point2 {
+            x: (self.x * other.width),
+            y: (self.y * other.height),
+        }
+    }
+}
+
 impl<N: Num<N>> Div<N> for Point2<N> {
     type Output = Self;
 
@@ -138,6 +152,20 @@ impl<N: Num<N>> Div<N> for Point2<N> {
         Point2 {
             x: (self.x / other),
             y: (self.y / other),
+        }
+    }
+}
+
+impl<N: Num<N>> Div<Size<N>> for Point2<N> {
+    type Output = Self;
+
+    fn div(
+        self,
+        other: Size<N>,
+    ) -> Self {
+        Point2 {
+            x: (self.x / other.width),
+            y: (self.y / other.height),
         }
     }
 }

@@ -16,12 +16,12 @@ pub trait LLR {
     fn pixel(
         &mut self,
         pixel: LLRPixel,
-        pos: Point2<i32>,
+        pos: Point2<u16>,
     ) -> Result<(), String>;
 
     /// Call when all the drawing is over for the current loop.
     fn finished_drawing(&mut self) -> ();
 
     /// Returns the size of the LLR in pixel tiles.
-    fn size(&self) -> Size<u32>;
+    fn size(&self) -> Size<u16>;
 }

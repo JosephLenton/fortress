@@ -8,6 +8,7 @@
 //!
 
 #![feature(associated_type_defaults)]
+#![feature(const_fn)]
 
 pub mod shapes;
 pub mod colour;

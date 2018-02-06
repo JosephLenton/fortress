@@ -7,7 +7,7 @@ RUST_BACKTRACE := 1
 
 run_cmd := cmd.exe /C
 run_cargo := cargo.exe
-run_cargo_stable := $(run_cmd) set RUST_BACKTRACE=$(RUST_BACKTRACE) \&\& set RUSTFLAGS=$(RUSTFLAGS) \&\& $(run_cargo) +stable
+run_cargo_stable := $(run_cmd) set RUST_BACKTRACE=$(RUST_BACKTRACE) \&\& set RUSTFLAGS=$(RUSTFLAGS) \&\& $(run_cargo) +nightly
 run_cargo_nightly := $(run_cmd) set RUST_BACKTRACE=$(RUST_BACKTRACE) \&\& set RUSTFLAGS=$(RUSTFLAGS) \&\& $(run_cargo) +nightly
 
 .DEFAULT_GOAL := default

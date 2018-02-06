@@ -29,7 +29,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point3<N> {
     ///
     /// You can make it by hand, or you can use this constructor.
     /// It's all the same to me.
-    pub fn new(
+    pub const fn new(
         x: N,
         y: N,
         z: N,

@@ -23,7 +23,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
     /// Trivial constructor.
     ///
     /// Creates a new Size with the width and height given.
-    pub fn new(
+    pub const fn new(
         width: N,
         height: N,
     ) -> Size<N> {
@@ -34,7 +34,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
     }
 
     /// Converts this to a Point2.
-    pub fn to_point2(&self) -> Point2<N> {
+    pub const fn to_point2(&self) -> Point2<N> {
         Point2 {
             x: self.width,
             y: self.height,
@@ -84,6 +84,20 @@ impl<N: Num<N>> Mul<N> for Size<N> {
     }
 }
 
+impl<N: Num<N>> Mul<Size<N>> for Size<N> {
+    type Output = Self;
+
+    fn mul(
+        self,
+        other: Size<N>,
+    ) -> Self {
+        Size {
+            width: (self.width * other.width),
+            height: (self.height * other.height),
+        }
+    }
+}
+
 impl<N: Num<N>> Div<N> for Size<N> {
     type Output = Self;
 
@@ -94,6 +108,20 @@ impl<N: Num<N>> Div<N> for Size<N> {
         Size {
             width: (self.width / other),
             height: (self.height / other),
+        }
+    }
+}
+
+impl<N: Num<N>> Div<Size<N>> for Size<N> {
+    type Output = Self;
+
+    fn div(
+        self,
+        other: Size<N>,
+    ) -> Self {
+        Size {
+            width: (self.width / other.width),
+            height: (self.height / other.height),
         }
     }
 }

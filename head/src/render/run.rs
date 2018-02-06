@@ -20,7 +20,7 @@ pub fn run<'a>(
 ) {
     let theme = Theme::new();
     let mut llr = LLRSDL2::new(setup);
-    let mut rgame = RenderGame::new(&game, &theme, setup.tile_size, setup.window_size);
+    let mut rgame = RenderGame::new(&game, &theme);
     let mut cursor =
         Cursor::new(setup.window_size.width as f32 / 2.0, setup.window_size.height as f32 / 2.0);
 
@@ -45,7 +45,7 @@ pub fn run<'a>(
                 win_event: WindowEvent::Resized(width, height),
                 ..
             } => {
-                rgame.on_resize(width as u32, height as u32);
+                // TODO
             },
 
             // User Input
