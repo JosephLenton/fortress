@@ -1,4 +1,5 @@
-use super::Num;
+use num_types::FromClamped;
+use num_types::Num;
 use super::Point;
 use std::convert::From;
 use std::ops::Add;
@@ -19,7 +20,7 @@ pub struct Size<N: Add + Sub + Mul + Div + Rem + Copy> {
     pub height: N,
 }
 
-impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
+impl<N: Add + Sub + Mul<Output = N> + Div + Rem + Copy> Size<N> {
     /// Trivial constructor.
     ///
     /// Creates a new Size with the width and height given.
@@ -43,7 +44,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
 
     /// The area of the size.
     /// Returns width * height.
-    pub const fn area(&self) -> N {
+    pub fn area(&self) -> N {
         self.width * self.height
     }
 }
@@ -247,11 +248,23 @@ impl<N: Num<N>> PartialEq for Size<N> {
 
 /// This is to allow creating a new Size, with a new type, from the type given.
 /// i.e. `Size::new(1 as u8, 1 as u8)::to::<f32>()`
-impl<U: Num<U>> Size<U> {
-    pub fn to<F: Num<F> + From<U>>(&self) -> Size<F> {
+impl<A: Num<A>> Size<A> {
+    pub fn to<B: Num<B> + From<A>>(&self) -> Size<B> {
         Size {
-            width: F::from(self.width),
-            height: F::from(self.height),
+            width: B::from(self.width),
+            height: B::from(self.height),
+        }
+    }
+}
+
+/// Converts to a new type. If the current values don't fit in the new type,
+/// then it'll be clamped between min and max.
+/// i.e. `Size::new(1 as i16, 1 as i16)::to::<u16>()`
+impl<A: Num<A>> Size<A> {
+    pub fn to_clamped<B: Num<B> + FromClamped<A>>(&self) -> Size<B> {
+        Size {
+            width: B::from_clamped(self.width),
+            height: B::from_clamped(self.height),
         }
     }
 }

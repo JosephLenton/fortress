@@ -23,7 +23,7 @@ impl<T: Copy> Map<T> {
     ) -> Map<T> {
         Map {
             size : size,
-            data: vec![default; size::to_clamped::<usize>().area()],
+            data: vec![default; size::from_clamped::<usize>().area()],
         }
     }
 

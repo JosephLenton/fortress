@@ -4,7 +4,8 @@ use std::ops::Mul;
 use std::ops::Rem;
 use std::ops::Sub;
 
-use super::Num;
+use num_types::Num;
+
 use super::Rect;
 use super::Size;
 

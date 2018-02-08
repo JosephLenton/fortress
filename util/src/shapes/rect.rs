@@ -6,7 +6,7 @@ use std::ops::Mul;
 use std::ops::Rem;
 use std::ops::Sub;
 
-use super::Num;
+use num_types::Num;
 
 use super::Point;
 use super::Size;
@@ -15,7 +15,7 @@ use super::Size;
 ///
 /// It has a position, and a size. It's generic parameter allows
 /// you to use any numerical type for it. Integers, floats, etc.
-/// 
+///
 #[derive(Copy, Clone, Debug)]
 pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy> {
     /// It's x location.
