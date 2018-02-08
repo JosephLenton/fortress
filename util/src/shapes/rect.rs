@@ -1,3 +1,4 @@
+use num_types::FromClamped;
 use std::convert::From;
 
 use std::ops::Add;
@@ -142,6 +143,34 @@ impl<N: Num<N>> PartialEq for Rect<N> {
     ) -> bool {
         self.x == other.x && self.y == other.y && self.width == other.width
             && self.height == other.height
+    }
+}
+
+/// This is to allow creating a new Rect, with a new type, from the type given.
+/// i.e. `Rect::new(1 as u8, 1 as u8)::to::<u32>()`
+impl<U: Num<U>> Rect<U> {
+    pub fn to<F: Num<F> + From<U>>(&self) -> Rect<F> {
+        Rect {
+            x: F::from(self.x),
+            y: F::from(self.y),
+            width: F::from(self.width),
+            height: F::from(self.height),
+        }
+    }
+}
+
+
+/// Converts to a new type. If the current values don't fit in the new type,
+/// then it'll be clamped between min and max.
+/// i.e. `Rect::new(1 as i16, 1 as i16)::to::<u16>()`
+impl<A: Num<A>> Rect<A> {
+    pub fn to_clamped<B: Num<B> + FromClamped<A>>(&self) -> Rect<B> {
+        Rect {
+            x: B::from_clamped(self.x),
+            y: B::from_clamped(self.y),
+            width: B::from_clamped(self.width),
+            height: B::from_clamped(self.height),
+        }
     }
 }
 

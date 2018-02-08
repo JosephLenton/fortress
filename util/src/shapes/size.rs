@@ -1,6 +1,6 @@
+use super::Point;
 use num_types::FromClamped;
 use num_types::Num;
-use super::Point;
 use std::convert::From;
 use std::ops::Add;
 use std::ops::Div;

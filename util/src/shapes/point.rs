@@ -1,3 +1,4 @@
+use num_types::FromClamped;
 use std::ops::Add;
 use std::ops::Div;
 use std::ops::Mul;
@@ -230,6 +231,18 @@ impl<U: Num<U>> Point<U> {
         Point {
             x: F::from(self.x),
             y: F::from(self.y),
+        }
+    }
+}
+
+/// Converts to a new type. If the current values don't fit in the new type,
+/// then it'll be clamped between min and max.
+/// i.e. `Point::new(1 as i16, 1 as i16)::to::<u16>()`
+impl<A: Num<A>> Point<A> {
+    pub fn to_clamped<B: Num<B> + FromClamped<A>>(&self) -> Point<B> {
+        Point {
+            x: B::from_clamped(self.x),
+            y: B::from_clamped(self.y),
         }
     }
 }
