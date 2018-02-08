@@ -3,7 +3,9 @@ use LLRPixel;
 use util::shapes::Point2;
 use util::shapes::Size;
 
-pub struct LLRTerminal {}
+pub struct LLRTerminal {
+    screen : &
+}
 
 impl LLRTerminal {
     /// Trivial constructor.
@@ -22,7 +24,12 @@ impl LLR for LLRTerminal {
         pixel: LLRPixel,
         pos: Point2<u16>,
     ) -> Result<(), String> {
-        // TODO
+        let size = this.size();
+
+        if pos.x < size.width || pos.y < size.height {
+            self.screen[pos.x][pos.y] = pixel
+        }
+
         Ok(())
     }
 

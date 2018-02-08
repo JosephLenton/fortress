@@ -40,6 +40,12 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
             y: self.height,
         }
     }
+
+    /// The area of the size.
+    /// Returns width * height.
+    pub const fn area(&self) -> N {
+        self.width * self.height
+    }
 }
 
 impl Size<u8> {
