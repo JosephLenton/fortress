@@ -1,8 +1,8 @@
-use util::shapes::Point2;
+use util::shapes::Point;
 
 pub struct Cursor {
-    pos: Point2<f32>,
-    start_pos: Point2<f32>,
+    pos: Point<f32>,
+    start_pos: Point<f32>,
 
     is_down: bool,
 }
@@ -13,14 +13,14 @@ impl Cursor {
         y: f32,
     ) -> Cursor {
         return Cursor {
-            pos: Point2::new(x, y),
-            start_pos: Point2::new(x, y),
+            pos: Point::new(x, y),
+            start_pos: Point::new(x, y),
 
             is_down: false,
         };
     }
 
-    pub fn to_xy(&self) -> Point2<f32> {
+    pub fn to_xy(&self) -> Point<f32> {
         return self.pos;
     }
 
@@ -35,7 +35,7 @@ impl Cursor {
 
     pub fn xy(
         &mut self,
-        pos: Point2<f32>,
+        pos: Point<f32>,
     ) {
         self.pos = pos;
     }

@@ -1,5 +1,5 @@
 use super::Num;
-use super::Point2;
+use super::Point;
 use std::convert::From;
 use std::ops::Add;
 use std::ops::Div;
@@ -33,9 +33,9 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
         }
     }
 
-    /// Converts this to a Point2.
-    pub const fn to_point2(&self) -> Point2<N> {
-        Point2 {
+    /// Converts this to a Point.
+    pub const fn to_point2(&self) -> Point<N> {
+        Point {
             x: self.width,
             y: self.height,
         }
@@ -50,61 +50,91 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Size<N> {
 
 impl Size<u8> {
     pub const fn zero() -> Self {
-        Size { width: 0, height: 0 }
+        Size {
+            width: 0,
+            height: 0,
+        }
     }
 }
 
 impl Size<u16> {
     pub const fn zero() -> Self {
-        Size { width: 0, height: 0 }
+        Size {
+            width: 0,
+            height: 0,
+        }
     }
 }
 
 impl Size<i16> {
     pub const fn zero() -> Self {
-        Size { width: 0, height: 0 }
+        Size {
+            width: 0,
+            height: 0,
+        }
     }
 }
 
 impl Size<u32> {
     pub const fn zero() -> Self {
-        Size { width: 0, height: 0 }
+        Size {
+            width: 0,
+            height: 0,
+        }
     }
 }
 
 impl Size<i32> {
     pub const fn zero() -> Self {
-        Size { width: 0, height: 0 }
+        Size {
+            width: 0,
+            height: 0,
+        }
     }
 }
 
 impl Size<u64> {
     pub const fn zero() -> Self {
-        Size { width: 0, height: 0 }
+        Size {
+            width: 0,
+            height: 0,
+        }
     }
 }
 
 impl Size<i64> {
     pub const fn zero() -> Self {
-        Size { width: 0, height: 0 }
+        Size {
+            width: 0,
+            height: 0,
+        }
     }
 }
 
 impl Size<f32> {
     pub const fn zero() -> Self {
-        Size { width: 0.0, height: 0.0 }
+        Size {
+            width: 0.0,
+            height: 0.0,
+        }
     }
 }
 
 impl Size<f64> {
     pub const fn zero() -> Self {
-        Size { width: 0.0, height: 0.0 }
+        Size {
+            width: 0.0,
+            height: 0.0,
+        }
     }
 }
 
 impl Size<usize> {
     pub const fn zero() -> Self {
-        Size { width: 0, height: 0 }
+        Size {
+            width: 0,
+            height: 0,
+        }
     }
 }
 
@@ -234,7 +264,10 @@ mod tests {
     fn test_default() {
         assert_eq!(
             Size::default(),
-            Size { width: 0, height: 0 },
+            Size {
+                width: 0,
+                height: 0,
+            },
         );
     }
 
@@ -266,7 +299,7 @@ mod tests {
     #[test]
     fn to_point2() {
         assert_eq!(
-            Point2 {
+            Point {
                 x: 1,
                 y: 5,
             },

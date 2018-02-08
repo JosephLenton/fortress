@@ -1,6 +1,6 @@
 use LLR;
 use LLRPixel;
-use util::shapes::Point2;
+use util::shapes::Point;
 use util::shapes::Size;
 
 pub struct LLRTerminal {
@@ -22,7 +22,7 @@ impl LLR for LLRTerminal {
     fn pixel(
         &mut self,
         pixel: LLRPixel,
-        pos: Point2<u16>,
+        pos: Point<u16>,
     ) -> Result<(), String> {
         let size = this.size();
 

@@ -12,7 +12,7 @@ use render::render_game::RenderGame;
 
 use game::Game;
 
-use util::shapes::Point2;
+use util::shapes::Point;
 
 pub fn run<'a>(
     setup: LLROptions,
@@ -91,7 +91,7 @@ pub fn run<'a>(
                 y,
                 ..
             } => {
-                cursor.xy(Point2::new(x as f32, y as f32));
+                cursor.xy(Point::new(x as f32, y as f32));
             },
 
             Event::MouseWheel {

@@ -1,5 +1,5 @@
 use std::iter::Iterator;
-use util::shapes::Point2;
+use util::shapes::Point;
 
 /// Holds the data for a Matrix.
 ///
@@ -30,7 +30,7 @@ impl<T: Copy> Map<T> {
     /// Returns the tile at the position given.
     pub fn get(
         &self,
-        pos : Point2<u16>,
+        pos : Point<u16>,
     ) -> T {
         let index = map_index(pos, self.size);
 
@@ -40,7 +40,7 @@ impl<T: Copy> Map<T> {
     /// Sets a tile at the position given.
     pub fn set(
         &mut self,
-        pos : Point2<u16>,
+        pos : Point<u16>,
         tile: T,
     ) -> () {
         let index = map_index(pos, self.size);
@@ -55,17 +55,17 @@ impl<T: Copy> Map<T> {
 
     /// Returns a slice which encompasses the entire map.
     pub fn iter(&self) -> MatrixIterator<T> {
-        self.iter_of(Point2::new(0, 0), self.size)
+        self.iter_of(Point::new(0, 0), self.size)
     }
 
     /// Allows you to iterate over a sub section of this map.
     pub fn iter_of(
         &self,
         area : Rect<u16>,
-        pos : Point2<u16>,
+        pos : Point<u16>,
         size : Size<u16>,
     ) -> MatrixIterator<T> {
-        let data_rect = Point2::new(0, 0).to_rect(self.size);
+        let data_rect = Point::new(0, 0).to_rect(self.size);
         let iterate_area = area.clamp_within( data_rect )
 
         MatrixIterator {
@@ -99,7 +99,7 @@ impl<'a, T: Copy> Iterator for MatrixIterator<'a, T> {
 
         let i = map_index(self.x, self.y, self.w, self.h);
         let data = self.data[i];
-        let pos = Point2::new(self.x, self.y);
+        let pos = Point::new(self.x, self.y);
 
         let result = Some((data, pos));
 
@@ -119,10 +119,10 @@ impl<'a, T: Copy> Iterator for MatrixIterator<'a, T> {
     }
 }
 
-type MapIteratorItem<T> = (T, Point2<u32>);
+type MapIteratorItem<T> = (T, Point<u32>);
 
 fn map_index(
-    pos : Point2<u16>,
+    pos : Point<u16>,
     size : Size<u16>,
 ) -> usize {
     (pos.y * size.height + pos.x) as usize

@@ -1,5 +1,5 @@
 use LLRPixel;
-use util::shapes::Point2;
+use util::shapes::Point;
 use util::shapes::Size;
 
 /// Represents rendering.
@@ -16,7 +16,7 @@ pub trait LLR {
     fn pixel(
         &mut self,
         pixel: LLRPixel,
-        pos: Point2<u16>,
+        pos: Point<u16>,
     ) -> Result<(), String>;
 
     /// Call when all the drawing is over for the current loop.

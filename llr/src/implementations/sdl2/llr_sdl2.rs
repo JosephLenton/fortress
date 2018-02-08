@@ -12,7 +12,7 @@ use sdl2::render::WindowCanvas;
 
 use super::to_sdl2::*;
 
-use util::shapes::Point2;
+use util::shapes::Point;
 use util::shapes::Size;
 
 /// An SDL2 based LLR.
@@ -71,7 +71,7 @@ impl LLR for LLRSDL2 {
     fn pixel(
         &mut self,
         pixel: LLRPixel,
-        pos: Point2<u16>,
+        pos: Point<u16>,
     ) -> Result<(), String> {
         let tile_size = self.options.tile_size.to::<f32>();
         let draw_pos = pos.to::<f32>() * tile_size;

@@ -10,7 +10,7 @@ use super::Size;
 
 /// A point in 2D space.
 #[derive(Debug, Copy, Clone)]
-pub struct Point2<N: Add + Sub + Mul + Div + Rem + Copy> {
+pub struct Point<N: Add + Sub + Mul + Div + Rem + Copy> {
     /// It's x location.
     pub x: N,
 
@@ -18,7 +18,7 @@ pub struct Point2<N: Add + Sub + Mul + Div + Rem + Copy> {
     pub y: N,
 }
 
-impl<N: Add + Sub + Mul + Div + Rem + Copy> Point2<N> {
+impl<N: Add + Sub + Mul + Div + Rem + Copy> Point<N> {
     /// Trivial constructor.
     ///
     /// You can make it by hand, or you can use this constructor.
@@ -26,8 +26,8 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point2<N> {
     pub const fn new(
         x: N,
         y: N,
-    ) -> Point2<N> {
-        Point2 {
+    ) -> Point<N> {
+        Point {
             x: x,
             y: y,
         }
@@ -49,7 +49,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point2<N> {
     }
 }
 
-impl<N: Num<N>> PartialEq for Point2<N> {
+impl<N: Num<N>> PartialEq for Point<N> {
     fn eq(
         &self,
         other: &Self,
@@ -58,162 +58,162 @@ impl<N: Num<N>> PartialEq for Point2<N> {
     }
 }
 
-impl<N: Num<N>> Add<Self> for Point2<N> {
+impl<N: Num<N>> Add<Self> for Point<N> {
     type Output = Self;
 
     fn add(
         self,
         other: Self,
     ) -> Self {
-        Point2 {
+        Point {
             x: (self.x + other.x),
             y: (self.y + other.y),
         }
     }
 }
 
-impl<N: Num<N>> Add<Size<N>> for Point2<N> {
+impl<N: Num<N>> Add<Size<N>> for Point<N> {
     type Output = Self;
 
     fn add(
         self,
         other: Size<N>,
     ) -> Self {
-        Point2 {
+        Point {
             x: (self.x + other.width),
             y: (self.y + other.height),
         }
     }
 }
 
-impl<N: Num<N>> Sub for Point2<N> {
+impl<N: Num<N>> Sub for Point<N> {
     type Output = Self;
 
     fn sub(
         self,
         other: Self,
     ) -> Self {
-        Point2 {
+        Point {
             x: (self.x - other.x),
             y: (self.y - other.y),
         }
     }
 }
 
-impl<N: Num<N>> Sub<Size<N>> for Point2<N> {
+impl<N: Num<N>> Sub<Size<N>> for Point<N> {
     type Output = Self;
 
     fn sub(
         self,
         other: Size<N>,
     ) -> Self {
-        Point2 {
+        Point {
             x: (self.x - other.width),
             y: (self.y - other.height),
         }
     }
 }
 
-impl<N: Num<N>> Mul<N> for Point2<N> {
+impl<N: Num<N>> Mul<N> for Point<N> {
     type Output = Self;
 
     fn mul(
         self,
         other: N,
     ) -> Self {
-        Point2 {
+        Point {
             x: (self.x * other),
             y: (self.y * other),
         }
     }
 }
 
-impl<N: Num<N>> Mul<Size<N>> for Point2<N> {
+impl<N: Num<N>> Mul<Size<N>> for Point<N> {
     type Output = Self;
 
     fn mul(
         self,
         other: Size<N>,
     ) -> Self {
-        Point2 {
+        Point {
             x: (self.x * other.width),
             y: (self.y * other.height),
         }
     }
 }
 
-impl<N: Num<N>> Div<N> for Point2<N> {
+impl<N: Num<N>> Div<N> for Point<N> {
     type Output = Self;
 
     fn div(
         self,
         other: N,
     ) -> Self {
-        Point2 {
+        Point {
             x: (self.x / other),
             y: (self.y / other),
         }
     }
 }
 
-impl<N: Num<N>> Div<Size<N>> for Point2<N> {
+impl<N: Num<N>> Div<Size<N>> for Point<N> {
     type Output = Self;
 
     fn div(
         self,
         other: Size<N>,
     ) -> Self {
-        Point2 {
+        Point {
             x: (self.x / other.width),
             y: (self.y / other.height),
         }
     }
 }
 
-impl<N: Num<N>> Rem<N> for Point2<N> {
+impl<N: Num<N>> Rem<N> for Point<N> {
     type Output = Self;
 
     fn rem(
         self,
         other: N,
     ) -> Self {
-        Point2 {
+        Point {
             x: (self.x % other),
             y: (self.y % other),
         }
     }
 }
 
-impl<N: Num<N>> Rem<Self> for Point2<N> {
+impl<N: Num<N>> Rem<Self> for Point<N> {
     type Output = Self;
 
     fn rem(
         self,
         other: Self,
     ) -> Self {
-        Point2 {
+        Point {
             x: (self.x % other.x),
             y: (self.y % other.y),
         }
     }
 }
 
-impl<N: Num<N>> Rem<Size<N>> for Point2<N> {
+impl<N: Num<N>> Rem<Size<N>> for Point<N> {
     type Output = Self;
 
     fn rem(
         self,
         other: Size<N>,
     ) -> Self {
-        Point2 {
+        Point {
             x: (self.x % other.width),
             y: (self.y % other.height),
         }
     }
 }
 
-/// For converting Point2 to Size.
-impl<N: Num<N>> Into<Size<N>> for Point2<N> {
+/// For converting Point to Size.
+impl<N: Num<N>> Into<Size<N>> for Point<N> {
     fn into(self) -> Size<N> {
         Size {
             width: self.x,
@@ -223,10 +223,10 @@ impl<N: Num<N>> Into<Size<N>> for Point2<N> {
 }
 
 /// This is to allow creating a new Point, with a new type, from the type given.
-/// i.e. `Point2::new(1 as u8, 1 as u8)::to::<u32>()`
-impl<U: Num<U>> Point2<U> {
-    pub fn to<F: Num<F> + From<U>>(&self) -> Point2<F> {
-        Point2 {
+/// i.e. `Point::new(1 as u8, 1 as u8)::to::<u32>()`
+impl<U: Num<U>> Point<U> {
+    pub fn to<F: Num<F> + From<U>>(&self) -> Point<F> {
+        Point {
             x: F::from(self.x),
             y: F::from(self.y),
         }
@@ -240,11 +240,11 @@ mod tests {
     #[test]
     fn create() {
         assert_eq!(
-            Point2 {
+            Point {
                 x: 1,
                 y: 5,
             },
-            Point2 {
+            Point {
                 x: 1,
                 y: 5,
             }
@@ -254,39 +254,39 @@ mod tests {
     #[test]
     fn new() {
         assert_eq!(
-            Point2 {
+            Point {
                 x: 1,
                 y: 5,
             },
-            Point2::new(1, 5)
+            Point::new(1, 5)
         );
     }
 
     #[test]
     fn add() {
         assert_eq!(
-            Point2 {
+            Point {
                 x: 1,
                 y: 5,
-            } + Point2 {
+            } + Point {
                 x: 93,
                 y: 28,
             },
-            Point2 {
+            Point {
                 x: 94,
                 y: 33,
             }
         );
 
         assert_eq!(
-            Point2 {
+            Point {
                 x: 50,
                 y: 10,
-            } + Point2 {
+            } + Point {
                 x: 100,
                 y: 5,
             },
-            Point2 {
+            Point {
                 x: 150,
                 y: 15,
             }
@@ -296,28 +296,28 @@ mod tests {
     #[test]
     fn add_size() {
         assert_eq!(
-            Point2 {
+            Point {
                 x: 1,
                 y: 5,
             } + Size {
                 width: 93,
                 height: 28,
             },
-            Point2 {
+            Point {
                 x: 94,
                 y: 33,
             }
         );
 
         assert_eq!(
-            Point2 {
+            Point {
                 x: 50,
                 y: 10,
             } + Size {
                 width: 100,
                 height: 5,
             },
-            Point2 {
+            Point {
                 x: 150,
                 y: 15,
             }
@@ -327,28 +327,28 @@ mod tests {
     #[test]
     fn sub() {
         assert_eq!(
-            Point2 {
+            Point {
                 x: 60,
                 y: 30,
-            } - Point2 {
+            } - Point {
                 x: 1,
                 y: 5,
             },
-            Point2 {
+            Point {
                 x: 59,
                 y: 25,
             }
         );
 
         assert_eq!(
-            Point2 {
+            Point {
                 x: 50,
                 y: 10,
-            } - Point2 {
+            } - Point {
                 x: 100,
                 y: 5,
             },
-            Point2 {
+            Point {
                 x: -50,
                 y: 5,
             }
@@ -358,28 +358,28 @@ mod tests {
     #[test]
     fn sub_size() {
         assert_eq!(
-            Point2 {
+            Point {
                 x: 60,
                 y: 30,
             } - Size {
                 width: 1,
                 height: 5,
             },
-            Point2 {
+            Point {
                 x: 59,
                 y: 25,
             }
         );
 
         assert_eq!(
-            Point2 {
+            Point {
                 x: 50,
                 y: 10,
             } - Size {
                 width: 100,
                 height: 5,
             },
-            Point2 {
+            Point {
                 x: -50,
                 y: 5,
             }
@@ -388,8 +388,8 @@ mod tests {
 
     #[test]
     pub fn test_from_u8_to_u32() {
-        let point_u8 = Point2::new(4 as u8, 5 as u8);
-        let point_u32 = Point2::new(4 as u32, 5 as u32);
+        let point_u8 = Point::new(4 as u8, 5 as u8);
+        let point_u32 = Point::new(4 as u32, 5 as u32);
         let point_u8_as_u32 = point_u8.to::<u32>();
 
         assert_eq!(point_u32, point_u8_as_u32);

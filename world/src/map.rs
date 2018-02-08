@@ -1,5 +1,5 @@
 use std::iter::Iterator;
-use util::shapes::Point2;
+use util::shapes::Point;
 
 /// Holds the data for a Map.
 pub struct Map<T: Copy> {
@@ -177,7 +177,7 @@ impl<'a, T: Copy> Iterator for MapIterator<'a, T> {
 
         let i = map_index(self.x, self.y, self.w, self.h);
         let data = self.data[i];
-        let pos = Point2::new(self.x, self.y);
+        let pos = Point::new(self.x, self.y);
 
         let result = Some((data, pos));
 
@@ -197,7 +197,7 @@ impl<'a, T: Copy> Iterator for MapIterator<'a, T> {
     }
 }
 
-type MapIteratorItem<T> = (T, Point2<u32>);
+type MapIteratorItem<T> = (T, Point<u32>);
 
 fn map_index(
     x: u32,

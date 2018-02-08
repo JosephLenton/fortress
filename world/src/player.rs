@@ -1,11 +1,11 @@
-use util::shapes::Point2;
+use util::shapes::Point;
 
 /// This represents a player in the world.
 /// 
 pub struct Player {
     /// The players location in the world.
     /// 
-    pub position: Point2<u32>,
+    pub position: Point<u32>,
 }
 
 impl Player {
@@ -16,7 +16,7 @@ impl Player {
         y: u32,
     ) -> Player {
         Player {
-            position: Point2::<u32> {
+            position: Point::<u32> {
                 x: x,
                 y: y,
             },

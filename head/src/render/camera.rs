@@ -1,12 +1,12 @@
-use util::shapes::Point2;
+use util::shapes::Point;
 
 pub struct Camera {
     zoom: f32,
-    pos: Point2<i32>,
+    pos: Point<i32>,
 }
 
 impl Camera {
-    pub fn new(pos: Point2<i32>) -> Camera {
+    pub fn new(pos: Point<i32>) -> Camera {
         return Camera {
             zoom: 1.0,
             pos: pos,
@@ -33,13 +33,13 @@ impl Camera {
         }
     }
 
-    pub fn position(&self) -> Point2<i32> {
+    pub fn position(&self) -> Point<i32> {
         self.pos
     }
 
     pub fn move_position(
         &mut self,
-        pos_move: Point2<i32>,
+        pos_move: Point<i32>,
     ) {
         self.pos = self.pos + pos_move;
     }

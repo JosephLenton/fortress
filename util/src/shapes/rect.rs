@@ -8,7 +8,7 @@ use std::ops::Sub;
 
 use super::Num;
 
-use super::Point2;
+use super::Point;
 use super::Size;
 
 /// A rectangle.
@@ -71,12 +71,12 @@ impl<N: Num<N> + From<u8>> Rect<N> {
     }
 }
 
-impl<N: Num<N>> Add<Point2<N>> for Rect<N> {
+impl<N: Num<N>> Add<Point<N>> for Rect<N> {
     type Output = Self;
 
     fn add(
         self,
-        other: Point2<N>,
+        other: Point<N>,
     ) -> Self {
         Rect {
             x: (self.x + other.x),
@@ -103,12 +103,12 @@ impl<N: Num<N>> Add<Size<N>> for Rect<N> {
     }
 }
 
-impl<N: Num<N>> Sub<Point2<N>> for Rect<N> {
+impl<N: Num<N>> Sub<Point<N>> for Rect<N> {
     type Output = Self;
 
     fn sub(
         self,
-        other: Point2<N>,
+        other: Point<N>,
     ) -> Self {
         Rect {
             x: (self.x - other.x),

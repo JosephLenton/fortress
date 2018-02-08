@@ -4,7 +4,7 @@ use theme::Theme;
 use game::Game;
 use game::GameTile;
 
-use util::shapes::Point2;
+use util::shapes::Point;
 
 use llr::LLR;
 
@@ -27,9 +27,9 @@ impl<'a> RenderGame<'a> {
         RenderGame {
             theme: theme,
             game: game,
-            // camera: Camera::new(Point2::new(game.player.position.x as i32,
+            // camera: Camera::new(Point::new(game.player.position.x as i32,
             // game.player.position.y as i32)),
-            camera: Camera::new(Point2::new(0, 0)),
+            camera: Camera::new(Point::new(0, 0)),
         }
     }
 
@@ -38,7 +38,7 @@ impl<'a> RenderGame<'a> {
         x: i32,
         y: i32,
     ) {
-        self.camera.move_position(Point2::new(x, y));
+        self.camera.move_position(Point::new(x, y));
     }
 
     pub fn render(
@@ -62,21 +62,21 @@ impl<'a> RenderGame<'a> {
             self.game.slice(area.x, area.y, area.width as u32, area.height as u32)
         {
             let pos =
-                Point2::new(tile_pos.x as i32 - camera_pos.x, tile_pos.y as i32 - camera_pos.y);
+                Point::new(tile_pos.x as i32 - camera_pos.x, tile_pos.y as i32 - camera_pos.y);
 
             if 0 <= pos.x && 0 <= pos.y {
-                let draw_pos = Point2::new(pos.x as u16, pos.y as u16);
+                let draw_pos = Point::new(pos.x as u16, pos.y as u16);
 
                 self.tile(llr, tile, draw_pos);
             }
         }
 
-        let player_pos = Point2::new(
+        let player_pos = Point::new(
             self.game.player.position.x as i32 - camera_pos.x,
             self.game.player.position.y as i32 - camera_pos.y,
         );
         if 0 <= player_pos.x && 0 <= player_pos.y {
-            let draw_pos = Point2::new(player_pos.x as u16, player_pos.y as u16);
+            let draw_pos = Point::new(player_pos.x as u16, player_pos.y as u16);
 
             self.player(llr, draw_pos);
         }
@@ -85,7 +85,7 @@ impl<'a> RenderGame<'a> {
     fn player(
         &mut self,
         llr: &mut LLR,
-        draw_pos: Point2<u16>,
+        draw_pos: Point<u16>,
     ) {
         let colour = self.theme.get_player();
 
@@ -96,7 +96,7 @@ impl<'a> RenderGame<'a> {
         &mut self,
         llr: &mut LLR,
         tile: GameTile,
-        draw_pos: Point2<u16>,
+        draw_pos: Point<u16>,
     ) {
         let colour = self.theme.get_game_tile(tile);
 
