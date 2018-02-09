@@ -1,11 +1,16 @@
 use num_types::FromClamped;
+use num_types::MinMax;
 use std::convert::From;
 
 use std::ops::Add;
+use std::ops::AddAssign;
 use std::ops::Div;
+use std::ops::DivAssign;
 use std::ops::Mul;
+use std::ops::MulAssign;
 use std::ops::Rem;
 use std::ops::Sub;
+use std::ops::SubAssign;
 
 use num_types::Num;
 
@@ -18,7 +23,7 @@ use super::Size;
 /// you to use any numerical type for it. Integers, floats, etc.
 ///
 #[derive(Copy, Clone, Debug)]
-pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy> {
+pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
     /// It's x location.
     pub x: N,
 
@@ -34,7 +39,7 @@ pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy> {
     pub height: N,
 }
 
-impl<N: Add + Sub + Mul + Div + Rem + Copy + From<u8>> Rect<N> {
+impl<N: Add + Sub + Mul + Div + Rem + Copy + From<u8> + AddAssign + DivAssign + MulAssign + SubAssign> Rect<N> {
     /// Trivial constructor.
     ///
     /// Creates a new Rect with the size given.
@@ -43,13 +48,40 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy + From<u8>> Rect<N> {
         y: N,
         w: N,
         h: N,
-    ) -> Rect<N> {
+    ) -> Self {
         Rect {
             x: x,
             y: y,
 
             width: w,
             height: h,
+        }
+    }
+
+    /// Returns the x/y section of this rectangle on it's own.
+    pub const fn point(&self) -> Point<N> {
+        Point {
+            x : self.x,
+            y : self.y,
+        }
+    }
+
+    /// Returns the width/height section of this rectangle on it's own.
+    pub const fn size(&self) -> Size<N> {
+        Size {
+            width: self.width,
+            height: self.height,
+        }
+    }
+}
+
+impl<N: Num<N> + MinMax> Rect<N> {
+    pub fn clamp_within(&self, other : Self) -> Self {
+        Rect {
+            x : self.x.max_t(other.x),
+            y : self.y.max_t(other.y),
+            width : self.width.min_t(other.width),
+            height : self.height.min_t(other.height),
         }
     }
 }
@@ -62,7 +94,7 @@ impl<N: Num<N> + From<u8>> Rect<N> {
     pub fn divide_around_centre(
         &self,
         divider: N,
-    ) -> Rect<N> {
+    ) -> Self {
         Rect {
             x: self.x + (self.width / divider) / N::from(2),
             y: self.y + (self.height / divider) / N::from(2),

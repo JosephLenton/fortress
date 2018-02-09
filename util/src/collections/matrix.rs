@@ -1,29 +1,31 @@
 use std::iter::Iterator;
-use util::shapes::Point;
+use shapes::Point;
+use shapes::Size;
+use shapes::Rect;
 
 /// Holds the data for a Matrix.
 ///
 /// A Matrix has a fixed size and cannot be resized.
 pub struct Matrix<T: Copy> {
     /// The width and height of this matrix.
-    size : Size<u32>,
+    size : Size<u16>,
 
     /// The raw data inside.
     /// It's size matches the size of this matrix.
     data: Vec<T>,
 }
 
-impl<T: Copy> Map<T> {
+impl<T: Copy> Matrix<T> {
     /// Creates a new matrix of the size given.
     ///
     /// It is filled with the default value.
     pub fn new(
         size : Size<u16>,
         default: T,
-    ) -> Map<T> {
-        Map {
+    ) -> Self {
+        Matrix {
             size : size,
-            data: vec![default; size::from_clamped::<usize>().area()],
+            data: vec![default; size.to_clamped::<usize>().area()],
         }
     }
 
@@ -55,24 +57,22 @@ impl<T: Copy> Map<T> {
 
     /// Returns a slice which encompasses the entire map.
     pub fn iter(&self) -> MatrixIterator<T> {
-        self.iter_of(Point::new(0, 0), self.size)
+        self.iter_of(Point::new(0, 0).combine(self.size))
     }
 
     /// Allows you to iterate over a sub section of this map.
     pub fn iter_of(
         &self,
         area : Rect<u16>,
-        pos : Point<u16>,
-        size : Size<u16>,
     ) -> MatrixIterator<T> {
-        let data_rect = Point::new(0, 0).to_rect(self.size);
-        let iterate_area = area.clamp_within( data_rect )
+        let data_rect = Point::new(0, 0).combine(self.size);
+        let iterate_area = area.clamp_within( data_rect );
 
         MatrixIterator {
             data: &self.data,
-            data_size: self.size,
 
             iterate_area: iterate_area,
+            pos: area.point(),
         }
     }
 }
@@ -82,44 +82,41 @@ pub struct MatrixIterator<'a, T: 'a> {
     /// The raw data we are iterating over.
     data: &'a Vec<T>,
 
-    /// The size of the raw data area.
-    data_size: Size<u16>,
-
     /// The size of the area we are iterating over.
     iterate_area: Rect<u16>,
+
+    /// Current index in the `Matrix`.
+    pos: Point<u16>,
 }
 
 impl<'a, T: Copy> Iterator for MatrixIterator<'a, T> {
     type Item = MapIteratorItem<T>;
 
     fn next(&mut self) -> Option<MapIteratorItem<T>> {
-        if self.y >= self.sh {
+        if self.pos.y >= self.iterate_area.height {
             return None;
         }
 
-        let i = map_index(self.x, self.y, self.w, self.h);
+        let i = map_index(self.pos, self.iterate_area.size());
         let data = self.data[i];
-        let pos = Point::new(self.x, self.y);
 
-        let result = Some((data, pos));
+        let result = Some((data, self.pos));
 
-        if self.x < self.sw {
-            self.x += 1;
+        // Increment across the x axis.
+        if self.pos.x < self.iterate_area.width-1 {
+            self.pos.move_x( 1 );
 
-            if self.x == self.sw {
-                self.x = self.sx;
-                self.y += 1;
-            }
+        // We've wrapped over the X position.
         } else {
-            self.x = self.sx;
-            self.y += 1;
+            self.pos.set_x( self.iterate_area.x );
+            self.pos.move_y( 1 );
         }
 
         result
     }
 }
 
-type MapIteratorItem<T> = (T, Point<u32>);
+type MapIteratorItem<T> = (T, Point<u16>);
 
 fn map_index(
     pos : Point<u16>,

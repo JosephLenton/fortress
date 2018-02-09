@@ -1,4 +1,5 @@
 use super::Num;
+use std::mem::size_of;
 
 /// It's useful to convert from a higher precision numerical type,
 /// to a lower one. i.e. u64 to u32.
@@ -307,6 +308,85 @@ impl FromClamped<f32> for u64 {
 impl FromClamped<f64> for u64 {
     fn from_clamped(n: f64) -> Self {
         n.min(<u64>::max_value() as f64) as Self
+    }
+}
+
+// usize
+impl FromClamped<i8> for usize {
+    fn from_clamped(n: i8) -> Self {
+        n.max(0) as Self
+    }
+}
+
+impl FromClamped<i16> for usize {
+    fn from_clamped(n: i16) -> Self {
+        if size_of::<u16>() <= size_of::<usize>() {
+            n.max(0) as Self
+        } else {
+            n.max(0).min(<usize>::max_value() as i16) as Self
+        }
+    }
+}
+
+impl FromClamped<i32> for usize {
+    fn from_clamped(n: i32) -> Self {
+        if size_of::<u16>() <= size_of::<usize>() {
+            n.max(0) as Self
+        } else {
+            n.max(0).min(<usize>::max_value() as i32) as Self
+        }
+    }
+}
+
+impl FromClamped<i64> for usize {
+    fn from_clamped(n: i64) -> Self {
+        if size_of::<u16>() <= size_of::<usize>() {
+            n.max(0) as Self
+        } else {
+            n.max(0).min(<usize>::max_value() as i64) as Self
+        }
+    }
+}
+
+impl FromClamped<u16> for usize {
+    fn from_clamped(n: u16) -> Self {
+        if size_of::<u16>() <= size_of::<usize>() {
+            n as Self
+        } else {
+            n.min(<usize>::max_value() as u16) as Self
+        }
+    }
+}
+
+impl FromClamped<u32> for usize {
+    fn from_clamped(n: u32) -> Self {
+        if size_of::<u32>() <= size_of::<usize>() {
+            n as Self
+        } else {
+            n.min(<usize>::max_value() as u32) as Self
+        }
+    }
+}
+
+impl FromClamped<u64> for usize {
+    fn from_clamped(n: u64) -> Self {
+        if size_of::<u64>() <= size_of::<usize>() {
+            n as Self
+        } else {
+            n.min(<usize>::max_value() as u64) as Self
+        }
+    }
+}
+
+impl FromClamped<f32> for usize {
+    fn from_clamped(n: f32) -> Self {
+        n.min(<usize>::max_value() as f32) as Self
+    }
+}
+
+impl FromClamped<f64> for usize {
+    fn from_clamped(n: f64) -> Self {
+        n.min(<usize>::max_value() as f64) as Self
     }
 }
 

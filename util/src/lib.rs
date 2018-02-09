@@ -13,7 +13,7 @@
 /// A module of traits to make it easier to work with numbers.
 mod num_types;
 
-// pub mod collections;
+pub mod collections;
 pub mod shapes;
 pub mod colour;
 pub mod states;

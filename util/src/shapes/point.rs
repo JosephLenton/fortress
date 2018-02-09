@@ -1,9 +1,14 @@
 use num_types::FromClamped;
+
 use std::ops::Add;
+use std::ops::AddAssign;
 use std::ops::Div;
+use std::ops::DivAssign;
 use std::ops::Mul;
+use std::ops::MulAssign;
 use std::ops::Rem;
 use std::ops::Sub;
+use std::ops::SubAssign;
 
 use num_types::Num;
 
@@ -12,7 +17,7 @@ use super::Size;
 
 /// A point in 2D space.
 #[derive(Debug, Copy, Clone)]
-pub struct Point<N: Add + Sub + Mul + Div + Rem + Copy> {
+pub struct Point<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
     /// It's x location.
     pub x: N,
 
@@ -20,7 +25,7 @@ pub struct Point<N: Add + Sub + Mul + Div + Rem + Copy> {
     pub y: N,
 }
 
-impl<N: Add + Sub + Mul + Div + Rem + Copy> Point<N> {
+impl<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + MulAssign + SubAssign> Point<N> {
     /// Trivial constructor.
     ///
     /// You can make it by hand, or you can use this constructor.
@@ -28,7 +33,7 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point<N> {
     pub const fn new(
         x: N,
         y: N,
-    ) -> Point<N> {
+    ) -> Self {
         Point {
             x: x,
             y: y,
@@ -48,6 +53,38 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy> Point<N> {
             width: size.width,
             height: size.height,
         }
+    }
+
+    /// Sets a new x position.
+    pub fn set_x(
+        &mut self,
+        x : N,
+    ) {
+        (*self).x = x;
+    }
+
+    /// Sets a new y position.
+    pub fn set_y(
+        &mut self,
+        y : N,
+    ) {
+        (*self).y = y;
+    }
+
+    /// Moves the point along by the x axis.
+    pub fn move_x(
+        &mut self,
+        move_x : N,
+    ) {
+        (*self).x += move_x;
+    }
+
+    /// Moves the point along by the y axis.
+    pub fn move_y(
+        &mut self,
+        move_y : N,
+    ) {
+        (*self).y += move_y;
     }
 }
 

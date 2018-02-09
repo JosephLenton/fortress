@@ -1,8 +1,12 @@
 use std::ops::Add;
+use std::ops::AddAssign;
 use std::ops::Div;
+use std::ops::DivAssign;
 use std::ops::Mul;
+use std::ops::MulAssign;
 use std::ops::Rem;
 use std::ops::Sub;
+use std::ops::SubAssign;
 
 /// A common number trait.
 ///
@@ -13,9 +17,13 @@ use std::ops::Sub;
 /// The Points, Rects, and Shapes, all use these traits.
 pub trait Num<N>
     : Add<Output = N>
+    + AddAssign
     + Sub<Output = N>
+    + SubAssign
     + Mul<Output = N>
+    + MulAssign
     + Div<Output = N>
+    + DivAssign
     + Rem<Output = N>
     + Copy
     + PartialEq {
@@ -31,9 +39,13 @@ pub trait Num<N>
 impl<N, U> Num<N> for U
 where
     U: Add<Output = N>
+        + AddAssign
         + Sub<Output = N>
+        + SubAssign
         + Mul<Output = N>
+        + MulAssign
         + Div<Output = N>
+        + DivAssign
         + Rem<Output = N>
         + Copy
         + PartialEq,

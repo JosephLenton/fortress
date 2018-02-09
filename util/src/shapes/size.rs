@@ -2,17 +2,22 @@ use super::Point;
 use num_types::FromClamped;
 use num_types::Num;
 use std::convert::From;
+
 use std::ops::Add;
+use std::ops::AddAssign;
 use std::ops::Div;
+use std::ops::DivAssign;
 use std::ops::Mul;
+use std::ops::MulAssign;
 use std::ops::Rem;
 use std::ops::Sub;
+use std::ops::SubAssign;
 
 /// A Size is an area of space with no location.
 /// The size of a box, the size of a window, the size of a player.
 /// But they don't have a location.
 #[derive(Default, Debug, Copy, Clone)]
-pub struct Size<N: Add + Sub + Mul + Div + Rem + Copy> {
+pub struct Size<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
     /// The width of the area.
     pub width: N,
 
@@ -20,7 +25,7 @@ pub struct Size<N: Add + Sub + Mul + Div + Rem + Copy> {
     pub height: N,
 }
 
-impl<N: Add + Sub + Mul<Output = N> + Div + Rem + Copy> Size<N> {
+impl<N: Add + Sub + Mul<Output = N> + Div + Rem + Copy + AddAssign + DivAssign + MulAssign + SubAssign> Size<N> {
     /// Trivial constructor.
     ///
     /// Creates a new Size with the width and height given.
