@@ -1,5 +1,4 @@
 use num_types::FromClamped;
-use num_types::MinMax;
 use std::convert::From;
 
 use std::ops::Add;
@@ -75,13 +74,13 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy + From<u8> + AddAssign + DivAssign + 
     }
 }
 
-impl<N: Num<N> + MinMax> Rect<N> {
+impl<N: Num<N> + PartialOrd> Rect<N> {
     pub fn clamp_within(&self, other : Self) -> Self {
         Rect {
-            x : self.x.max_t(other.x),
-            y : self.y.max_t(other.y),
-            width : self.width.min_t(other.width),
-            height : self.height.min_t(other.height),
+            x : if self.x < other.x { other.x } else { self.x },
+            y : if self.y < other.y { other.y } else { self.y },
+            width : if self.width < other.width { self.width } else { other.width },
+            height : if self.height < other.height { self.height } else { other.height },
         }
     }
 }
