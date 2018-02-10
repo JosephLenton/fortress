@@ -1,5 +1,5 @@
 
-build_lint_allows := -A unknown_lints
+build_lint_allows :=
 build_lint_warnings := -W unreachable-pub -W missing-docs
 build_lint_denials := -D trivial-casts -D trivial-numeric-casts -D unused-extern-crates -D unused-import-braces
 
