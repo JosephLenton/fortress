@@ -63,6 +63,7 @@ impl<N: Num<N> + PartialOrd> Size<N> {
 }
 
 impl Size<u8> {
+    /// Returns `Size::new( 0, 0 )`
     pub const fn zero() -> Self {
         Size {
             width: 0,
@@ -72,6 +73,7 @@ impl Size<u8> {
 }
 
 impl Size<u16> {
+    /// Returns `Size::new( 0, 0 )`
     pub const fn zero() -> Self {
         Size {
             width: 0,
@@ -81,6 +83,7 @@ impl Size<u16> {
 }
 
 impl Size<i16> {
+    /// Returns `Size::new( 0, 0 )`
     pub const fn zero() -> Self {
         Size {
             width: 0,
@@ -90,6 +93,7 @@ impl Size<i16> {
 }
 
 impl Size<u32> {
+    /// Returns `Size::new( 0, 0 )`
     pub const fn zero() -> Self {
         Size {
             width: 0,
@@ -99,6 +103,7 @@ impl Size<u32> {
 }
 
 impl Size<i32> {
+    /// Returns `Size::new( 0, 0 )`
     pub const fn zero() -> Self {
         Size {
             width: 0,
@@ -108,6 +113,7 @@ impl Size<i32> {
 }
 
 impl Size<u64> {
+    /// Returns `Size::new( 0, 0 )`
     pub const fn zero() -> Self {
         Size {
             width: 0,
@@ -117,6 +123,7 @@ impl Size<u64> {
 }
 
 impl Size<i64> {
+    /// Returns `Size::new( 0, 0 )`
     pub const fn zero() -> Self {
         Size {
             width: 0,
@@ -126,6 +133,7 @@ impl Size<i64> {
 }
 
 impl Size<f32> {
+    /// Returns `Size::new( 0, 0 )`
     pub const fn zero() -> Self {
         Size {
             width: 0.0,
@@ -135,6 +143,7 @@ impl Size<f32> {
 }
 
 impl Size<f64> {
+    /// Returns `Size::new( 0, 0 )`
     pub const fn zero() -> Self {
         Size {
             width: 0.0,
@@ -144,6 +153,7 @@ impl Size<f64> {
 }
 
 impl Size<usize> {
+    /// Returns `Size::new( 0, 0 )`
     pub const fn zero() -> Self {
         Size {
             width: 0,

@@ -85,6 +85,7 @@ impl<N: Num<N> + PartialOrd> Rect<N> {
 
 impl<N: Num<N> + PartialOrd + SaturatingAddT> Rect<N> {
     /// Returns a rectangle that only contains the overlapping section.
+    #[allow(if_same_then_else)]
     pub fn overlap_of(&self, other : Self) -> Option<Self> {
         // We are far on the left.
         if self.x.saturating_add_t(self.width) < other.x {

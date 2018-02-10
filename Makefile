@@ -1,14 +1,20 @@
 
-lint_warnings := -W unreachable-pub -W missing-docs
-lint_denials := -D trivial-casts -D trivial-numeric-casts -D unused-extern-crates -D unused-import-braces
+build_lint_allows := -A unknown_lints
+build_lint_warnings := -W unreachable-pub -W missing-docs
+build_lint_denials := -D trivial-casts -D trivial-numeric-casts -D unused-extern-crates -D unused-import-braces
 
-RUSTFLAGS := $(lint_warnings) $(lint_denials)
+tools_lint_allows := 
+tools_lint_warnings := -W unreachable-pub -W missing-docs
+tools_lint_denials := -D trivial-casts -D trivial-numeric-casts -D unused-extern-crates -D unused-import-braces
+
+BUILD_RUSTFLAGS := $(build_line_allows) $(build_lint_warnings) $(build_lint_denials)
+TOOLS_RUSTFLAGS := $(tools_line_allows) $(tools_lint_warnings) $(tools_lint_denials)
 RUST_BACKTRACE := 1
 
 run_cmd := cmd.exe /C
 run_cargo := cargo.exe
-run_cargo_stable := $(run_cmd) set RUST_BACKTRACE=$(RUST_BACKTRACE) \&\& set RUSTFLAGS=$(RUSTFLAGS) \&\& $(run_cargo) +nightly
-run_cargo_nightly := $(run_cmd) set RUST_BACKTRACE=$(RUST_BACKTRACE) \&\& set RUSTFLAGS=$(RUSTFLAGS) \&\& $(run_cargo) +nightly
+run_cargo_build := $(run_cmd) set RUST_BACKTRACE=$(RUST_BACKTRACE) \&\& set RUSTFLAGS=$(BUILD_RUSTFLAGS) \&\& $(run_cargo) +nightly
+run_cargo_tools := $(run_cmd) set RUST_BACKTRACE=$(RUST_BACKTRACE) \&\& set RUSTFLAGS=$(TOOLS_RUSTFLAGS) \&\& $(run_cargo) +nightly
 
 .DEFAULT_GOAL := default
 default: make-dev
@@ -34,7 +40,7 @@ run-generate: make-main-no-test
 #
 init:
 	cp ./pre-commit-hook.sh .git/hooks/pre-commit
-	$(run_cargo_nightly) install --force clippy
+	$(run_cargo_tools) install --force clippy
 	rustup component add rustfmt-preview --toolchain=nightly
 
 
@@ -103,12 +109,12 @@ make-one-dev-no-test: lint-one compile-one-dev
 # Just build.
 #
 compile-one-release:
-	$(run_cargo_stable) build \
+	$(run_cargo_build) build \
 			--manifest-path="${manifest-path}" \
 			--release
 
 compile-one-dev:
-	$(run_cargo_stable) build \
+	$(run_cargo_build) build \
 			--manifest-path="${manifest-path}"
 
 
@@ -121,11 +127,11 @@ compile-one-dev:
 
 lint: lint-all
 lint-all:
-	$(run_cargo_nightly) clippy \
+	$(run_cargo_tools) clippy \
 			--all
 
 lint-one:
-	$(run_cargo_nightly) clippy \
+	$(run_cargo_tools) clippy \
 			--manifest-path="${manifest-path}"
 
 
@@ -136,13 +142,13 @@ lint-one:
 
 test: test-all
 test-all:
-	$(run_cargo_stable) test \
+	$(run_cargo_build) test \
 			--all
 
 test-one:
 	RUST_BACKTRACE="1"
 	export RUST_BACKTRACE
-	$(run_cargo_stable) test \
+	$(run_cargo_build) test \
 			--manifest-path="${manifest-path}"
 
 
@@ -153,7 +159,7 @@ test-one:
 
 clean: clean-all
 clean-all:
-	$(run_cargo_stable) clean
+	$(run_cargo_build) clean
 
 
 
@@ -166,11 +172,11 @@ clean-all:
 fmt: format
 format: format-all
 format-all:
-	$(run_cargo_nightly) fmt \
+	$(run_cargo_tools) fmt \
 			--all
 
 format-one:
-	$(run_cargo_nightly) fmt \
+	$(run_cargo_tools) fmt \
 			--manifest-path="${manifest-path}"
 
 

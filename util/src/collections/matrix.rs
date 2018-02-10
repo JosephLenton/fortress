@@ -98,7 +98,7 @@ impl<V: Copy> Index<Point<u16>> for Matrix<V> {
 }
 
 impl<V: Copy> IndexMut<Point<u16>> for Matrix<V> {
-    fn index_mut<'a>(&'a mut self, pos:Point<u16>) -> &'a mut V {
+    fn index_mut(& mut self, pos:Point<u16>) -> & mut V {
         let index = map_index( pos, self.size );
 
         & mut self.data[index]
