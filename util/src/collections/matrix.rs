@@ -68,7 +68,15 @@ impl<V: Copy> Matrix<V> {
         area : Rect<u16>,
     ) -> MatrixIterator<V> {
         let data_rect = Point::new(0, 0).combine(self.size);
-        let iterate_area = area.clamp_within( data_rect );
+
+        let iterate_area = match area.overlap_of( data_rect ) {
+            Some(iterate_area) => {
+                iterate_area
+            },
+            None => {
+                Rect::new( 0, 0, 0, 0 )
+            },
+        };
 
         MatrixIterator {
             data: &self.data,

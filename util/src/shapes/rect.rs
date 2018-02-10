@@ -1,4 +1,5 @@
 use num_types::FromClamped;
+use num_types::internal::SaturatingAddT;
 use std::convert::From;
 
 use std::ops::Add;
@@ -75,12 +76,36 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy + From<u8> + AddAssign + DivAssign + 
 }
 
 impl<N: Num<N> + PartialOrd> Rect<N> {
-    pub fn clamp_within(&self, other : Self) -> Self {
-        Rect {
-            x : if self.x < other.x { other.x } else { self.x },
-            y : if self.y < other.y { other.y } else { self.y },
-            width : if self.width < other.width { self.width } else { other.width },
-            height : if self.height < other.height { self.height } else { other.height },
+    /// Returns true if the point is within the size.
+    /// The check is exclusive of the size. i.e. `x < width`.
+    pub fn contains( &self, point : Point<N> ) -> bool {
+        point.x >= self.x && point.y >= self.y && point.x < self.width && point.y < self.height
+    }
+}
+
+impl<N: Num<N> + PartialOrd + SaturatingAddT> Rect<N> {
+    /// Returns a rectangle that only contains the overlapping section.
+    pub fn overlap_of(&self, other : Self) -> Option<Self> {
+        // We are far on the left.
+        if self.x.saturating_add_t(self.width) < other.x {
+            None
+        // They are far on the left of us.
+        } else if other.x.saturating_add_t(other.width) < self.x {
+            None
+        // We are far above.
+        } else if self.y.saturating_add_t(self.height) < other.y {
+            None
+        // They are far above us.
+        } else if other.y.saturating_add_t(other.height) < self.y {
+            None
+        // We have an overlap!
+        } else {
+            Some(Rect {
+                x : if self.x < other.x { other.x } else { self.x },
+                y : if self.y < other.y { other.y } else { self.y },
+                width : if self.width < other.width { self.width } else { other.width },
+                height : if self.height < other.height { self.height } else { other.height },
+            })
         }
     }
 }

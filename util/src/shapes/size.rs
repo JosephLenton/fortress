@@ -54,6 +54,14 @@ impl<N: Add + Sub + Mul<Output = N> + Div + Rem + Copy + AddAssign + DivAssign +
     }
 }
 
+impl<N: Num<N> + PartialOrd> Size<N> {
+    /// Returns true if the point is within the size.
+    /// The check is exclusive of the size. i.e. `x < width`.
+    pub fn contains( &self, point : Point<N> ) -> bool {
+        point.x < self.width && point.y < self.height
+    }
+}
+
 impl Size<u8> {
     pub const fn zero() -> Self {
         Size {
