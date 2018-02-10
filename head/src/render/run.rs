@@ -1,12 +1,11 @@
 use theme::Theme;
 
-use llr::temp::Event;
-use llr::temp::Keycode;
-use llr::temp::MouseWheelDirection;
-use llr::temp::WindowEvent;
-
+use llr::LLREvent;
+use llr::LLRKey;
 use llr::LLROptions;
 use llr::LLRSDL2;
+use llr::LLR;
+
 use render::cursor::Cursor;
 use render::render_game::RenderGame;
 
@@ -28,86 +27,33 @@ pub fn run<'a>(
 
     'main: loop {
         match llr.poll() {
-            Event::Quit {
-                ..
-            }
-            | Event::AppTerminating {
-                ..
-            } => {
-                break 'main;
-            },
+            Some(ev) => {
+                match ev {
+                    LLREvent::Quit => {
+                        break 'main;
+                    },
 
-            Event::Window {
-                win_event: WindowEvent::SizeChanged(width, height),
-                ..
-            }
-            | Event::Window {
-                win_event: WindowEvent::Resized(width, height),
-                ..
-            } => {
-                // TODO
-            },
+                    // User Input
+                    //
+                    LLREvent::KeyPress(LLRKey::Left) => {
+                        rgame.move_camera(-1, 0);
+                    },
 
-            // User Input
-            // 
-            Event::KeyDown {
-                keycode: Some(Keycode::Left),
-                ..
-            } => {
-                rgame.move_camera(-1, 0);
-            },
+                    LLREvent::KeyPress(LLRKey::Right) => {
+                        rgame.move_camera(1, 0);
+                    },
 
-            Event::KeyDown {
-                keycode: Some(Keycode::Right),
-                ..
-            } => {
-                rgame.move_camera(1, 0);
-            },
+                    LLREvent::KeyPress(LLRKey::Up) => {
+                        rgame.move_camera(0, -1);
+                    },
 
-            Event::KeyDown {
-                keycode: Some(Keycode::Up),
-                ..
-            } => {
-                rgame.move_camera(0, -1);
-            },
+                    LLREvent::KeyPress(LLRKey::Down) => {
+                        rgame.move_camera(0, 1);
+                    },
 
-            Event::KeyDown {
-                keycode: Some(Keycode::Down),
-                ..
-            } => {
-                rgame.move_camera(0, 1);
-            },
-            Event::MouseButtonDown {
-                x,
-                y,
-                mouse_btn,
-                ..
-            } => {
-                // do nothing
-            },
-
-            Event::MouseMotion {
-                x,
-                y,
-                ..
-            } => {
-                cursor.xy(Point::new(x as f32, y as f32));
-            },
-
-            Event::MouseWheel {
-                y,
-                direction: MouseWheelDirection::Normal,
-                ..
-            } => {
-                // do nothing
-            },
-
-            Event::MouseWheel {
-                y,
-                direction: MouseWheelDirection::Flipped,
-                ..
-            } => {
-                // do nothing
+                    // do nothing
+                    _ => {},
+                }
             },
 
             _ => {},
@@ -117,5 +63,7 @@ pub fn run<'a>(
         rgame.render(&mut llr)
     }
 
+    // Keep this.
+    // It's useful to see a message to tell us we really did quit.
     println!("goodbye!");
 }
