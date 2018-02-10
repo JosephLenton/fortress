@@ -98,7 +98,7 @@ make-world:
 #
 make-one-release: lint-one compile-one-release test-one
 make-one-dev: make-one-dev-no-test test-one
-make-one-dev-no-test: lint-one compile-one-dev
+make-one-dev-no-test: compile-one-dev
 
 
 

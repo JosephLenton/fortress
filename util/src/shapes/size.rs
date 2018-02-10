@@ -2,6 +2,7 @@ use super::Point;
 use num_types::FromClamped;
 use num_types::Num;
 
+use std::fmt;
 use std::ops::Add;
 use std::ops::AddAssign;
 use std::ops::Div;
@@ -15,8 +16,8 @@ use std::ops::SubAssign;
 /// A Size is an area of space with no location.
 /// The size of a box, the size of a window, the size of a player.
 /// But they don't have a location.
-#[derive(Default, Debug, Copy, Clone)]
-pub struct Size<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
+#[derive(Debug, Default, Copy, Clone)]
+pub struct Size<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
     /// The width of the area.
     pub width: N,
 
@@ -24,7 +25,7 @@ pub struct Size<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + 
     pub height: N,
 }
 
-impl<N: Add + Sub + Mul<Output = N> + Div + Rem + Copy + AddAssign + DivAssign + MulAssign + SubAssign> Size<N> {
+impl<N: Add + Sub + Mul<Output = N> + Div + Rem + fmt::Display + Copy + AddAssign + DivAssign + MulAssign + SubAssign> Size<N> {
     /// Trivial constructor.
     ///
     /// Creates a new Size with the width and height given.
@@ -50,6 +51,12 @@ impl<N: Add + Sub + Mul<Output = N> + Div + Rem + Copy + AddAssign + DivAssign +
     /// Returns width * height.
     pub fn area(&self) -> N {
         self.width * self.height
+    }
+}
+
+impl<N: Num<N>> fmt::Display for Size<N> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "({}, {})", self.width, self.height)
     }
 }
 

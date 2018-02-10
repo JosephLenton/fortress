@@ -80,6 +80,7 @@ impl<V: Copy> Matrix<V> {
 
         MatrixIterator {
             data: &self.data,
+            data_size: self.size,
 
             iterate_area: iterate_area,
             pos: area.point(),
@@ -111,6 +112,10 @@ pub struct MatrixIterator<'a, V: 'a> {
     /// The raw data we are iterating over.
     data: &'a Vec<V>,
 
+    /// The size of the data when 2D.
+    /// Needed for translating index.
+    data_size: Size<u16>,
+
     /// The size of the area we are iterating over.
     iterate_area: Rect<u16>,
 
@@ -126,7 +131,7 @@ impl<'a, V: Copy> Iterator for MatrixIterator<'a, V> {
             return None;
         }
 
-        let i = map_index(self.pos, self.iterate_area.size());
+        let i = map_index(self.pos, self.data_size);
         let data = self.data[i];
 
         let result = Some((data, self.pos));
@@ -149,7 +154,11 @@ fn map_index(
     pos : Point<u16>,
     size : Size<u16>,
 ) -> usize {
-    (pos.y * size.height + pos.x) as usize
+    if pos.x >= size.width || pos.y >= size.height {
+        panic!("Matrix index out of bounds pos: {} size: {}", pos, size );
+    }
+
+    ((pos.y * size.width) + pos.x) as usize
 }
 
 #[cfg(test)]
@@ -164,6 +173,32 @@ mod test {
         assert_eq!( matrix[index], 0 );
         matrix[index] = 1;
         assert_eq!( matrix[index], 1 );
+    }
+
+    #[test]
+    fn test_index() {
+        let matrix_size = Size::new(10, 10);
+        let mut matrix = Matrix::new( matrix_size, 1 );
+
+        for x in 0..matrix_size.width {
+            for y in 0..matrix_size.height {
+                matrix[ Point::new(x, y) ] = x;
+            }
+        }
+
+        matrix.iter().for_each(|(x, pos)| -> () {
+            assert_eq!( x, pos.x );
+        });
+
+        for x in 0..matrix_size.width {
+            for y in 0..matrix_size.height {
+                matrix[ Point::new(x, y) ] = y;
+            }
+        }
+
+        matrix.iter().for_each(|(y, pos)| -> () {
+            assert_eq!( y, pos.y );
+        });
     }
 
     #[test]
@@ -214,5 +249,27 @@ mod test {
         assert_eq!( pos_count_x, 5*(5 + 6 + 7 + 8 + 9) );
     }
 
+    #[test]
+    fn set_and_then_iterate_over_all() {
+        let matrix_size = Size::new(10, 10);
+        let mut matrix = Matrix::new( matrix_size, 0 );
+
+        for x in 0..matrix_size.width {
+            for y in 0..matrix_size.height {
+                matrix[ Point::new(x, y) ] = 1;
+            }
+        }
+
+        let mut count = 0;
+        let mut pos_count_x = 0;
+
+        matrix.iter().for_each(|(n, pos)| -> () {
+            count += n;
+            pos_count_x += pos.x;
+        });
+
+        assert_eq!( count, matrix_size.area() );
+        assert_eq!( pos_count_x, 10*(1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9) );
+    }
 }
 

@@ -1,3 +1,4 @@
+use std::fmt::Display;
 use std::ops::Add;
 use std::ops::AddAssign;
 use std::ops::Div;
@@ -25,6 +26,7 @@ pub trait Num<N>
     + Div<Output = N>
     + DivAssign
     + Rem<Output = N>
+    + Display
     + Copy
     + PartialEq {
     type Output = Self;
@@ -47,6 +49,7 @@ where
         + Div<Output = N>
         + DivAssign
         + Rem<Output = N>
+        + Display
         + Copy
         + PartialEq,
 {

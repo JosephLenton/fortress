@@ -8,6 +8,7 @@
 extern crate sdl2;
 extern crate util;
 extern crate terminal_size;
+extern crate getch;
 
 /// Here lies the various llr implementations.
 mod implementations;

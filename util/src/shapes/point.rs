@@ -1,5 +1,6 @@
 use num_types::FromClamped;
 
+use std::fmt;
 use std::ops::Add;
 use std::ops::AddAssign;
 use std::ops::Div;
@@ -17,7 +18,7 @@ use super::Size;
 
 /// A point in 2D space.
 #[derive(Debug, Copy, Clone)]
-pub struct Point<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
+pub struct Point<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
     /// It's x location.
     pub x: N,
 
@@ -25,7 +26,7 @@ pub struct Point<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign +
     pub y: N,
 }
 
-impl<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + MulAssign + SubAssign> Point<N> {
+impl<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssign + MulAssign + SubAssign> Point<N> {
     /// Trivial constructor.
     ///
     /// You can make it by hand, or you can use this constructor.
@@ -85,6 +86,12 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + MulAssign +
         move_y : N,
     ) {
         (*self).y += move_y;
+    }
+}
+
+impl<N: Num<N>> fmt::Display for Point<N> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
     }
 }
 

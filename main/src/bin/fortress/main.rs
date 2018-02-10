@@ -92,8 +92,8 @@ fn main_run(args: Args) -> Result<()> {
         },
 
         tile_size: Size {
-            width: 24,
-            height: 24,
+            width: 12,
+            height: 12,
         },
 
         clear_colour: RGBA::new( 0, 0, 0, 255 ),

@@ -2,6 +2,7 @@ use num_types::FromClamped;
 use num_types::internal::SaturatingAddT;
 use std::convert::From;
 
+use std::fmt;
 use std::ops::Add;
 use std::ops::AddAssign;
 use std::ops::Div;
@@ -23,7 +24,7 @@ use super::Size;
 /// you to use any numerical type for it. Integers, floats, etc.
 ///
 #[derive(Copy, Clone, Debug)]
-pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
+pub struct Rect<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
     /// It's x location.
     pub x: N,
 
@@ -39,7 +40,7 @@ pub struct Rect<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + 
     pub height: N,
 }
 
-impl<N: Add + Sub + Mul + Div + Rem + Copy + From<u8> + AddAssign + DivAssign + MulAssign + SubAssign> Rect<N> {
+impl<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + From<u8> + AddAssign + DivAssign + MulAssign + SubAssign> Rect<N> {
     /// Trivial constructor.
     ///
     /// Creates a new Rect with the size given.
@@ -72,6 +73,12 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy + From<u8> + AddAssign + DivAssign + 
             width: self.width,
             height: self.height,
         }
+    }
+}
+
+impl<N: Num<N>> fmt::Display for Rect<N> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "({}, {}, {}, {})", self.x, self.y, self.width, self.height)
     }
 }
 

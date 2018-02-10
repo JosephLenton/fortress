@@ -2,13 +2,16 @@ use LLR;
 use LLROptions;
 use LLRPixel;
 use LLREvent;
-use LLRKey;
 use util::shapes::Point;
 use util::shapes::Size;
 use util::collections::Matrix;
 use implementations::terminal::colour::pixel_to_cmd_code;
 use implementations::terminal::colour::to_background_colour_code;
 use terminal_size;
+use getch::Getch;
+use super::terminal_keys::u8_to_key;
+use std::io::stdout;
+use std::io::Write;
 
 /// An LLR that renders to the terminal.
 pub struct LLRTerminal {
@@ -29,6 +32,9 @@ pub struct LLRTerminal {
     /// to draw.
     out_buffer : String,
 
+    /// We use this for reading in user input.
+    getch : Getch,
+
 }
 
 impl LLRTerminal {
@@ -41,14 +47,30 @@ impl LLRTerminal {
             options : options,
             screen : Matrix::new( matrix_size, None ),
             out_buffer : String::with_capacity( estimated_out_capacity ),
+            getch : Getch::new(),
         }
+    }
+
+    fn reset_screen(&self) {
+        let mut out = stdout();
+        out.lock();
+
+        write!(out, "\x1B[2J");
+        writeln!(out, "{}", to_background_colour_code(self.options.clear_colour) );
+
+        out.flush();
     }
 }
 
 impl LLR for LLRTerminal {
     fn clear(&mut self) {
+        for x in 0 .. self.screen.size().width {
+            for y in 0 .. self.screen.size().height {
+                self.screen[Point::new(x, y)] = None;
+            }
+        }
+
         self.out_buffer.clear();
-        self.out_buffer += "\x1B[2J";
     }
 
     fn pixel(
@@ -57,33 +79,36 @@ impl LLR for LLRTerminal {
         pos: Point<u16>,
     ) -> Result<(), String> {
         if self.screen.size().contains( pos ) {
-            self.screen[pos] = Some(pixel)
+            self.screen[pos] = Some(pixel);
         }
 
         Ok(())
     }
 
     fn finished_drawing(&mut self) {
-        let mut out_buffer = String::new();
-        out_buffer += "\x1B[2J";
+        let mut out = stdout();
+        out.lock();
 
         self.screen.iter().for_each(|(maybe_pixel, pos)| -> () {
             match maybe_pixel {
                 Some(pixel) => {
-                    out_buffer += & pixel_to_cmd_code(pixel);
+                    write!(out, "\x1B[{};{}H{}", pos.y, pos.x, pixel_to_cmd_code(pixel) );
                 },
                 None => {
-                    out_buffer += & to_background_colour_code(self.options.clear_colour);
-                    out_buffer += " ";
+                    write!(out, "\x1B[{};{}H{} ", pos.y, pos.x, to_background_colour_code(self.options.clear_colour) );
                 },
             };
-
-            if pos.x == self.screen.size().width-1 {
-                out_buffer += "\n";
-            }
         });
 
-        print!( "{}", out_buffer );
+        out.flush();
+    }
+
+    fn on_start(&mut self) {
+        self.reset_screen();
+    }
+
+    fn on_quit(&mut self) {
+        self.reset_screen();
     }
 
     fn size(&self) -> Size<u16> {
@@ -94,13 +119,21 @@ impl LLR for LLRTerminal {
 
         // We'll just pretend we have a proper size.
         } else {
-            self.options.window_size
+            self.options.window_size / self.options.tile_size.to::<u16>()
+
         }
     }
 
     fn poll(&mut self) -> Option<LLREvent> {
-        // TODO
-        None
+        match self.getch.getch() {
+            Ok(c) => {
+                u8_to_key( c ).map(|key| LLREvent::KeyPress(key))
+            },
+            Err(err) => {
+                eprintln!("Error reading getch {}", err);
+                None
+            }
+        }
     }
 }
 

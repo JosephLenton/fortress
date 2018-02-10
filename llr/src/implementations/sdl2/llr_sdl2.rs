@@ -19,10 +19,13 @@ use util::shapes::Size;
 
 /// An SDL2 based LLR.
 pub struct LLRSDL2 {
+    /// Used for setting this up.
     options: LLROptions,
 
+    /// The Window it's self.
     canvas: WindowCanvas,
 
+    /// The SDL2 event pump we use for getting user events.
     events: EventPump,
 }
 
@@ -81,14 +84,10 @@ impl LLR for LLRSDL2 {
     }
 
     fn size(&self) -> Size<u16> {
-        let (s_width, s_height) = self.canvas.window().size();
+        let window_size = Size::from( self.canvas.window().size() );
+        let num_pixels = (window_size / self.options.tile_size.to::<u32>()).to_clamped::<u16>();
 
-        let num_x =
-            (s_width / self.options.tile_size.width as u32).max(std::u16::MAX as u32) as u16;
-        let num_y =
-            (s_height / self.options.tile_size.height as u32).max(std::u16::MAX as u32) as u16;
-
-        Size::new(num_x, num_y)
+        num_pixels
     }
 
     /// Blocks indefinitely until a user event has occurred.
@@ -114,7 +113,7 @@ impl LLR for LLRSDL2 {
                 keycode: Some(sdl_key),
                 ..
             } => {
-                match translate_sdl_key( sdl_key ) {
+                match sdl_key_to_llr_key( sdl_key ) {
                     Some( key ) => {
                         Some( LLREvent::KeyPress( key ))
                     },
@@ -129,9 +128,17 @@ impl LLR for LLRSDL2 {
             },
         }
     }
+
+    fn on_start(&mut self) {
+        // Do nothing.
+    }
+
+    fn on_quit(&mut self) {
+        // Do nothing.
+    }
 }
 
-fn translate_sdl_key( sdl_key : Keycode ) -> Option<LLRKey> {
+fn sdl_key_to_llr_key( sdl_key : Keycode ) -> Option<LLRKey> {
     match sdl_key {
         Keycode::Up => {
             Some(LLRKey::Up)

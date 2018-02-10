@@ -27,8 +27,7 @@ impl<'a> RenderGame<'a> {
         RenderGame {
             theme: theme,
             game: game,
-            // camera: Camera::new(Point::new(game.player.position.x as i32,
-            // game.player.position.y as i32)),
+            //camera: Camera::new(game.player.position.to_clamped::<i32>()),
             camera: Camera::new(Point::new(0, 0)),
         }
     }
@@ -56,29 +55,21 @@ impl<'a> RenderGame<'a> {
     ) {
         let camera_pos = self.camera.position();
         let llr_size = llr.size().to::<i32>();
-        let area = (camera_pos - llr_size / 2).combine(llr_size);
+        let top_left = camera_pos - llr_size/2;
+        let area = top_left.combine(llr_size);
 
         for (tile, tile_pos) in
             self.game.slice(area.x, area.y, area.width as u32, area.height as u32)
         {
-            let pos =
-                Point::new(tile_pos.x as i32 - camera_pos.x, tile_pos.y as i32 - camera_pos.y);
-
+            let pos = tile_pos.to_clamped::<i32>() - top_left;
             if 0 <= pos.x && 0 <= pos.y {
-                let draw_pos = Point::new(pos.x as u16, pos.y as u16);
-
-                self.tile(llr, tile, draw_pos);
+                self.tile(llr, tile, pos.to_clamped::<u16>());
             }
         }
 
-        let player_pos = Point::new(
-            self.game.player.position.x as i32 - camera_pos.x,
-            self.game.player.position.y as i32 - camera_pos.y,
-        );
+        let player_pos = self.game.player.position.to_clamped::<i32>() - top_left;
         if 0 <= player_pos.x && 0 <= player_pos.y {
-            let draw_pos = Point::new(player_pos.x as u16, player_pos.y as u16);
-
-            self.player(llr, draw_pos);
+            self.player(llr, player_pos.to_clamped::<u16>());
         }
     }
 
