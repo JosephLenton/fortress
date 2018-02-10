@@ -7,6 +7,7 @@
 
 extern crate sdl2;
 extern crate util;
+extern crate terminal_size;
 
 /// Here lies the various llr implementations.
 mod implementations;
@@ -20,10 +21,18 @@ mod llr_options;
 /// Information for drawing a single pixel.
 mod llr_pixel;
 
-/// LLR was created to move code out of the `head` crate as a part of
-/// refactoring. Until that is done, the `head` still needs some SDL2 bits.
-/// `temp` exists to provide these bits.
-pub mod temp;
+/// Event wrapper.
+/// Aims to be a simpler common denominator.
+mod llr_event;
+
+/// Where the common keycodes live.
+mod llr_key;
+
+/// The translated event.
+pub use llr_event::LLREvent;
+
+/// Keycodes.
+pub use llr_key::LLRKey;
 
 /// The common LLR interface.
 pub use llr::LLR;

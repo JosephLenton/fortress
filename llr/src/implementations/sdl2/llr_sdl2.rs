@@ -1,15 +1,17 @@
 use LLR;
 use LLROptions;
 use LLRPixel;
+use LLREvent;
+use LLRKey;
 
 use std;
 
 use sdl2;
 use sdl2::EventPump;
 use sdl2::event::Event;
-use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
-
+use sdl2::event::WindowEvent;
+use sdl2::keyboard::Keycode;
 use super::to_sdl2::*;
 
 use util::shapes::Point;
@@ -18,8 +20,6 @@ use util::shapes::Size;
 /// An SDL2 based LLR.
 pub struct LLRSDL2 {
     options: LLROptions,
-
-    tile_size: Size<f32>,
 
     canvas: WindowCanvas,
 
@@ -48,23 +48,15 @@ impl LLRSDL2 {
 
         LLRSDL2 {
             options: options,
-            tile_size: options.tile_size.to::<f32>(),
             canvas: canvas,
             events: events,
         }
-    }
-
-    /// Blocks indefinitely until a user event has occurred.
-    /// When the event happens this will return.
-    pub fn poll(&mut self) -> Event {
-        self.events.wait_event()
     }
 }
 
 impl LLR for LLRSDL2 {
     fn clear(&mut self) {
-        let black = Color::RGBA(0, 0, 0, 255);
-        self.canvas.set_draw_color(black);
+        self.canvas.set_draw_color( self.options.clear_colour.to_sdl2() );
         self.canvas.clear();
     }
 
@@ -98,4 +90,64 @@ impl LLR for LLRSDL2 {
 
         Size::new(num_x, num_y)
     }
+
+    /// Blocks indefinitely until a user event has occurred.
+    /// When the event happens this will return.
+    fn poll(&mut self) -> Option<LLREvent> {
+        match self.events.wait_event() {
+            Event::Quit { .. } | Event::AppTerminating { .. } => {
+                Some(LLREvent::Quit)
+            },
+
+            Event::Window { win_event, .. } => {
+                match win_event {
+                    WindowEvent::Resized(_w, _h) | WindowEvent::SizeChanged(_w, _h) => {
+                        Some(LLREvent::Resize)
+                    },
+                    _ => {
+                        None
+                    },
+                }
+            },
+
+            Event::KeyDown {
+                keycode: Some(sdl_key),
+                ..
+            } => {
+                match translate_sdl_key( sdl_key ) {
+                    Some( key ) => {
+                        Some( LLREvent::KeyPress( key ))
+                    },
+                    None => {
+                        None
+                    },
+                }
+            },
+
+            _ => {
+                None
+            },
+        }
+    }
 }
+
+fn translate_sdl_key( sdl_key : Keycode ) -> Option<LLRKey> {
+    match sdl_key {
+        Keycode::Up => {
+            Some(LLRKey::Up)
+        },
+        Keycode::Down => {
+            Some(LLRKey::Down)
+        },
+        Keycode::Left => {
+            Some(LLRKey::Left)
+        },
+        Keycode::Right => {
+            Some(LLRKey::Right)
+        },
+        _ => {
+            None
+        },
+    }
+}
+
