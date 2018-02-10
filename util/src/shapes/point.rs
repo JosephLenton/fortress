@@ -88,6 +88,12 @@ impl<N: Add + Sub + Mul + Div + Rem + Copy + AddAssign + DivAssign + MulAssign +
     }
 }
 
+impl<N: Num<N>> From<(N, N)> for Point<N> {
+    fn from((x, y):(N, N)) -> Self {
+        Self::new( x, y )
+    }
+}
+
 impl<N: Num<N>> PartialEq for Point<N> {
     fn eq(
         &self,

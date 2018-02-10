@@ -1,7 +1,6 @@
 use super::Point;
 use num_types::FromClamped;
 use num_types::Num;
-use std::convert::From;
 
 use std::ops::Add;
 use std::ops::AddAssign;
@@ -59,6 +58,12 @@ impl<N: Num<N> + PartialOrd> Size<N> {
     /// The check is exclusive of the size. i.e. `x < width`.
     pub fn contains( &self, point : Point<N> ) -> bool {
         point.x < self.width && point.y < self.height
+    }
+}
+
+impl<N: Num<N>> From<(N, N)> for Size<N> {
+    fn from((width, height):(N, N)) -> Self {
+        Self::new( width, height )
     }
 }
 
