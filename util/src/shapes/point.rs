@@ -18,7 +18,19 @@ use super::Size;
 
 /// A point in 2D space.
 #[derive(Debug, Copy, Clone)]
-pub struct Point<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
+pub struct Point<
+    N: Add
+        + Sub
+        + Mul
+        + Div
+        + Rem
+        + fmt::Display
+        + Copy
+        + AddAssign
+        + DivAssign
+        + MulAssign
+        + SubAssign,
+> {
     /// It's x location.
     pub x: N,
 
@@ -26,7 +38,20 @@ pub struct Point<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssig
     pub y: N,
 }
 
-impl<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssign + MulAssign + SubAssign> Point<N> {
+impl<
+    N: Add
+        + Sub
+        + Mul
+        + Div
+        + Rem
+        + fmt::Display
+        + Copy
+        + AddAssign
+        + DivAssign
+        + MulAssign
+        + SubAssign,
+> Point<N>
+{
     /// Trivial constructor.
     ///
     /// You can make it by hand, or you can use this constructor.
@@ -59,7 +84,7 @@ impl<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssig
     /// Sets a new x position.
     pub fn set_x(
         &mut self,
-        x : N,
+        x: N,
     ) {
         (*self).x = x;
     }
@@ -67,7 +92,7 @@ impl<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssig
     /// Sets a new y position.
     pub fn set_y(
         &mut self,
-        y : N,
+        y: N,
     ) {
         (*self).y = y;
     }
@@ -75,7 +100,7 @@ impl<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssig
     /// Moves the point along by the x axis.
     pub fn move_x(
         &mut self,
-        move_x : N,
+        move_x: N,
     ) {
         (*self).x += move_x;
     }
@@ -83,21 +108,24 @@ impl<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssig
     /// Moves the point along by the y axis.
     pub fn move_y(
         &mut self,
-        move_y : N,
+        move_y: N,
     ) {
         (*self).y += move_y;
     }
 }
 
 impl<N: Num<N>> fmt::Display for Point<N> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(
+        &self,
+        f: &mut fmt::Formatter,
+    ) -> fmt::Result {
         write!(f, "({}, {})", self.x, self.y)
     }
 }
 
 impl<N: Num<N>> From<(N, N)> for Point<N> {
-    fn from((x, y):(N, N)) -> Self {
-        Self::new( x, y )
+    fn from((x, y): (N, N)) -> Self {
+        Self::new(x, y)
     }
 }
 
@@ -264,8 +292,8 @@ impl<N: Num<N>> Rem<Size<N>> for Point<N> {
     }
 }
 
-/// For converting Point to Size.
 impl<N: Num<N>> Into<Size<N>> for Point<N> {
+    /// For converting Point to Size.
     fn into(self) -> Size<N> {
         Size {
             width: self.x,
@@ -274,9 +302,9 @@ impl<N: Num<N>> Into<Size<N>> for Point<N> {
     }
 }
 
-/// This is to allow creating a new Point, with a new type, from the type given.
-/// i.e. `Point::new(1 as u8, 1 as u8)::to::<u32>()`
 impl<U: Num<U>> Point<U> {
+    /// This is to allow creating a new Point, with a new type, from the type given.
+    /// i.e. `Point::new(1 as u8, 1 as u8)::to::<u32>()`
     pub fn to<F: Num<F> + From<U>>(&self) -> Point<F> {
         Point {
             x: F::from(self.x),
@@ -285,10 +313,10 @@ impl<U: Num<U>> Point<U> {
     }
 }
 
-/// Converts to a new type. If the current values don't fit in the new type,
-/// then it'll be clamped between min and max.
-/// i.e. `Point::new(1 as i16, 1 as i16)::to::<u16>()`
 impl<A: Num<A>> Point<A> {
+    /// Converts to a new type. If the current values don't fit in the new type,
+    /// then it'll be clamped between min and max.
+    /// i.e. `Point::new(1 as i16, 1 as i16)::to::<u16>()`
     pub fn to_clamped<B: Num<B> + FromClamped<A>>(&self) -> Point<B> {
         Point {
             x: B::from_clamped(self.x),
@@ -452,8 +480,8 @@ mod tests {
 
     #[test]
     pub fn test_from_u8_to_u32() {
-        let point_u8 = Point::new(4 as u8, 5 as u8);
-        let point_u32 = Point::new(4 as u32, 5 as u32);
+        let point_u8 = Point::new(4, 5).to::<u8>();
+        let point_u32 = Point::new(4, 5).to_clamped::<u32>();
         let point_u8_as_u32 = point_u8.to::<u32>();
 
         assert_eq!(point_u32, point_u8_as_u32);

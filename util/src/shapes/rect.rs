@@ -22,9 +22,21 @@ use super::Size;
 ///
 /// It has a position, and a size. It's generic parameter allows
 /// you to use any numerical type for it. Integers, floats, etc.
-///
+/// 
 #[derive(Copy, Clone, Debug)]
-pub struct Rect<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
+pub struct Rect<
+    N: Add
+        + Sub
+        + Mul
+        + Div
+        + Rem
+        + fmt::Display
+        + Copy
+        + AddAssign
+        + DivAssign
+        + MulAssign
+        + SubAssign,
+> {
     /// It's x location.
     pub x: N,
 
@@ -40,7 +52,21 @@ pub struct Rect<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign
     pub height: N,
 }
 
-impl<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + From<u8> + AddAssign + DivAssign + MulAssign + SubAssign> Rect<N> {
+impl<
+    N: Add
+        + Sub
+        + Mul
+        + Div
+        + Rem
+        + fmt::Display
+        + Copy
+        + From<u8>
+        + AddAssign
+        + DivAssign
+        + MulAssign
+        + SubAssign,
+> Rect<N>
+{
     /// Trivial constructor.
     ///
     /// Creates a new Rect with the size given.
@@ -62,8 +88,8 @@ impl<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + From<u8> + AddAssign
     /// Returns the x/y section of this rectangle on it's own.
     pub const fn point(&self) -> Point<N> {
         Point {
-            x : self.x,
-            y : self.y,
+            x: self.x,
+            y: self.y,
         }
     }
 
@@ -77,7 +103,10 @@ impl<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + From<u8> + AddAssign
 }
 
 impl<N: Num<N>> fmt::Display for Rect<N> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(
+        &self,
+        f: &mut fmt::Formatter,
+    ) -> fmt::Result {
         write!(f, "({}, {}, {}, {})", self.x, self.y, self.width, self.height)
     }
 }
@@ -85,7 +114,10 @@ impl<N: Num<N>> fmt::Display for Rect<N> {
 impl<N: Num<N> + PartialOrd> Rect<N> {
     /// Returns true if the point is within the size.
     /// The check is exclusive of the size. i.e. `x < width`.
-    pub fn contains( &self, point : Point<N> ) -> bool {
+    pub fn contains(
+        &self,
+        point: Point<N>,
+    ) -> bool {
         point.x >= self.x && point.y >= self.y && point.x < self.width && point.y < self.height
     }
 }
@@ -93,7 +125,10 @@ impl<N: Num<N> + PartialOrd> Rect<N> {
 impl<N: Num<N> + PartialOrd + SaturatingAddT> Rect<N> {
     /// Returns a rectangle that only contains the overlapping section.
     #[cfg_attr(feature = "cargo-clippy", allow(if_same_then_else))]
-    pub fn overlap_of(&self, other : Self) -> Option<Self> {
+    pub fn overlap_of(
+        &self,
+        other: Self,
+    ) -> Option<Self> {
         // We are far on the left.
         if self.x.saturating_add_t(self.width) < other.x {
             None
@@ -109,10 +144,26 @@ impl<N: Num<N> + PartialOrd + SaturatingAddT> Rect<N> {
         // We have an overlap!
         } else {
             Some(Rect {
-                x : if self.x < other.x { other.x } else { self.x },
-                y : if self.y < other.y { other.y } else { self.y },
-                width : if self.width < other.width { self.width } else { other.width },
-                height : if self.height < other.height { self.height } else { other.height },
+                x: if self.x < other.x {
+                    other.x
+                } else {
+                    self.x
+                },
+                y: if self.y < other.y {
+                    other.y
+                } else {
+                    self.y
+                },
+                width: if self.width < other.width {
+                    self.width
+                } else {
+                    other.width
+                },
+                height: if self.height < other.height {
+                    self.height
+                } else {
+                    other.height
+                },
             })
         }
     }
@@ -210,9 +261,9 @@ impl<N: Num<N>> PartialEq for Rect<N> {
     }
 }
 
-/// This is to allow creating a new Rect, with a new type, from the type given.
-/// i.e. `Rect::new(1 as u8, 1 as u8)::to::<u32>()`
 impl<U: Num<U>> Rect<U> {
+    /// This is to allow creating a new Rect, with a new type, from the type given.
+    /// i.e. `Rect::new(1 as u8, 1 as u8)::to::<u32>()`
     pub fn to<F: Num<F> + From<U>>(&self) -> Rect<F> {
         Rect {
             x: F::from(self.x),
@@ -223,11 +274,10 @@ impl<U: Num<U>> Rect<U> {
     }
 }
 
-
-/// Converts to a new type. If the current values don't fit in the new type,
-/// then it'll be clamped between min and max.
-/// i.e. `Rect::new(1 as i16, 1 as i16)::to::<u16>()`
 impl<A: Num<A>> Rect<A> {
+    /// Converts to a new type. If the current values don't fit in the new type,
+    /// then it'll be clamped between min and max.
+    /// i.e. `Rect::new(1 as i16, 1 as i16)::to::<u16>()`
     pub fn to_clamped<B: Num<B> + FromClamped<A>>(&self) -> Rect<B> {
         Rect {
             x: B::from_clamped(self.x),

@@ -1,10 +1,10 @@
 use theme::Theme;
 
+use llr::LLR;
 use llr::LLREvent;
 use llr::LLRKey;
 use llr::LLROptions;
 use llr::LLRTerminal;
-use llr::LLR;
 
 use render::cursor::Cursor;
 use render::render_game::RenderGame;
@@ -35,7 +35,7 @@ pub fn run<'a>(
                     },
 
                     // User Input
-                    //
+                    // 
                     LLREvent::KeyPress(key) => {
                         match key {
                             LLRKey::Escape => {

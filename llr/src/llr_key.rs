@@ -1,4 +1,3 @@
-
 /// Render independant keycodes.
 #[allow(missing_docs)]
 pub enum LLRKey {
@@ -16,4 +15,3 @@ pub enum LLRKey {
     Space,
     Escape,
 }
-

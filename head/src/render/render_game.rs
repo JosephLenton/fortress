@@ -27,7 +27,7 @@ impl<'a> RenderGame<'a> {
         RenderGame {
             theme: theme,
             game: game,
-            //camera: Camera::new(game.player.position.to_clamped::<i32>()),
+            // camera: Camera::new(game.player.position.to_clamped::<i32>()),
             camera: Camera::new(Point::new(0, 0)),
         }
     }
@@ -55,7 +55,7 @@ impl<'a> RenderGame<'a> {
     ) {
         let camera_pos = self.camera.position();
         let llr_size = llr.size().to::<i32>();
-        let top_left = camera_pos - llr_size/2;
+        let top_left = camera_pos - llr_size / 2;
         let area = top_left.combine(llr_size);
 
         for (tile, tile_pos) in

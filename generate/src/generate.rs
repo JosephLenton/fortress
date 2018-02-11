@@ -48,7 +48,6 @@ fn add_buildings(
     mut map: &mut Map<Tile>,
     mut rng: &mut StdRng,
 ) {
-    // TODO change this to some proper building building code.
     for x in 20..30 {
         map.set(x, 15, Tile::Wall);
     }

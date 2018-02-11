@@ -19,8 +19,8 @@ use game::Game;
 use game::GameSetup;
 use head::RenderOptions;
 use head::render::run::run;
-use util::shapes::Size;
 use util::colour::RGBA;
+use util::shapes::Size;
 use world::calendar::WorldCalendar;
 use world::calendar::WorldTime;
 use world::load;
@@ -96,7 +96,7 @@ fn main_run(args: Args) -> Result<()> {
             height: 12,
         },
 
-        clear_colour: RGBA::new( 0, 0, 0, 255 ),
+        clear_colour: RGBA::new(0, 0, 0, 255),
     };
 
     run(setup, &game);

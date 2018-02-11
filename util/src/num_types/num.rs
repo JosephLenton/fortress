@@ -29,6 +29,10 @@ pub trait Num<N>
     + Display
     + Copy
     + PartialEq {
+    /// The various types we implement care about their output.
+    /// What type does their operation complete.
+    ///
+    /// This is it defined again for implementation.
     type Output = Self;
 }
 

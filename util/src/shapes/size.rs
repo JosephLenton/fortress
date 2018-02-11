@@ -17,7 +17,19 @@ use std::ops::SubAssign;
 /// The size of a box, the size of a window, the size of a player.
 /// But they don't have a location.
 #[derive(Debug, Default, Copy, Clone)]
-pub struct Size<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign + DivAssign + MulAssign + SubAssign> {
+pub struct Size<
+    N: Add
+        + Sub
+        + Mul
+        + Div
+        + Rem
+        + fmt::Display
+        + Copy
+        + AddAssign
+        + DivAssign
+        + MulAssign
+        + SubAssign,
+> {
     /// The width of the area.
     pub width: N,
 
@@ -25,7 +37,20 @@ pub struct Size<N: Add + Sub + Mul + Div + Rem + fmt::Display + Copy + AddAssign
     pub height: N,
 }
 
-impl<N: Add + Sub + Mul<Output = N> + Div + Rem + fmt::Display + Copy + AddAssign + DivAssign + MulAssign + SubAssign> Size<N> {
+impl<
+    N: Add
+        + Sub
+        + Mul<Output = N>
+        + Div
+        + Rem
+        + fmt::Display
+        + Copy
+        + AddAssign
+        + DivAssign
+        + MulAssign
+        + SubAssign,
+> Size<N>
+{
     /// Trivial constructor.
     ///
     /// Creates a new Size with the width and height given.
@@ -55,7 +80,10 @@ impl<N: Add + Sub + Mul<Output = N> + Div + Rem + fmt::Display + Copy + AddAssig
 }
 
 impl<N: Num<N>> fmt::Display for Size<N> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(
+        &self,
+        f: &mut fmt::Formatter,
+    ) -> fmt::Result {
         write!(f, "({}, {})", self.width, self.height)
     }
 }
@@ -63,14 +91,17 @@ impl<N: Num<N>> fmt::Display for Size<N> {
 impl<N: Num<N> + PartialOrd> Size<N> {
     /// Returns true if the point is within the size.
     /// The check is exclusive of the size. i.e. `x < width`.
-    pub fn contains( &self, point : Point<N> ) -> bool {
+    pub fn contains(
+        &self,
+        point: Point<N>,
+    ) -> bool {
         point.x < self.width && point.y < self.height
     }
 }
 
 impl<N: Num<N>> From<(N, N)> for Size<N> {
-    fn from((width, height):(N, N)) -> Self {
-        Self::new( width, height )
+    fn from((width, height): (N, N)) -> Self {
+        Self::new(width, height)
     }
 }
 
@@ -281,9 +312,9 @@ impl<N: Num<N>> PartialEq for Size<N> {
     }
 }
 
-/// This is to allow creating a new Size, with a new type, from the type given.
-/// i.e. `Size::new(1 as u8, 1 as u8)::to::<f32>()`
 impl<A: Num<A>> Size<A> {
+    /// This is to allow creating a new Size, with a new type, from the type given.
+    /// i.e. `Size::new(1 as u8, 1 as u8)::to::<f32>()`
     pub fn to<B: Num<B> + From<A>>(&self) -> Size<B> {
         Size {
             width: B::from(self.width),
@@ -292,10 +323,10 @@ impl<A: Num<A>> Size<A> {
     }
 }
 
-/// Converts to a new type. If the current values don't fit in the new type,
-/// then it'll be clamped between min and max.
-/// i.e. `Size::new(1 as i16, 1 as i16)::to::<u16>()`
 impl<A: Num<A>> Size<A> {
+    /// Converts to a new type. If the current values don't fit in the new type,
+    /// then it'll be clamped between min and max.
+    /// i.e. `Size::new(1 as i16, 1 as i16)::to::<u16>()`
     pub fn to_clamped<B: Num<B> + FromClamped<A>>(&self) -> Size<B> {
         Size {
             width: B::from_clamped(self.width),
@@ -419,8 +450,8 @@ mod tests {
 
     #[test]
     pub fn test_from_u8_to_u32() {
-        let size_u8 = Size::new(4 as u8, 5 as u8);
-        let size_u32 = Size::new(4 as u32, 5 as u32);
+        let size_u8 = Size::new(4, 5).to::<u8>();
+        let size_u32 = Size::new(4, 5).to_clamped::<u32>();
         let size_u8_as_u32 = size_u8.to::<u32>();
 
         assert_eq!(size_u32, size_u8_as_u32);

@@ -1,33 +1,33 @@
 use super::HSVA;
 
 /// An RGBA colour.
-///
+/// 
 #[derive(Debug, Copy, Clone)]
 pub struct RGBA {
     /// The red component.
     /// 0 to 255.
-    ///
+    /// 
     pub red: u8,
 
     /// The green component.
     /// 0 to 255.
-    ///
+    /// 
     pub green: u8,
 
     /// The green component.
     /// 0 to 255.
-    ///
+    /// 
     pub blue: u8,
 
     /// The alpha component.
     /// 0 to 255.
-    ///
+    /// 
     pub alpha: u8,
 }
 
 impl RGBA {
     /// Trivial constructor.
-    ///
+    /// 
     pub fn new_rgb(
         r: u8,
         g: u8,
@@ -42,7 +42,7 @@ impl RGBA {
     }
 
     /// Trivial constructor.
-    ///
+    /// 
     pub fn new(
         r: u8,
         g: u8,
@@ -58,7 +58,7 @@ impl RGBA {
     }
 
     /// Returns the HSVA equivalent of the RGBA object.
-    ///
+    /// 
     pub fn to_hsva(&self) -> HSVA {
         if self.red == self.green && self.red == self.blue {
             return HSVA {
@@ -110,7 +110,7 @@ impl RGBA {
     }
 
     /// Clones this colour, with the new opacity.
-    ///
+    /// 
     pub fn opacity(
         &self,
         alpha: u8,
@@ -124,7 +124,7 @@ impl RGBA {
     }
 
     /// Returns a copy lightened by the amount given.
-    ///
+    /// 
     pub fn lighten(
         &self,
         amount: f32,
@@ -133,7 +133,7 @@ impl RGBA {
     }
 
     /// Returns a copy darkened by the amount given.
-    ///
+    /// 
     pub fn darken(
         &self,
         amount: f32,

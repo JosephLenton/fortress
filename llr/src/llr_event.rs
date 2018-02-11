@@ -1,4 +1,3 @@
-
 use LLRKey;
 
 /// An event on the input system.
@@ -7,4 +6,3 @@ pub enum LLREvent {
     Resize,
     KeyPress(LLRKey),
 }
-

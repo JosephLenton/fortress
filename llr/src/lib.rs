@@ -5,10 +5,10 @@
 //! This is the logic for actual drawing operations. It also contains the
 //! implementations for this. i.e. for drawing to SDL2, or the terminal.
 
-extern crate sdl2;
-extern crate util;
-extern crate terminal_size;
 extern crate getch;
+extern crate sdl2;
+extern crate terminal_size;
+extern crate util;
 
 /// Here lies the various llr implementations.
 mod implementations;

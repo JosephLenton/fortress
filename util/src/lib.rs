@@ -11,9 +11,16 @@
 #![feature(const_fn)]
 
 /// A module of traits to make it easier to work with numbers.
-mod num_types;
+pub mod num_types;
 
+/// Some custom collections I find useful.
 pub mod collections;
+
+/// For representing points, sizes, and shapes.
 pub mod shapes;
+
+/// For representing colours.
 pub mod colour;
+
+/// Some extra enums for representing items.
 pub mod states;

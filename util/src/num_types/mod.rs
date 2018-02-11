@@ -4,4 +4,3 @@ pub(crate) mod internal;
 
 pub use self::from_clamped::FromClamped;
 pub use self::num::Num;
-

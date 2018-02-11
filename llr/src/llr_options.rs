@@ -1,5 +1,5 @@
-use util::shapes::Size;
 use util::colour::RGBA;
+use util::shapes::Size;
 
 /// Describes how to setup a low level renderer.
 ///
@@ -9,5 +9,5 @@ pub struct LLROptions {
     pub title: &'static str,
     pub window_size: Size<u16>,
     pub tile_size: Size<u8>,
-    pub clear_colour : RGBA,
+    pub clear_colour: RGBA,
 }
