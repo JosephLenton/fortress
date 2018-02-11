@@ -65,8 +65,8 @@ impl<'a> Game<'a> {
     /// This update can range from updating the weather,
     /// to triggerring a random encounter, to causing other
     /// effects.
-    /// 
-    pub fn tick(&mut self) -> () {
+    ///
+    pub fn tick(&mut self) {
         self.time += self.game_setup.time_tick_speed;
     }
 

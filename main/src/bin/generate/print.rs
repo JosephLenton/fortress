@@ -3,11 +3,11 @@ use world::tiles::Tile;
 
 use std::io;
 
-use super::colour::pixel_to_cmd_code;
 use llr::LLRPixel;
-use theme::Theme;
+use hlr::theme::Theme;
+use util::colour::RGBA;
 
-// Re-export this as ours for ease of use.
+/// For stating if the colour is on or off.
 pub use util::states::OnOff;
 
 /// Iterates over the map given, and writes it to the writer.
@@ -58,4 +58,25 @@ fn print_end_of_line(
     }
 
     writeln!(out, "")
+}
+
+/// Converts the pixel to it's colour, and then returns the command version
+/// of that colour.
+fn pixel_to_cmd_code(pixel: LLRPixel) -> String {
+    let foreground = to_foreground_colour_code(pixel.foreground);
+    let background = to_background_colour_code(pixel.background);
+
+    format!("{}{}{}", foreground, background, pixel.character)
+}
+
+fn to_foreground_colour_code(colour: RGBA) -> String {
+    format!("\x1B[38;2;{}m", to_colour_code(colour))
+}
+
+fn to_background_colour_code(colour: RGBA) -> String {
+    format!("\x1B[48;2;{}m", to_colour_code(colour))
+}
+
+fn to_colour_code(colour: RGBA) -> String {
+    format!("{};{};{}", colour.red, colour.green, colour.blue)
 }

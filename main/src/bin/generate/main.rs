@@ -1,14 +1,17 @@
 //! # Generate.
 //!
 //! This is a command line utility for generating maps.
-//! 
+//!
 
 extern crate structopt;
 #[macro_use]
 extern crate structopt_derive;
 
 extern crate generate;
-extern crate head;
+extern crate hlr;
+extern crate llr;
+extern crate world;
+extern crate util;
 
 use std::io::stdout;
 
@@ -16,9 +19,9 @@ use args::Args;
 use args::ArgsColour;
 use generate::generate::MapOptions;
 use generate::generate::new_map;
-use head::native::cmd::print;
 
 mod args;
+mod print;
 
 /// Entry point.
 fn main() {

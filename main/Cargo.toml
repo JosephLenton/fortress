@@ -11,5 +11,6 @@ world = { path = "../world" }
 util = { path = "../util" }
 generate = { path = "../generate" }
 game = { path = "../game" }
-head = { path = "../head" }
+hlr = { path = "../hlr" }
+llr = { path = "../llr" }
 

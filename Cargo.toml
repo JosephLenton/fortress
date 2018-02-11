@@ -6,6 +6,7 @@ members = [
     "main",
     "generate",
     "game",
-    "head"
+    "hlr",
+    "llr",
 ]
 

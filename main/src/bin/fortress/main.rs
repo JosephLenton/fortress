@@ -10,15 +10,15 @@ extern crate structopt;
 extern crate structopt_derive;
 
 extern crate game;
-extern crate head;
+extern crate hlr;
 extern crate util;
 extern crate world;
 
 use args::Args;
 use game::Game;
 use game::GameSetup;
-use head::RenderOptions;
-use head::render::run::run;
+use hlr::HLROptions;
+use hlr::render::run::run;
 use util::colour::RGBA;
 use util::shapes::Size;
 use world::calendar::WorldCalendar;
@@ -83,7 +83,7 @@ fn main_run(args: Args) -> Result<()> {
 
     let game = Game::new(map, player, world_setup, game_setup);
 
-    let setup = RenderOptions {
+    let setup = HLROptions {
         title: "Fortress",
 
         window_size: Size {

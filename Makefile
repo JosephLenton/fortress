@@ -76,8 +76,8 @@ make-game:
 make-generate:
 	make --no-print-directory make-one-dev manifest-path="./generate/Cargo.toml"
 
-make-head:
-	make --no-print-directory make-one-dev manifest-path="./head/Cargo.toml"
+make-hlr:
+	make --no-print-directory make-one-dev manifest-path="./hlr/Cargo.toml"
 
 make-llr:
 	make --no-print-directory make-one-dev manifest-path="./llr/Cargo.toml"
