@@ -15,7 +15,7 @@ impl Theme {
     /// Gets the players draw information.
     pub fn get_player(&self) -> LLRPixel {
         LLRPixel {
-            character: '@',
+            character: "@",
             background: colours::PINK,
             foreground: colours::BLACK,
         }
@@ -39,14 +39,14 @@ impl Theme {
         match tile {
             Tile::Empty => {
                 LLRPixel {
-                    character: '.',
+                    character: ".",
                     background: colours::BLACK,
                     foreground: colours::GREY,
                 }
             },
             Tile::Ground => {
                 LLRPixel {
-                    character: ':',
+                    character: ":",
                     background: colours::BLACK,
                     foreground: colours::BROWN,
                 }
@@ -54,14 +54,14 @@ impl Theme {
 
             Tile::Grass => {
                 LLRPixel {
-                    character: ',',
+                    character: ",",
                     background: colours::BLACK,
                     foreground: colours::GREEN,
                 }
             },
             Tile::GrassThick => {
                 LLRPixel {
-                    character: '"',
+                    character: "\"",
                     background: colours::BLACK,
                     foreground: colours::GREEN,
                 }
@@ -69,7 +69,7 @@ impl Theme {
 
             Tile::Rocks => {
                 LLRPixel {
-                    character: '∩',
+                    character: "∩",
                     background: colours::BLACK,
                     foreground: colours::LIGHT_GREY,
                 }
@@ -77,7 +77,7 @@ impl Theme {
 
             Tile::Hill => {
                 LLRPixel {
-                    character: '^',
+                    character: "^",
                     background: colours::BLACK,
                     foreground: colours::GREEN,
                 }
@@ -85,21 +85,21 @@ impl Theme {
 
             Tile::Water => {
                 LLRPixel {
-                    character: '~',
+                    character: "~",
                     background: colours::BLACK,
                     foreground: colours::BLUE,
                 }
             },
             Tile::Wall => {
                 LLRPixel {
-                    character: '#',
+                    character: "#",
                     background: colours::GREY,
                     foreground: colours::LIGHT_GREY,
                 }
             },
             Tile::TreeStump => {
                 LLRPixel {
-                    character: 'o',
+                    character: "o",
                     background: colours::BLACK,
                     foreground: colours::BROWN,
                 }
@@ -107,7 +107,7 @@ impl Theme {
 
             Tile::Ice => {
                 LLRPixel {
-                    character: '∴',
+                    character: "∴",
                     background: colours::LIGHT_CYAN,
                     foreground: colours::WHITE,
                 }

@@ -1,21 +1,23 @@
 use LLRKey;
 
-pub const ARROW_UP: u8 = 72;
-pub const ARROW_DOWN: u8 = 80;
-pub const ARROW_LEFT: u8 = 75;
-pub const ARROW_RIGHT: u8 = 77;
+#[allow(missing_docs)]
 
-pub const ESCAPE: u8 = 27;
-pub const LETTER_Q: u8 = 113;
+const ARROW_UP: u8 = 72;
+const ARROW_DOWN: u8 = 80;
+const ARROW_LEFT: u8 = 75;
+const ARROW_RIGHT: u8 = 77;
 
-pub const LETTER_W: u8 = 119;
-pub const LETTER_S: u8 = 115;
-pub const LETTER_A: u8 = 97;
-pub const LETTER_D: u8 = 100;
+const ESCAPE: u8 = 27;
+const LETTER_Q: u8 = 113;
 
-pub const SPACE: u8 = 32;
+const LETTER_W: u8 = 119;
+const LETTER_S: u8 = 115;
+const LETTER_A: u8 = 97;
+const LETTER_D: u8 = 100;
 
-pub fn u8_to_key(key: u8) -> Option<LLRKey> {
+const SPACE: u8 = 32;
+
+pub(crate) fn u8_to_key(key: u8) -> Option<LLRKey> {
     match key {
         ESCAPE => Some(LLRKey::Escape),
 

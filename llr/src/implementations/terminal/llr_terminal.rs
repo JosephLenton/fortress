@@ -4,10 +4,8 @@ use LLREvent;
 use LLROptions;
 use LLRPixel;
 use getch::Getch;
-use implementations::terminal::colour::pixel_to_cmd_code;
-use implementations::terminal::colour::to_background_colour_code;
+use implementations::terminal::colour;
 use std::io::{self, Write};
-use std::time;
 use terminal_size;
 use util::collections::Matrix;
 use util::shapes::Point;
@@ -23,45 +21,45 @@ pub struct LLRTerminal {
     /// Internal buffer that holds that data we will be drawing.
     screen: Matrix<Option<LLRPixel>>,
 
-    /// Holds the output to be printed.
-    /// This is not the source of truth. It holds the contents of the matrix,
-    /// once it's been converted to a string.
-    ///
-    /// We hold onto the string here to avoid re-creating it every time we go
-    /// to draw.
-    out_buffer: String,
-
     /// We use this for reading in user input.
     getch: Getch,
 
     /// Where we are writing to.
     out: io::Stdout,
+
+    /// The output is first concatonated into a giant string.
+    /// This allows us to perform a single write to send it out.
+    ///
+    /// To avoid rebuilding that string every single time, we instead place it
+    /// here.
+    out_buffer : String,
 }
 
 impl LLRTerminal {
     /// Trivial constructor.
     pub fn new(options: LLROptions) -> Self {
         let matrix_size = options.window_size / options.tile_size.to::<u16>();
-        let estimated_out_capacity = matrix_size.to_clamped::<usize>().area() * 16;
+        let estimated_out_capacity = matrix_size.to_clamped::<usize>().area() * 4;
 
-        Self {
+        let mut llr = Self {
             options: options,
             screen: Matrix::new(matrix_size, None),
             out_buffer: String::with_capacity(estimated_out_capacity),
             getch: Getch::new(),
             out: io::stdout(),
-        }
-    }
+        };
 
-    /// Cleares the terminal, and sets the drawing colour to the clear colour.
-    fn reset_screen(&mut self) {
-        self.out.write(b"\x1B[2J");
-        write!(self.out, "{}", to_background_colour_code(self.options.clear_colour));
-        self.out.flush();
+        llr.set_title( & options.title );
+
+        llr
     }
 }
 
 impl LLR for LLRTerminal {
+    fn set_title( &mut self, title : &str ) {
+        write!( self.out, "\x1B]2;{}\x1b\x5c", title );
+    }
+
     fn clear(&mut self) {
         for x in 0..self.screen.size().width {
             for y in 0..self.screen.size().height {
@@ -85,35 +83,99 @@ impl LLR for LLRTerminal {
     }
 
     fn finished_drawing(&mut self) {
-        let matrix_size = self.screen.size();
-        let estimated_out_capacity = matrix_size.to_clamped::<usize>().area() * 32;
-        let mut out_buffer = String::with_capacity(estimated_out_capacity);
+        let out_buffer = &mut self.out_buffer;
+        let clear_colour = self.options.clear_colour;
+        let clear_colour_str = & colour::to_background_colour_code(self.options.clear_colour);
+        let mut maybe_last_pixel : Option<LLRPixel> = None;
+
+        // Start us off in the top left with the clear colour.
+        *out_buffer += & "\x1B[0;0H";
+        *out_buffer += & clear_colour_str;
 
         self.screen.iter().for_each(|(maybe_pixel, pos)| -> () {
-            match maybe_pixel {
-                Some(pixel) => {
-                    out_buffer += &format!("\x1B[{};{}H{}", pos.y, pos.x, pixel_to_cmd_code(pixel));
+            if pos.x == 0 && pos.y > 0 {
+                *out_buffer += & "\n";
+            }
+
+            match (maybe_pixel, maybe_last_pixel) {
+                (Some(pixel), None) => {
+                    if pixel.background != clear_colour {
+                        *out_buffer += & colour::to_background_colour_code(pixel.background);
+                    }
+
+                    *out_buffer += & colour::to_foreground_colour_code(pixel.foreground);
+                    *out_buffer += & pixel.character;
+
+                    maybe_last_pixel = Some(pixel);
                 },
-                None => {
-                    out_buffer += &format!(
-                        "\x1B[{};{}H{} ",
-                        pos.y,
-                        pos.x,
-                        to_background_colour_code(self.options.clear_colour)
-                    );
+                (Some(pixel), Some(last_pixel)) => {
+                    if pixel.background != last_pixel.background {
+                        *out_buffer += & colour::to_background_colour_code(pixel.background);
+                    }
+
+                    if pixel.foreground != last_pixel.foreground {
+                        *out_buffer += & colour::to_foreground_colour_code(pixel.foreground);
+                    }
+
+                    *out_buffer += & pixel.character;
+                    maybe_last_pixel = Some(pixel);
+                },
+                (None, None) => {
+                    *out_buffer += & " ";
+                },
+                (None, _) => {
+                    *out_buffer += & clear_colour_str;
+                    *out_buffer += & " ";
+                    maybe_last_pixel = None;
                 },
             };
         });
 
-        self.out.write(&out_buffer.into_bytes());
+        // Padding.
+        // This is to hide the extra characters we get printed.
+        *out_buffer += & clear_colour_str;
+        *out_buffer += & "\n\x1B[2K";
+        *out_buffer += & "\n\x1B[2K";
+        *out_buffer += & "\x1B[1A";
+
+        write!( self.out, "{}", &out_buffer );
     }
 
     fn on_start(&mut self) {
-        self.reset_screen();
+        let output = &mut String::new();
+
+        // Clear.
+        *output += & "\x1B[2J";
+
+        // Default colours.
+        *output += & colour::to_default_colour_code();
+
+        // Hide cursor.
+        *output += & "\x1B[?25l";
+
+        write!( self.out, "{}", &output );
+        self.out.flush();
     }
 
     fn on_quit(&mut self) {
-        self.reset_screen();
+        let output = &mut String::new();
+
+        // Clear.
+        *output += & "\x1B[2J";
+
+        // Default colours.
+        *output += & colour::to_default_colour_code();
+
+        // Show cursor.
+        *output += & "\x1B[?25h";
+
+        // Restore to initial state.
+        // May not actually make the cursor shown again, but should provide
+        // any additional resets we missed.
+        *output += & "\x1Bc";
+
+        write!( self.out, "{}", &output );
+        self.out.flush();
     }
 
     fn size(&self) -> Size<u16> {

@@ -11,5 +11,5 @@ pub struct LLRPixel {
     pub foreground: RGBA,
 
     /// This is the display character to display the tile.
-    pub character: char,
+    pub character: &'static str,
 }

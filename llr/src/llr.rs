@@ -6,10 +6,22 @@ use util::shapes::Size;
 /// Represents rendering.
 ///
 /// This handles all drawing logic.
+///
+/// Note that no drawing calls will be displayed until you call
+/// `finished_drawing`.
 pub trait LLR {
+    /// Sets the title on the LLR.
+    ///
+    /// This is probably the window title, or the window title if in the
+    /// terminal.
+    ///
+    /// Not guaranteed to actually do anything.
+    fn set_title(&mut self, title : &str);
+
     /// Clears everything.
     ///
-    /// You can call this before you begin drawing.
+    /// You can call this before you begin drawing, or during drawing to reset.
+    /// Note the clear will not show until you call `finished_drawing`.
     fn clear(&mut self);
 
     /// Draws a rectangle at the location given,

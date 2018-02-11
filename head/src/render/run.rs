@@ -35,7 +35,7 @@ pub fn run<'a>(
                     },
 
                     // User Input
-                    // 
+                    //
                     LLREvent::KeyPress(key) => {
                         match key {
                             LLRKey::Escape => {

@@ -56,6 +56,10 @@ impl LLRSDL2 {
 }
 
 impl LLR for LLRSDL2 {
+    fn set_title(&mut self, title : &str) {
+        self.canvas.window_mut().set_title( title );
+    }
+
     fn clear(&mut self) {
         self.canvas.set_draw_color(self.options.clear_colour.to_sdl2());
         self.canvas.clear();
