@@ -6,7 +6,6 @@ use LLRPixel;
 use getch::Getch;
 use implementations::terminal::colour;
 use std::io::{self, Write};
-use terminal_size;
 use util::collections::Matrix;
 use util::shapes::Point;
 use util::shapes::Size;
@@ -179,15 +178,7 @@ impl LLR for LLRTerminal {
     }
 
     fn size(&self) -> Size<u16> {
-        let size = terminal_size::terminal_size();
-
-        if let Some((terminal_size::Width(w), terminal_size::Height(h))) = size {
-            Size::new(w, h)
-
-        // We'll just pretend we have a proper size.
-        } else {
-            self.options.window_size / self.options.tile_size.to::<u16>()
-        }
+        self.options.window_size / self.options.tile_size.to::<u16>()
     }
 
     fn poll(&mut self) -> Option<LLREvent> {

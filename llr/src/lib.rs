@@ -7,7 +7,6 @@
 
 extern crate getch;
 extern crate sdl2;
-extern crate terminal_size;
 extern crate util;
 
 /// Here lies the various llr implementations.
