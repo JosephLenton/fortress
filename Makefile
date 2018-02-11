@@ -79,6 +79,9 @@ make-generate:
 make-head:
 	make --no-print-directory make-one-dev manifest-path="./head/Cargo.toml"
 
+make-llr:
+	make --no-print-directory make-one-dev manifest-path="./llr/Cargo.toml"
+
 make-util:
 	make --no-print-directory make-one-dev manifest-path="./util/Cargo.toml"
 
